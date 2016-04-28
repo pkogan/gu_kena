@@ -167,4 +167,18 @@ INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, colum
 	NULL, --externa
 	'mesa'  --tabla
 );
+INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
+	'gu_kena', --objeto_proyecto
+	'10000119', --objeto
+	'10000087', --col_id
+	'estado', --columna
+	'E', --tipo
+	'0', --pk
+	'', --secuencia
+	NULL, --largo
+	NULL, --no_nulo
+	'0', --no_nulo_db
+	NULL, --externa
+	'mesa'  --tabla
+);
 --- FIN Grupo de desarrollo 10
