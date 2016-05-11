@@ -21,9 +21,17 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	NULL, --objeto_categoria_proyecto
 	NULL, --objeto_categoria
 	'Consejeros Superior - CI - cuadro_superior_e', --nombre
-	NULL, --titulo
-	'0', --colapsable
-	NULL, --descripcion
+	'Detalle Votos Ponderados', --titulo
+	'1', --colapsable
+	'ARTíCULO 80: A los efectos de ponderar los votos obtenidos por cada lista de candidatos a
+Consejeros Superiores en cada claustro se utilizará la siguiente fórmula, en un todo de acuerdo
+con el artículo 103 del Estatuto.
+VP=VUE 1/EUE 1+VUE2/EUE2+VUE3/EUE3+ ...
+Siendo,
+VP= Sumatoria de los votos ponderados obtenidos por cada lista.
+VUEn= Cantidad de votos obtenidos por la lista en la unidad electoral "n".
+EUEn= Cantidad de empadronados en ese claustro en la unidad electoral "n".
+Deberán tomarse los cocientes con un número de decimales no menos a cuatro (4).', --descripcion
 	NULL, --fuente_datos_proyecto
 	NULL, --fuente_datos
 	NULL, --solicitud_registrar
@@ -64,7 +72,7 @@ INSERT INTO apex_objeto_cuadro (objeto_cuadro_proyecto, objeto_cuadro, titulo, s
 	NULL, --eof_customizado
 	'0', --siempre_con_titulo
 	'0', --exportar_paginado
-	'0', --exportar
+	'1', --exportar
 	'0', --exportar_rtf
 	NULL, --pdf_propiedades
 	NULL, --pdf_respetar_paginacion

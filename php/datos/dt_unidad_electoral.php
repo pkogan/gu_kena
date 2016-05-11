@@ -22,8 +22,8 @@ class dt_unidad_electoral extends gu_kena_datos_tabla
             $where = "";
             if(isset($id))
                 $where = " WHERE id_nro_ue = $id ";
-		$sql = "SELECT id_nro_ue, nombre FROM unidad_electoral $where ORDER BY nombre";
-		return toba::db('gu_kena')->consultar($sql);
+            $sql = "SELECT id_nro_ue, nombre, sigla FROM unidad_electoral $where ORDER BY nombre";
+            return toba::db('gu_kena')->consultar($sql);
 	}
 
 

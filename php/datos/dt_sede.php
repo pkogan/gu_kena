@@ -18,5 +18,10 @@ class dt_sede extends gu_kena_datos_tabla
             return $ar[0]['nombre'];
         }
 
+        function get_unidad($id_sede){
+            $sql = "SELECT id_ue FROM sede WHERE id_sede = $id_sede";
+            $ar = toba::db('gu_kena')->consultar($sql);
+            return $ar[0]['id_ue'];
+        }
 }
 ?>

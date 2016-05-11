@@ -9,20 +9,21 @@ class dt_voto_lista_cdirectivo extends gu_kena_datos_tabla
 
 
 //obtiene el listado de voto_lista_cdirectivo correspondientes al acta que recibe como parametro del acta 
-        function get_listado_votos_dir($acta)
+        function get_listado_votos_dir($id_acta)
 	{
 		
-		$sql = "SELECT
-                        t_v.id_acta,
-                        t_v.id_lista,
-			t_l.nombre,
-			t_v.cant_votos
-			
-		FROM
-			voto_lista_cdirectivo as t_v, lista_cdirectivo as t_l	
-                WHERE t_l.id_nro_lista=t_v.id_lista and t_v.id_acta=".$acta;
-		
-		return toba::db('gu_kena')->consultar($sql);
+            $sql = "SELECT t_l.id_nro_lista, 
+                           t_l.nombre,
+                           t_v.cant_votos as votos
+                    FROM voto_lista_cdirectivo t_v
+                    INNER JOIN lista_cdirectivo t_l ON (t_l.id_nro_lista = t_v.id_lista)
+                    INNER JOIN acta t_a ON (t_a.id_acta = t_v.id_acta)
+                    INNER JOIN mesa t_m ON (t_m.id_mesa = t_a.para)
+                    INNER JOIN sede t_s ON (t_s.id_sede = t_m.id_sede)
+                    WHERE t_l.id_ue = t_s.id_ue
+                    AND t_a.id_acta = $id_acta ORDER BY t_l.id_nro_lista";
+                    
+            return toba::db('gu_kena')->consultar($sql);
 	}
 
         function get_listas_con_total_votos($id_claustro, $id_nro_ue){
@@ -36,6 +37,7 @@ class dt_voto_lista_cdirectivo extends gu_kena_datos_tabla
                 WHERE t_l.id_nro_lista=t_v.id_lista 
                 AND t_l.id_claustro = $id_claustro "
                     . "AND t_l.id_ue = $id_nro_ue "
+                    . "AND t_l.fecha = (SELECT max(fecha) FROM lista_cdirectivo)"
                     . "GROUP BY t_l.id_nro_lista "
                     . "ORDER BY votos DESC";
 		

@@ -37,7 +37,7 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	NULL, --parametro_f
 	NULL, --usuario
 	'2016-04-27 09:51:17', --creacion
-	'abajo'  --posicion_botonera
+	'ambos'  --posicion_botonera
 );
 --- FIN Grupo de desarrollo 10
 
@@ -63,7 +63,7 @@ INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, eti
 	'1', --orden
 	NULL, --ci_predep
 	'0', --implicito
-	'1', --defecto
+	'0', --defecto
 	NULL, --display_datos_cargados
 	NULL, --grupo
 	NULL, --accion
@@ -81,16 +81,16 @@ INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, eti
 );
 INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, etiqueta, maneja_datos, sobre_fila, confirmacion, estilo, imagen_recurso_origen, imagen, en_botonera, ayuda, orden, ci_predep, implicito, defecto, display_datos_cargados, grupo, accion, accion_imphtml_debug, accion_vinculo_carpeta, accion_vinculo_item, accion_vinculo_objeto, accion_vinculo_popup, accion_vinculo_popup_param, accion_vinculo_target, accion_vinculo_celda, accion_vinculo_servicio, es_seleccion_multiple, es_autovinculo) VALUES (
 	'gu_kena', --proyecto
-	'10000193', --evento_id
+	'10000206', --evento_id
 	'10000170', --objeto
-	'cancelar', --identificador
-	'&Cancelar', --etiqueta
-	'0', --maneja_datos
+	'enviar', --identificador
+	'Enviar', --etiqueta
+	'1', --maneja_datos
 	NULL, --sobre_fila
-	NULL, --confirmacion
+	'¿Está seguro que desea enviar los datos? Esta operación no permitirá modificar los datos ya enviados', --confirmacion
 	NULL, --estilo
 	'apex', --imagen_recurso_origen
-	NULL, --imagen
+	'instanciar.png', --imagen
 	'1', --en_botonera
 	NULL, --ayuda
 	'2', --orden
@@ -100,11 +100,11 @@ INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, eti
 	NULL, --display_datos_cargados
 	NULL, --grupo
 	NULL, --accion
-	NULL, --accion_imphtml_debug
+	'0', --accion_imphtml_debug
 	NULL, --accion_vinculo_carpeta
 	NULL, --accion_vinculo_item
 	NULL, --accion_vinculo_objeto
-	NULL, --accion_vinculo_popup
+	'0', --accion_vinculo_popup
 	NULL, --accion_vinculo_popup_param
 	NULL, --accion_vinculo_target
 	NULL, --accion_vinculo_celda
@@ -126,7 +126,7 @@ INSERT INTO apex_objeto_mt_me (objeto_mt_me_proyecto, objeto_mt_me, ev_procesar_
 	'300px', --alto
 	NULL, --posicion_botonera
 	NULL, --tipo_navegacion
-	'0', --botonera_barra_item
+	'1', --botonera_barra_item
 	'0', --con_toc
 	NULL, --incremental
 	NULL, --debug_eventos
@@ -159,6 +159,18 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 );
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'gu_kena', --proyecto
+	'10000250', --dep_id
+	'10000170', --objeto_consumidor
+	'10000192', --objeto_proveedor
+	'form_datos', --identificador
+	NULL, --parametros_a
+	NULL, --parametros_b
+	NULL, --parametros_c
+	NULL, --inicializar
+	NULL  --orden
+);
+INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
+	'gu_kena', --proyecto
 	'10000220', --dep_id
 	'10000170', --objeto_consumidor
 	'10000172', --objeto_proveedor
@@ -171,10 +183,10 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 );
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'gu_kena', --proyecto
-	'10000219', --dep_id
+	'10000259', --dep_id
 	'10000170', --objeto_consumidor
-	'10000171', --objeto_proveedor
-	'form_ml_directivo_extra', --identificador
+	'10000196', --objeto_proveedor
+	'form_ml_extra', --identificador
 	NULL, --parametros_a
 	NULL, --parametros_b
 	NULL, --parametros_c
@@ -187,18 +199,6 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	'10000170', --objeto_consumidor
 	'10000173', --objeto_proveedor
 	'form_ml_superior', --identificador
-	NULL, --parametros_a
-	NULL, --parametros_b
-	NULL, --parametros_c
-	NULL, --inicializar
-	NULL  --orden
-);
-INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
-	'gu_kena', --proyecto
-	'10000218', --dep_id
-	'10000170', --objeto_consumidor
-	'10000169', --objeto_proveedor
-	'formulario', --identificador
 	NULL, --parametros_a
 	NULL, --parametros_b
 	NULL, --parametros_c
@@ -229,17 +229,15 @@ INSERT INTO apex_objeto_ci_pantalla (objeto_ci_proyecto, objeto_ci, pantalla, id
 	NULL, --subclase_archivo
 	'<table>
 	<tbody>
-		<tr>
+		<tr style="vertical-align: top;">
 			<td>
-				[dep id=formulario]</td>
-			
+				[dep id=form_datos]</td>
 		</tr>
 		<tr style="vertical-align: top;">
 			<td>
 				[dep id=form_ml_superior]</td>
 			<td>
-				[dep id=form_ml_directivo]<p>[dep id=form_ml_directivo_extra]</p></td>
-			
+				[dep id=form_ml_directivo]<p>[dep id=form_ml_extra]</p></td>
 		</tr>
 	</tbody>
 </table>
@@ -256,29 +254,29 @@ INSERT INTO apex_objetos_pantalla (proyecto, pantalla, objeto_ci, orden, dep_id)
 	'gu_kena', --proyecto
 	'10000071', --pantalla
 	'10000170', --objeto_ci
-	'0', --orden
-	'10000218'  --dep_id
-);
-INSERT INTO apex_objetos_pantalla (proyecto, pantalla, objeto_ci, orden, dep_id) VALUES (
-	'gu_kena', --proyecto
-	'10000071', --pantalla
-	'10000170', --objeto_ci
 	'1', --orden
-	'10000219'  --dep_id
-);
-INSERT INTO apex_objetos_pantalla (proyecto, pantalla, objeto_ci, orden, dep_id) VALUES (
-	'gu_kena', --proyecto
-	'10000071', --pantalla
-	'10000170', --objeto_ci
-	'2', --orden
 	'10000220'  --dep_id
 );
 INSERT INTO apex_objetos_pantalla (proyecto, pantalla, objeto_ci, orden, dep_id) VALUES (
 	'gu_kena', --proyecto
 	'10000071', --pantalla
 	'10000170', --objeto_ci
-	'3', --orden
+	'2', --orden
 	'10000221'  --dep_id
+);
+INSERT INTO apex_objetos_pantalla (proyecto, pantalla, objeto_ci, orden, dep_id) VALUES (
+	'gu_kena', --proyecto
+	'10000071', --pantalla
+	'10000170', --objeto_ci
+	'0', --orden
+	'10000250'  --dep_id
+);
+INSERT INTO apex_objetos_pantalla (proyecto, pantalla, objeto_ci, orden, dep_id) VALUES (
+	'gu_kena', --proyecto
+	'10000071', --pantalla
+	'10000170', --objeto_ci
+	'3', --orden
+	'10000259'  --dep_id
 );
 
 ------------------------------------------------------------
@@ -293,6 +291,6 @@ INSERT INTO apex_eventos_pantalla (pantalla, objeto_ci, evento_id, proyecto) VAL
 INSERT INTO apex_eventos_pantalla (pantalla, objeto_ci, evento_id, proyecto) VALUES (
 	'10000071', --pantalla
 	'10000170', --objeto_ci
-	'10000193', --evento_id
+	'10000206', --evento_id
 	'gu_kena'  --proyecto
 );

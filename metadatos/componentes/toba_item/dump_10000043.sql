@@ -1,5 +1,5 @@
 ------------------------------------------------------------
---[10000043]--  Consejeros Superior 
+--[10000043]--  Resultados Superior 
 ------------------------------------------------------------
 
 ------------------------------------------------------------
@@ -13,9 +13,9 @@ INSERT INTO apex_item (item_id, proyecto, item, padre_id, padre_proyecto, padre,
 	'10000043', --item
 	NULL, --padre_id
 	'gu_kena', --padre_proyecto
-	'10000039', --padre
-	NULL, --carpeta
-	NULL, --nivel_acceso
+	'1', --padre
+	'0', --carpeta
+	'0', --nivel_acceso
 	'web', --solicitud_tipo
 	'toba', --pagina_tipo_proyecto
 	'normal', --pagina_tipo
@@ -23,13 +23,13 @@ INSERT INTO apex_item (item_id, proyecto, item, padre_id, padre_proyecto, padre,
 	NULL, --actividad_buffer
 	NULL, --actividad_patron_proyecto
 	NULL, --actividad_patron
-	'Consejeros Superior', --nombre
+	'Resultados Superior', --nombre
 	NULL, --descripcion
 	'10000003', --punto_montaje
 	NULL, --actividad_accion
 	'1', --menu
-	'0', --orden
-	NULL, --solicitud_registrar
+	'6', --orden
+	'0', --solicitud_registrar
 	NULL, --solicitud_obs_tipo_proyecto
 	NULL, --solicitud_obs_tipo
 	NULL, --solicitud_observacion
@@ -38,16 +38,16 @@ INSERT INTO apex_item (item_id, proyecto, item, padre_id, padre_proyecto, padre,
 	NULL, --zona_proyecto
 	NULL, --zona
 	NULL, --zona_orden
-	NULL, --zona_listar
-	NULL, --imagen_recurso_origen
+	'0', --zona_listar
+	'apex', --imagen_recurso_origen
 	NULL, --imagen
 	NULL, --parametro_a
 	NULL, --parametro_b
 	NULL, --parametro_c
-	NULL, --publico
+	'0', --publico
 	NULL, --redirecciona
 	NULL, --usuario
-	NULL, --exportable
+	'0', --exportable
 	'2016-04-26 10:31:02', --creacion
 	'0'  --retrasar_headers
 );
@@ -60,7 +60,7 @@ INSERT INTO apex_item_objeto (item_id, proyecto, item, objeto, orden, inicializa
 	NULL, --item_id
 	'gu_kena', --proyecto
 	'10000043', --item
-	'10000158', --objeto
+	'10000202', --objeto
 	'0', --orden
 	NULL  --inicializar
 );

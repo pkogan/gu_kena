@@ -69,11 +69,23 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	'10000167', --objeto_consumidor
 	'10000115', --objeto_proveedor
 	'acta', --identificador
+	'1', --parametros_a
+	'1', --parametros_b
+	NULL, --parametros_c
+	NULL, --inicializar
+	'2'  --orden
+);
+INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
+	'gu_kena', --proyecto
+	'10000246', --dep_id
+	'10000167', --objeto_consumidor
+	'10000126', --objeto_proveedor
+	'claustro', --identificador
 	NULL, --parametros_a
 	NULL, --parametros_b
 	NULL, --parametros_c
 	NULL, --inicializar
-	'2'  --orden
+	'8'  --orden
 );
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'gu_kena', --proyecto
@@ -113,12 +125,36 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 );
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'gu_kena', --proyecto
+	'10000245', --dep_id
+	'10000167', --objeto_consumidor
+	'10000129', --objeto_proveedor
+	'sede', --identificador
+	NULL, --parametros_a
+	NULL, --parametros_b
+	NULL, --parametros_c
+	NULL, --inicializar
+	'7'  --orden
+);
+INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
+	'gu_kena', --proyecto
+	'10000249', --dep_id
+	'10000167', --objeto_consumidor
+	'10000130', --objeto_proveedor
+	'unidad_electoral', --identificador
+	NULL, --parametros_a
+	NULL, --parametros_b
+	NULL, --parametros_c
+	NULL, --inicializar
+	'9'  --orden
+);
+INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
+	'gu_kena', --proyecto
 	'10000224', --dep_id
 	'10000167', --objeto_consumidor
 	'10000131', --objeto_proveedor
 	'voto_lista_cdirectivo', --identificador
-	NULL, --parametros_a
-	NULL, --parametros_b
+	'1', --parametros_a
+	'1', --parametros_b
 	NULL, --parametros_c
 	NULL, --inicializar
 	'4'  --orden
@@ -129,8 +165,8 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	'10000167', --objeto_consumidor
 	'10000132', --objeto_proveedor
 	'voto_lista_csuperior', --identificador
-	NULL, --parametros_a
-	NULL, --parametros_b
+	'1', --parametros_a
+	'1', --parametros_b
 	NULL, --parametros_c
 	NULL, --inicializar
 	'6'  --orden

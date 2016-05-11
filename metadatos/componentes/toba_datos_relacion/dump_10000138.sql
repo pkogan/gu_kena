@@ -50,7 +50,7 @@ INSERT INTO apex_objeto_datos_rel (proyecto, objeto, debug, clave, ap, punto_mon
 	'0', --debug
 	NULL, --clave
 	'2', --ap
-	NULL, --punto_montaje
+	'10000003', --punto_montaje
 	NULL, --ap_clase
 	NULL, --ap_archivo
 	'0', --sinc_susp_constraints
@@ -73,6 +73,54 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	'1', --parametros_b
 	NULL, --parametros_c
 	NULL, --inicializar
-	NULL  --orden
+	'1'  --orden
+);
+INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
+	'gu_kena', --proyecto
+	'10000254', --dep_id
+	'10000138', --objeto_consumidor
+	'10000127', --objeto_proveedor
+	'lista_cdirectivo', --identificador
+	NULL, --parametros_a
+	NULL, --parametros_b
+	NULL, --parametros_c
+	NULL, --inicializar
+	'2'  --orden
+);
+INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
+	'gu_kena', --proyecto
+	'10000256', --dep_id
+	'10000138', --objeto_consumidor
+	'10000128', --objeto_proveedor
+	'lista_csuperior', --identificador
+	NULL, --parametros_a
+	NULL, --parametros_b
+	NULL, --parametros_c
+	NULL, --inicializar
+	'4'  --orden
+);
+INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
+	'gu_kena', --proyecto
+	'10000255', --dep_id
+	'10000138', --objeto_consumidor
+	'10000131', --objeto_proveedor
+	'voto_lista_cdirectivo', --identificador
+	NULL, --parametros_a
+	NULL, --parametros_b
+	NULL, --parametros_c
+	NULL, --inicializar
+	'3'  --orden
+);
+INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
+	'gu_kena', --proyecto
+	'10000257', --dep_id
+	'10000138', --objeto_consumidor
+	'10000132', --objeto_proveedor
+	'voto_lista_csuperior', --identificador
+	NULL, --parametros_a
+	NULL, --parametros_b
+	NULL, --parametros_c
+	NULL, --inicializar
+	'5'  --orden
 );
 --- FIN Grupo de desarrollo 10

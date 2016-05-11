@@ -14,13 +14,14 @@ class dt_voto_lista_csuperior extends gu_kena_datos_tabla
 		
 		$sql = "SELECT
                         t_v.id_acta,
-                        t_v.id_lista,
+                        t_v.id_lista as id_nro_lista,
 			t_l.nombre,
-			t_v.cant_votos
+			t_v.cant_votos as votos
 			
 		FROM
 			voto_lista_csuperior as t_v, lista_csuperior as t_l	
-                WHERE t_l.id_nro_lista=t_v.id_lista and t_v.id_acta=".$acta;
+                WHERE t_l.id_nro_lista=t_v.id_lista and t_v.id_acta=".$acta
+                        ." ORDER BY t_v.id_lista";
 		
 		return toba::db('gu_kena')->consultar($sql);
 	}
@@ -41,13 +42,32 @@ class dt_voto_lista_csuperior extends gu_kena_datos_tabla
         function cant_votos($id_lista, $id_nro_ue, $id_claustro){
             $sql = "SELECT sum(t_v.cant_votos) votos FROM voto_lista_csuperior t_v "
                     . "INNER JOIN acta t_a ON t_a.id_acta = t_v.id_acta "
-                    . "INNER JOIN sede t_s ON t_s.id_sede = t_a.para "
+                    . "INNER JOIN mesa t_m ON t_m.id_mesa = t_a.para "
+                    . "INNER JOIN sede t_s ON t_s.id_sede = t_m.id_sede "
                     . "WHERE t_v.id_lista = $id_lista "
-                    . "AND t_a.id_claustro = $id_claustro "
-                    . "AND t_s.id_ue = $id_nro_ue";
+                    . "AND t_m.id_claustro = $id_claustro "
+                    . "AND t_s.id_ue = $id_nro_ue "
+                    . "ORDER BY votos";
             
             $ar = toba::db('gu_kena')->consultar($sql);
             return $ar[0]['votos'];
+        }
+        
+        function get_listas_con_total_votos($id_claustro){
+            $sql = "SELECT
+                        t_l.id_nro_lista,
+                        t_l.nombre,
+			sum(t_v.cant_votos) votos
+			
+		FROM
+			voto_lista_csuperior as t_v, lista_csuperior as t_l	
+                WHERE t_l.id_nro_lista=t_v.id_lista 
+                AND t_l.id_claustro = $id_claustro "
+                    . "AND t_l.fecha = (SELECT max(fecha) FROM lista_csuperior)"
+                    . "GROUP BY t_l.id_nro_lista "
+                    . "ORDER BY votos DESC";
+		
+		return toba::db('gu_kena')->consultar($sql);
         }
 
 }

@@ -21,9 +21,13 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	NULL, --objeto_categoria_proyecto
 	NULL, --objeto_categoria
 	'Consejeros Superior - CI - cuadro_dhondt_g', --nombre
-	NULL, --titulo
+	'Distribución de cargos a ocupar', --titulo
 	'0', --colapsable
-	NULL, --descripcion
+	'ARTíCULO 85: La distribución de los cargos para los distintos claustros en el Consejo Superior será según el siguiente criterio:
+Se multiplicarán por diez (10.000) los votos ponderados obtenidos por cada lista y se los dividirá desde uno (1) y hasta el total de cargos a ocupar.
+Luego, se agruparán en forma decreciente tantos cocientes como cargos a ocupar, sin considerar en que Listas se han obtenido. De esta manera se establecerá el "número repartidor", que es el menor de los cocientes citados.
+A continuación se dividirá la cantidad de votos lograda por cada Lista por el "número repartidor".
+El resultado obtenido dará el número de cargos que se adjudicará a cada una de ellas.', --descripcion
 	NULL, --fuente_datos_proyecto
 	NULL, --fuente_datos
 	NULL, --solicitud_registrar
@@ -64,7 +68,7 @@ INSERT INTO apex_objeto_cuadro (objeto_cuadro_proyecto, objeto_cuadro, titulo, s
 	NULL, --eof_customizado
 	'0', --siempre_con_titulo
 	'0', --exportar_paginado
-	'0', --exportar
+	'1', --exportar
 	'0', --exportar_rtf
 	NULL, --pdf_propiedades
 	NULL, --pdf_respetar_paginacion
@@ -126,7 +130,7 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 	'10000161', --objeto_cuadro
 	'10000441', --objeto_cuadro_col
 	'votos', --clave
-	'2', --orden
+	'3', --orden
 	'Votos ponderados', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
 	'4', --estilo
@@ -157,7 +161,7 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 	'10000161', --objeto_cuadro
 	'10000442', --objeto_cuadro_col
 	'1', --clave
-	'3', --orden
+	'4', --orden
 	'n°votos/1', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
 	'4', --estilo
@@ -188,7 +192,7 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 	'10000161', --objeto_cuadro
 	'10000443', --objeto_cuadro_col
 	'2', --clave
-	'4', --orden
+	'5', --orden
 	'n°votos/2', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
 	'4', --estilo
@@ -219,7 +223,7 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 	'10000161', --objeto_cuadro
 	'10000444', --objeto_cuadro_col
 	'3', --clave
-	'5', --orden
+	'6', --orden
 	'n°votos/3', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
 	'4', --estilo
@@ -250,7 +254,7 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 	'10000161', --objeto_cuadro
 	'10000445', --objeto_cuadro_col
 	'4', --clave
-	'6', --orden
+	'7', --orden
 	'n°votos/4', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
 	'4', --estilo
@@ -281,7 +285,7 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 	'10000161', --objeto_cuadro
 	'10000446', --objeto_cuadro_col
 	'5', --clave
-	'7', --orden
+	'8', --orden
 	'n°votos/5', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
 	'4', --estilo
@@ -312,7 +316,7 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 	'10000161', --objeto_cuadro
 	'10000447', --objeto_cuadro_col
 	'6', --clave
-	'8', --orden
+	'9', --orden
 	'n°votos/6', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
 	'4', --estilo
@@ -343,7 +347,7 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 	'10000161', --objeto_cuadro
 	'10000448', --objeto_cuadro_col
 	'7', --clave
-	'9', --orden
+	'10', --orden
 	'n°votos/7', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
 	'4', --estilo
@@ -374,7 +378,7 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 	'10000161', --objeto_cuadro
 	'10000449', --objeto_cuadro_col
 	'8', --clave
-	'10', --orden
+	'11', --orden
 	'n°votos/8', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
 	'4', --estilo
@@ -405,7 +409,7 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 	'10000161', --objeto_cuadro
 	'10000450', --objeto_cuadro_col
 	'9', --clave
-	'11', --orden
+	'12', --orden
 	'n°votos/9', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
 	'4', --estilo
@@ -436,7 +440,7 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 	'10000161', --objeto_cuadro
 	'10000451', --objeto_cuadro_col
 	'10', --clave
-	'12', --orden
+	'13', --orden
 	'n°votos/10', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
 	'4', --estilo
@@ -467,21 +471,21 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 	'10000161', --objeto_cuadro
 	'10000452', --objeto_cuadro_col
 	'final', --clave
-	'13', --orden
+	'2', --orden
 	'Escaños obtenidos', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
-	'4', --estilo
+	'col-tex-p2', --estilo
 	NULL, --ancho
 	'1', --formateo
 	NULL, --vinculo_indice
-	NULL, --no_ordenar
+	'0', --no_ordenar
 	NULL, --mostrar_xls
 	NULL, --mostrar_pdf
 	NULL, --pdf_propiedades
 	NULL, --desabilitado
-	NULL, --total
+	'0', --total
 	NULL, --total_cc
-	NULL, --usar_vinculo
+	'0', --usar_vinculo
 	NULL, --vinculo_carpeta
 	NULL, --vinculo_item
 	NULL, --vinculo_popup

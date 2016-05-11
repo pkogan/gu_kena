@@ -17,15 +17,15 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	'toba_ci', --clase
 	'10000003', --punto_montaje
 	'ci_confirmar', --subclase
-	'confirmar/ci_confirmar.php', --subclase_archivo
+	'actas/ci_confirmar.php', --subclase_archivo
 	NULL, --objeto_categoria_proyecto
 	NULL, --objeto_categoria
 	'Confirmar - CI', --nombre
 	NULL, --titulo
-	NULL, --colapsable
+	'0', --colapsable
 	NULL, --descripcion
-	'gu_kena', --fuente_datos_proyecto
-	'gu_kena', --fuente_datos
+	NULL, --fuente_datos_proyecto
+	NULL, --fuente_datos
 	NULL, --solicitud_registrar
 	NULL, --solicitud_obj_obs_tipo
 	NULL, --solicitud_obj_observacion
@@ -37,7 +37,7 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	NULL, --parametro_f
 	NULL, --usuario
 	'2016-04-27 11:12:10', --creacion
-	NULL  --posicion_botonera
+	'abajo'  --posicion_botonera
 );
 --- FIN Grupo de desarrollo 10
 
@@ -53,8 +53,8 @@ INSERT INTO apex_objeto_mt_me (objeto_mt_me_proyecto, objeto_mt_me, ev_procesar_
 	'300px', --alto
 	NULL, --posicion_botonera
 	NULL, --tipo_navegacion
-	NULL, --botonera_barra_item
-	NULL, --con_toc
+	'0', --botonera_barra_item
+	'0', --con_toc
 	NULL, --incremental
 	NULL, --debug_eventos
 	NULL, --activacion_procesar
@@ -74,10 +74,10 @@ INSERT INTO apex_objeto_mt_me (objeto_mt_me_proyecto, objeto_mt_me, ev_procesar_
 --- INICIO Grupo de desarrollo 10
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'gu_kena', --proyecto
-	'10000229', --dep_id
+	'10000233', --dep_id
 	'10000177', --objeto_consumidor
-	'10000175', --objeto_proveedor
-	'cuadro', --identificador
+	'10000181', --objeto_proveedor
+	'clautros', --identificador
 	NULL, --parametros_a
 	NULL, --parametros_b
 	NULL, --parametros_c
@@ -143,13 +143,13 @@ INSERT INTO apex_objetos_pantalla (proyecto, pantalla, objeto_ci, orden, dep_id)
 	'gu_kena', --proyecto
 	'10000072', --pantalla
 	'10000177', --objeto_ci
-	'1', --orden
-	'10000229'  --dep_id
+	'0', --orden
+	'10000231'  --dep_id
 );
 INSERT INTO apex_objetos_pantalla (proyecto, pantalla, objeto_ci, orden, dep_id) VALUES (
 	'gu_kena', --proyecto
 	'10000072', --pantalla
 	'10000177', --objeto_ci
-	'0', --orden
-	'10000231'  --dep_id
+	'2', --orden
+	'10000233'  --dep_id
 );

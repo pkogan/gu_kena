@@ -1,3 +1,13 @@
-/**
-	Incluir aquí las reglas css propias de este proyecto 
-*/
+.tit-cuadro-resultados {
+	border: 1px solid #231f20;
+	background-color: #514a84;
+	color: #ffffff;
+	vertical-align: top;
+	padding: 5px;
+}
+
+.col-cuadro-resultados {
+	border: 1px double #231f20;
+	text-align: right;
+	
+}

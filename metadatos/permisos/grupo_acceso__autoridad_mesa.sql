@@ -7,7 +7,7 @@ INSERT INTO apex_usuario_grupo_acc (proyecto, usuario_grupo_acc, nombre, nivel_a
 	'autoridad_mesa', --usuario_grupo_acc
 	'Autoridad de mesa', --nombre
 	NULL, --nivel_acceso
-	NULL, --descripcion
+	'Sólo carga datos de una mesa asignada', --descripcion
 	NULL, --vencimiento
 	NULL, --dias
 	NULL, --hora_entrada
@@ -28,6 +28,12 @@ INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, i
 	NULL, --item_id
 	'1'  --item
 );
+INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, item) VALUES (
+	'gu_kena', --proyecto
+	'autoridad_mesa', --usuario_grupo_acc
+	NULL, --item_id
+	'2'  --item
+);
 --- FIN Grupo de desarrollo 0
 
 --- INICIO Grupo de desarrollo 10
@@ -35,6 +41,6 @@ INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, i
 	'gu_kena', --proyecto
 	'autoridad_mesa', --usuario_grupo_acc
 	NULL, --item_id
-	'10000040'  --item
+	'10000044'  --item
 );
 --- FIN Grupo de desarrollo 10
