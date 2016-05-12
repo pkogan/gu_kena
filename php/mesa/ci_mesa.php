@@ -151,6 +151,11 @@ class ci_mesa extends toba_ci
                        }else{ //Sino colapsar
                            $this->dep('form_ml_extra')->colapsar();
                            $this->dep('form_ml_extra')->set_titulo('');
+                           
+                           if(sizeof($this->s__actas) == 1){//form directivo no debe mostrarse
+                               $this->dep('form_ml_directivo')->colapsar();
+                               $this->dep('form_ml_directivo')->set_titulo('');
+                           }
                        }
                        
                        //Separacion de actas
@@ -203,40 +208,42 @@ class ci_mesa extends toba_ci
         //Formulario dedicado para cargar votos destinadas a la facultad/asentamiento
 	function conf__form_ml_directivo(gu_kena_ei_formulario_ml $form_ml)
 	{   
-            $ar = array();
             if(isset($this->s__acta_directivo)){
-                $ar[0]['votos'] = $this->s__acta_directivo['total_votos_blancos'];
-                $ar[1]['votos'] = $this->s__acta_directivo['total_votos_nulos'];
-                $ar[2]['votos'] = $this->s__acta_directivo['total_votos_recurridos'];
-                
-                //obtener los votos cargados, asociados a este acta
-                $votos = $this->dep('datos')->tabla('voto_lista_cdirectivo')->get_listado_votos_dir($this->s__acta_directivo['id_acta']);
-                
-            }
-            if(sizeof($ar) > 0){
-                $ar[0]['id_nro_lista'] = -1;
-                $ar[0]['nombre'] = "VOTOS EN BLANCO";            
-//                $ar[0] = $blancos;
+                $ar = array();
+                if(isset($this->s__acta_directivo)){
+                    $ar[0]['votos'] = $this->s__acta_directivo['total_votos_blancos'];
+                    $ar[1]['votos'] = $this->s__acta_directivo['total_votos_nulos'];
+                    $ar[2]['votos'] = $this->s__acta_directivo['total_votos_recurridos'];
 
-                $ar[1]['id_nro_lista'] = -2;
-                $ar[1]['nombre'] = "VOTOS NULOS";
-//                $ar[1] = $nulos;
+                    //obtener los votos cargados, asociados a este acta
+                    $votos = $this->dep('datos')->tabla('voto_lista_cdirectivo')->get_listado_votos_dir($this->s__acta_directivo['id_acta']);
 
-                $ar[2]['id_nro_lista'] = -3;
-                $ar[2]['nombre'] = "VOTOS RECURRIDOS";
-//                $ar[2] = $recurridos;
-                
-//                $ar = array_merge($ar, $arr);
-            }
-            if(sizeof($votos) > 0){//existen votos cargados
-                $ar = array_merge($votos, $ar);
-                $form_ml->set_datos($ar);
-            }
-            else{//no existen votos cargados
-                $listas = $this->dep('datos')->tabla('lista_cdirectivo')->get_listas_a_votar($this->s__acta_directivo['id_acta']);
-                if(sizeof($listas)>0){//Existen listas
-                    $ar = array_merge($listas, $ar);
+                }
+                if(sizeof($ar) > 0){
+                    $ar[0]['id_nro_lista'] = -1;
+                    $ar[0]['nombre'] = "VOTOS EN BLANCO";            
+    //                $ar[0] = $blancos;
+
+                    $ar[1]['id_nro_lista'] = -2;
+                    $ar[1]['nombre'] = "VOTOS NULOS";
+    //                $ar[1] = $nulos;
+
+                    $ar[2]['id_nro_lista'] = -3;
+                    $ar[2]['nombre'] = "VOTOS RECURRIDOS";
+    //                $ar[2] = $recurridos;
+
+    //                $ar = array_merge($ar, $arr);
+                }
+                if(sizeof($votos) > 0){//existen votos cargados
+                    $ar = array_merge($votos, $ar);
                     $form_ml->set_datos($ar);
+                }
+                else{//no existen votos cargados
+                    $listas = $this->dep('datos')->tabla('lista_cdirectivo')->get_listas_a_votar($this->s__acta_directivo['id_acta']);
+                    if(sizeof($listas)>0){//Existen listas
+                        $ar = array_merge($listas, $ar);
+                        $form_ml->set_datos($ar);
+                    }
                 }
             }
         }
