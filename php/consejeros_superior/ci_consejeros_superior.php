@@ -11,7 +11,7 @@ class ci_consejeros_superior extends toba_ci
     
     //---- Cuadro -----------------------------------------------------------------------
 
-	function conf__cuadro_superior_e(toba_ei_cuadro $cuadro)
+	function conf__cuadro_superior_e(gu_kena_ei_cuadro $cuadro)
 	{
             $this->dep('cuadro_superior_e')->colapsar();//No se muestra el cuadro en un principio
             
@@ -57,14 +57,47 @@ class ci_consejeros_superior extends toba_ci
               
             $this->s__votos_e = $ar;//Guardar los votos para el calculo dhondt
             
+            //Agregar datos totales de blancos, nulos y recurridos
+            $b['clave'] = 'total_votos_blancos';
+            $b['titulo'] = 'Blancos';
+            $b['estilo'] = 'col-cuadro-resultados';
+            $bnr[0] = $b;
+            
+            $n['clave'] = 'total_votos_nulos';
+            $n['titulo'] = 'Nulos';
+            $n['estilo'] = 'col-cuadro-resultados';
+            $bnr[1] = $n;
+            
+            $r['clave'] = 'total_votos_recurridos';
+            $r['titulo'] = 'Recurridos';
+            $r['estilo'] = 'col-cuadro-resultados';
+            $bnr[2] = $r;
+            
+            $this->dep('cuadro_superior_e')->agregar_columnas($bnr);
+            $ar = $this->cargar_cant_b_n_r($ar, 3);
+            
             return $ar;
+        }
+        
+        //Metodo responsable de cargar los votos blancos, nulos y recurridos de cada unidad electoral
+        function cargar_cant_b_n_r($unidades, $id_claustro){
+            for($i=0; $i<sizeof($unidades)-1; $i++){//Recorro las unidades
+                //Agrega la cantidad de votos blancos,nulos y recurridos calculado en acta para cada unidad con claustro y tipo superior=1
+                $ar = $this->dep('datos')->tabla('acta')->cant_b_n_r($unidades[$i]['id_nro_ue'], $id_claustro, 1);
+                if(sizeof($ar)>0){
+                    $unidades[$i]['total_votos_blancos'] = $ar[0]['blancos'];
+                    $unidades[$i]['total_votos_nulos'] = $ar[0]['nulos'];
+                    $unidades[$i]['total_votos_recurridos'] = $ar[0]['recurridos'];
+                }
+            }
+            return $unidades;
         }
         
         //Metodo responsable de cargar la segunda columna con la cantidad de empadronados
         // en cada unidad electoral
         function cargar_cant_empadronados($unidades, $id_claustro){
             for($i=0; $i<sizeof($unidades); $i++){//Recorro las unidades
-                //Agrega la cantidad de empadronados calculado en acta para cada unidad con claustro estudiante
+                //Agrega la cantidad de empadronados calculado en acta para cada unidad con claustro 
                 $unidades[$i]['cant_empadronados'] = $this->dep('datos')->tabla('mesa')->cant_empadronados($unidades[$i]['id_nro_ue'], $id_claustro);
                 
             }
@@ -73,7 +106,7 @@ class ci_consejeros_superior extends toba_ci
         
         function cargar_cant_votos($id_lista, $unidades, $id_claustro){
             for($i=0; $i<sizeof($unidades)-1; $i++){//Recorro las unidades
-                //Agrega la cantidad de empadronados calculado en acta para cada unidad con claustro estudiante y tipo 'superior'
+                //Agrega la cantidad de empadronados calculado en acta para cada unidad con claustro  y tipo 'superior'
                 $unidades[$i][$id_lista] = $this->dep('datos')->tabla('voto_lista_csuperior')->cant_votos($id_lista, $unidades[$i]['id_nro_ue'], $id_claustro);
                 
             }
@@ -98,7 +131,7 @@ class ci_consejeros_superior extends toba_ci
 
 	function evt__cuadro_superior_e__seleccion($datos)
 	{
-		$this->dep('datos')->cargar($datos);
+		
 	}
         
         //-----------------------------------------------------------------------------------
@@ -143,22 +176,22 @@ class ci_consejeros_superior extends toba_ci
                     $listas[$pos]['final'] = floor($c);
                     $this->s__salida_excel[$pos] = $listas[$pos]; 
             
-            
                     //Resalta los mayores
-                    $p = array_search($ar[$i], $lista);
+                    $p = array_search($ar[$i], $lista, TRUE);
                         if($p != null){//Encontro el valor en esta fila
                             if(strcmp($p, "votos")==0){//Encontro que esta en el campo 'votos' entonces hay que resaltar n°votos/1
-                                $valor = "<div style='color:red'>".$listas[$pos][1]."</div>";
+                                $valor = "<span style='color:red'>".$listas[$pos][1]."</span>";
                                 $listas[$pos][1] = $valor;
                             }
                             else{
-                                $valor = "<div style='color:red'>".$listas[$pos][$p]."</div>";
+                                $valor = "<span style='color:red'>".$listas[$pos][$p]."</span>";
                                 $listas[$pos][$p] = $valor;
                             }  
                         }                        
                     }
                 }
             $this->s__titulo_excel = 'Estudiantes';
+            
             return $listas;
 	}
 
@@ -196,7 +229,7 @@ class ci_consejeros_superior extends toba_ci
                 $grupo[$i] = $lista['id_nro_lista'];
                 
                 $columnas[$i] = $l;
-                $this->dep('cuadro_superior_e')->agregar_columnas($columnas);
+                $this->dep('cuadro_superior_g')->agregar_columnas($columnas);
                 
                 //Cargar la cantidad de votos para cada lista de claustro graduados=4 
                 //en cada unidad
@@ -211,9 +244,28 @@ class ci_consejeros_superior extends toba_ci
             }
             
             if(isset($grupo))
-                $this->dep('cuadro_superior_e')->set_grupo_columnas('Listas',$grupo);
+                $this->dep('cuadro_superior_g')->set_grupo_columnas('Listas',$grupo);
               
             $this->s__votos_g = $ar;//Guardar los votos para el calculo dhondt
+            
+            //Agregar datos totales de blancos, nulos y recurridos
+            $b['clave'] = 'total_votos_blancos';
+            $b['titulo'] = 'Blancos';
+            $b['estilo'] = 'col-cuadro-resultados';
+            $bnr[0] = $b;
+            
+            $n['clave'] = 'total_votos_nulos';
+            $n['titulo'] = 'Nulos';
+            $n['estilo'] = 'col-cuadro-resultados';
+            $bnr[1] = $n;
+            
+            $r['clave'] = 'total_votos_recurridos';
+            $r['titulo'] = 'Recurridos';
+            $r['estilo'] = 'col-cuadro-resultados';
+            $bnr[2] = $r;
+            
+            $this->dep('cuadro_superior_g')->agregar_columnas($bnr);
+            $ar = $this->cargar_cant_b_n_r($ar, 4);
             
             return $ar;
         }
@@ -266,7 +318,7 @@ class ci_consejeros_superior extends toba_ci
                     $this->s__salida_excel[$pos] = $listas[$pos];            
             
                     //Resalta los mayores
-                    $p = array_search($ar[$i], $lista);
+                    $p = array_search($ar[$i], $lista, TRUE);
                         if($p != null){//Encontro el valor en esta fila
                             if(strcmp($p, "votos")==0){//Encontro que esta en el campo 'votos' entonces hay que resaltar n°votos/1
                                 $valor = "<span style='color:red'>".$listas[$pos][1]."</span>";
@@ -319,14 +371,14 @@ class ci_consejeros_superior extends toba_ci
                 $columnas[$i] = $l;
                 $this->dep('cuadro_superior_nd')->agregar_columnas($columnas);
                 
-                //Cargar la cantidad de votos para cada lista de claustro estudiantes=3 
+                //Cargar la cantidad de votos para cada lista de claustro no docente = 1 
                 //en cada unidad
-                $ar = $this->cargar_cant_votos($lista['id_nro_lista'], $ar, 3);
+                $ar = $this->cargar_cant_votos($lista['id_nro_lista'], $ar, 1);
                 
                 //Cargar los votos ponderados para cada lista agregado como última fila
-                //para claustro estudiantes=3
+                //para claustro no docente = 1
                 $ar[$pos][$lista['id_nro_lista']] = 0;
-                $ar = $this->cargar_votos_ponderados($lista['id_nro_lista'], $ar, 3);
+                $ar = $this->cargar_votos_ponderados($lista['id_nro_lista'], $ar, 1);
                 
                 $i++;
             }
@@ -334,6 +386,25 @@ class ci_consejeros_superior extends toba_ci
                 $this->dep('cuadro_superior_nd')->set_grupo_columnas('Listas',$grupo);
               
             $this->s__votos_nd = $ar;//Guardar los votos para el calculo dhondt
+            
+            //Agregar datos totales de blancos, nulos y recurridos
+            $b['clave'] = 'total_votos_blancos';
+            $b['titulo'] = 'Blancos';
+            $b['estilo'] = 'col-cuadro-resultados';
+            $bnr[0] = $b;
+            
+            $n['clave'] = 'total_votos_nulos';
+            $n['titulo'] = 'Nulos';
+            $n['estilo'] = 'col-cuadro-resultados';
+            $bnr[1] = $n;
+            
+            $r['clave'] = 'total_votos_recurridos';
+            $r['titulo'] = 'Recurridos';
+            $r['estilo'] = 'col-cuadro-resultados';
+            $bnr[2] = $r;
+            
+            $this->dep('cuadro_superior_nd')->agregar_columnas($bnr);
+            $ar = $this->cargar_cant_b_n_r($ar, 1);
             
             return $ar;
 	}
@@ -386,7 +457,7 @@ class ci_consejeros_superior extends toba_ci
                     $this->s__salida_excel[$pos] = $listas[$pos];            
             
                     //Resalta los mayores
-                    $p = array_search($ar[$i], $lista);
+                    $p = array_search($ar[$i], $lista, TRUE);
                         if($p != null){//Encontro el valor en esta fila
                             if(strcmp($p, "votos")==0){//Encontro que esta en el campo 'votos' entonces hay que resaltar n°votos/1
                                 $valor = "<span style='color:red'>".$listas[$pos][1]."</span>";
@@ -434,7 +505,8 @@ class ci_consejeros_superior extends toba_ci
             $this->pantalla()->tab('pant_docente')->ocultar();
 	}
 
-        
+        //-----------------------------------------------------------------------------------
+	//---- formulario que muestra datos de mesas enviadas, confirmadas y definitivas -----------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
 	//---- form_mesas_e -----------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
@@ -500,6 +572,34 @@ class ci_consejeros_superior extends toba_ci
             
             return $datos;
 	}
-
+        
+        //-----------------------------------------------------------------------------------
+	//---- EXPORTACION EXCEL ----------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+        function vista_excel(toba_vista_excel $salida){
+            $salida->set_nombre_archivo("Escrutinio Superior.xls");
+            $excel = $salida->get_excel();
+            
+            
+            $this->dependencia('cuadro_superior_e')->vista_excel($salida);
+            $salida->separacion(3);
+            $this->dependencia('cuadro_dhondt_e')->vista_excel($salida);
+            $salida->set_hoja_nombre("Estudiantes");
+            
+            $salida->crear_hoja();
+            $this->dependencia('cuadro_superior_g')->vista_excel($salida);
+            $salida->separacion(3);
+            $this->dependencia('cuadro_dhondt_g')->vista_excel($salida);
+            $salida->set_hoja_nombre("Graduados");
+            
+            $salida->crear_hoja();
+            $this->dependencia('cuadro_superior_nd')->vista_excel($salida);
+            $salida->separacion(3);
+            $this->dependencia('cuadro_dhondt_nd')->vista_excel($salida);
+            $salida->set_hoja_nombre("No Docente");
+//            $excel->getActiveSheet()->setTitle('Parte de Novedades');
+//            $excel->getActiveSheet()->getStyle('A5')->getFill()->applyFromArray(array(
+//        'type' => PHPExcel_Style_Fill::FILL_SOLID, 'startcolor' => array( 'rgb' => 'F28A8C' ) ));
+        }
 }
 ?>

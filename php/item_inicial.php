@@ -26,7 +26,7 @@ $u = toba::manejador_sesiones()->get_perfiles_funcionales();
                          // las operaciones de resultados en cons. superior y directivo
 //                         toba::vinculador()->navegar_a("",10000043,true);
                         echo '<div class="logo">';
-                        echo toba_recurso::imagen_proyecto('logo_grande.gif', true);
+                        echo toba_recurso::imagen_proyecto('inicio.png', true);
                         echo '</div>';
                      }
                  }

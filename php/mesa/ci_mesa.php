@@ -128,9 +128,7 @@ class ci_mesa extends toba_ci
                 }
             }
             
-//            $temp_nombre = md5(uniqid(time()));
-        
-            if(isset($this->s__id_mesa)){//Si el pedido viene de la operacion Confirmar/Cargar//              
+          if(isset($this->s__id_mesa)){//Si el pedido viene de la operacion Confirmar/Cargar//              
                 $this->s__claustro = $this->s__mesa['id_claustro'];
                 $this->s__id_nro_ue = $this->dep('datos')->tabla('sede')->get_unidad($this->s__mesa['id_sede']);
                 $this->s__id_sede = $this->s__mesa['id_sede'];
@@ -222,17 +220,13 @@ class ci_mesa extends toba_ci
                 if(sizeof($ar) > 0){
                     $ar[0]['id_nro_lista'] = -1;
                     $ar[0]['nombre'] = "VOTOS EN BLANCO";            
-    //                $ar[0] = $blancos;
-
+    
                     $ar[1]['id_nro_lista'] = -2;
                     $ar[1]['nombre'] = "VOTOS NULOS";
-    //                $ar[1] = $nulos;
-
+    
                     $ar[2]['id_nro_lista'] = -3;
                     $ar[2]['nombre'] = "VOTOS RECURRIDOS";
-    //                $ar[2] = $recurridos;
-
-    //                $ar = array_merge($ar, $arr);
+    
                 }
                 if(sizeof($votos) > 0){//existen votos cargados
                     $ar = array_merge($votos, $ar);

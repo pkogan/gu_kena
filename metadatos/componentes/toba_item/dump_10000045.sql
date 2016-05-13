@@ -1,5 +1,5 @@
 ------------------------------------------------------------
---[10000045]--  Actas 
+--[10000045]--  Mesas 
 ------------------------------------------------------------
 
 ------------------------------------------------------------
@@ -23,7 +23,7 @@ INSERT INTO apex_item (item_id, proyecto, item, padre_id, padre_proyecto, padre,
 	NULL, --actividad_buffer
 	NULL, --actividad_patron_proyecto
 	NULL, --actividad_patron
-	'Actas', --nombre
+	'Mesas', --nombre
 	NULL, --descripcion
 	'10000003', --punto_montaje
 	NULL, --actividad_accion

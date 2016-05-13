@@ -24,7 +24,7 @@ INSERT INTO apex_item (item_id, proyecto, item, padre_id, padre_proyecto, padre,
 	NULL, --actividad_patron_proyecto
 	NULL, --actividad_patron
 	'Validar', --nombre
-	NULL, --descripcion
+	'Esta operación es sólo para verificar los datos cargados', --descripcion
 	'10000003', --punto_montaje
 	NULL, --actividad_accion
 	'1', --menu

@@ -141,7 +141,7 @@ class ci_consejeros_directivos extends ci_principal
 	function conf__cuadro_dhondt_nd(gu_kena_ei_cuadro $cuadro)
 	{
             if($this->controlador->s__unidad == 17 || $this->controlador->s__unidad == 18){
-                //Casos especiales cons. dir de asentamiento tiene 3 puestos
+                //Casos especiales cons. dir de asentamiento tiene 2 puestos
                 $cargos = 2;                
             }
             else{
@@ -153,7 +153,7 @@ class ci_consejeros_directivos extends ci_principal
 //                $l['estilo_titulo'] = 'tit-cuadro-resultados';
                 $l['permitir_html'] = true;
                 $c[0] = $l;
-                $this->dep('cuadro_dhondt_e')->agregar_columnas($c);
+                $this->dep('cuadro_dhondt_nd')->agregar_columnas($c);
             }
              
             $listas = $this->controlador()->dep('datos')->tabla('voto_lista_cdirectivo')->get_listas_con_total_votos(1,$this->controlador->s__unidad);
@@ -180,7 +180,7 @@ class ci_consejeros_directivos extends ci_principal
                     $c = $lista['votos'] / $ar[$cargos-1];
                     $listas[$pos]['final'] = floor($c);
                     
-                    $p = array_search($ar[$i], $lista);
+                    $p = array_search($ar[$i], $lista, TRUE);
                         if($p != null){//Encontro el valor en esta fila
                             if(strcmp($p, "votos")==0){//Encontro que esta en el campo 'votos' entonces hay que resaltar n°votos/1
                                 $valor = "<span style='color:red'>".$listas[$pos][1]."</span>";
@@ -279,6 +279,28 @@ class ci_consejeros_directivos extends ci_principal
 	{
 	}
 
+        //-----------------------------------------------------------------------------------
+	//---- formulario que muestra datos de votos blancos, nulos y recurridos en cada unidad electoral 
+	//-----------------------------------------------------------------------------------
+	function conf__form_dato_e(gu_kena_ei_formulario $form)
+	{
+            //Agrega la cantidad de votos blancos,nulos y recurridos calculado en acta para cada unidad con claustro estudiante y tipo directivo=2
+            $ar = $this->controlador()->dep('datos')->tabla('acta')->cant_b_n_r($this->controlador->s__unidad, 3, 2);
+            return $ar[0];
+        }
         
+        function conf__form_dato_g(gu_kena_ei_formulario $form)
+	{
+            //Agrega la cantidad de votos blancos,nulos y recurridos calculado en acta para cada unidad con claustro graduados y tipo directivo=2
+            $ar = $this->controlador()->dep('datos')->tabla('acta')->cant_b_n_r($this->controlador->s__unidad, 4, 2);
+            return $ar[0];
+        }
+        
+        function conf__form_dato_nd(gu_kena_ei_formulario $form)
+	{
+            //Agrega la cantidad de votos blancos,nulos y recurridos calculado en acta para cada unidad con claustro no docente y tipo directivo=2
+            $ar = $this->controlador()->dep('datos')->tabla('acta')->cant_b_n_r($this->controlador->s__unidad, 1, 2);
+            return $ar[0];
+        }
 }
 ?>

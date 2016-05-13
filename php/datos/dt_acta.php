@@ -51,6 +51,7 @@ class dt_acta extends gu_kena_datos_tabla
                     INNER JOIN sede t_sde ON (t_de.id_sede = t_sde.id_sede)
                     INNER JOIN sede t_spara ON (t_para.id_sede = t_spara.id_sede)
                     WHERE t_de.fecha = (SELECT max(fecha) FROM mesa)
+                    AND t_de.ficticio = false AND t_para.ficticio = false 
                     $where ";
             return toba::db('gu_kena')->consultar($sql);
 	}
@@ -110,7 +111,8 @@ class dt_acta extends gu_kena_datos_tabla
                     . "INNER JOIN claustro as t_c ON (t_c.id = t_m.id_claustro) "
                     . "INNER JOIN sede as t_s ON (t_s.id_sede = t_m.id_sede) "
                     . "INNER JOIN unidad_electoral as t_u ON (t_u.id_nro_ue = t_s.id_ue) " 
-                    . "WHERE t_m.fecha = (SELECT max(fecha) FROM mesa ) $where "
+                    . "WHERE t_m.fecha = (SELECT max(fecha) FROM mesa )"
+                    . " AND t_m.ficticio = false $where "
                     . "ORDER BY id_acta";
             
             return toba::db('gu_kena')->consultar($sql);
@@ -121,9 +123,9 @@ class dt_acta extends gu_kena_datos_tabla
             if(isset($filtro)){
                 $where = "";
                 if(isset($filtro['unidad_electoral']))
-                    $where = " AND (t_ude.id_nro_ue = ".$filtro['unidad_electoral']['valor']." OR t_upara.id_nro_ue = ".$filtro['unidad_electoral']['valor'].")";
+                    $where = " AND t_ude.id_nro_ue = ".$filtro['unidad_electoral']['valor'];
                 if(isset($filtro['sede']))
-                    $where .= " AND (t_sde.id_sede = ".$filtro['sede']['valor'] ." OR t_spara.id_sede = ".$filtro['sede']['valor'].")";
+                    $where .= " AND (t_sde.id_sede = ".$filtro['sede']['valor'];
                 if(isset($filtro['claustro']))
                     $where .= " AND t_de.id_claustro = ".$filtro['claustro']['valor'];
                 if(isset($filtro['tipo']))
@@ -134,24 +136,21 @@ class dt_acta extends gu_kena_datos_tabla
                 $sql = "SELECT t_a.id_acta,
                                 t_de.nro_mesa, 
                                 t_de.id_mesa,
-                                t_sde.nombre as de, 
-                                t_ude.nombre as unidad_electoral,
-                                t_spara.nombre as para,
+                                t_sde.sigla as de, 
+                                t_ude.sigla as unidad_electoral,
                                 t_e.descripcion as estado, 
                                 t_t.descripcion as tipo,
                                 t_t.id_tipo,
                                 t_de.id_claustro
                             FROM acta t_a
                             LEFT JOIN mesa t_de ON (t_de.id_mesa = t_a.de)
-                            LEFT JOIN mesa t_para ON (t_para.id_mesa = t_a.para)
                             LEFT JOIN estado t_e ON (t_e.id_estado = t_de.estado)
                             LEFT JOIN sede t_sde ON (t_sde.id_sede = t_de.id_sede)
-                            LEFT JOIN sede t_spara ON (t_spara.id_sede = t_para.id_sede)
                             LEFT JOIN unidad_electoral t_ude ON (t_ude.id_nro_ue = t_sde.id_ue)
-                            LEFT JOIN unidad_electoral t_upara ON (t_upara.id_nro_ue = t_spara.id_ue)
                             LEFT JOIN tipo t_t ON (t_t.id_tipo = t_a.id_tipo)
                             WHERE t_de.fecha = (SELECT max(fecha) FROM mesa )
-                         $where ORDER BY t_de.estado";
+                            AND t_de.ficticio = false 
+                         $where ORDER BY t_ude.id_nro_ue";
                 
                 return toba::db('gu_kena')->consultar($sql);       
             }
@@ -177,6 +176,18 @@ class dt_acta extends gu_kena_datos_tabla
             }
             
 	}
+        
+        function cant_b_n_r($id_ue, $id_claustro, $id_tipo){
+            $sql = "SELECT sum(total_votos_blancos) as blancos, sum(total_votos_nulos) as nulos, sum(total_votos_recurridos) as recurridos"
+                    . " FROM acta t_a"
+                    . " INNER JOIN mesa t_m ON (t_m.id_mesa = t_a.para)"
+                    . " INNER JOIN sede t_s ON (t_m.id_sede = t_s.id_sede)"
+                    . " WHERE t_s.id_ue = $id_ue "
+                    . " AND t_m.id_claustro = $id_claustro "
+                    . " AND t_a.id_tipo = $id_tipo"
+                    . " AND t_m.fecha = (SELECT max(fecha) FROM mesa)";
+            return toba::db('gu_kena')->consultar($sql);
+        }
         
 }
 ?>
