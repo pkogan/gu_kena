@@ -22,9 +22,11 @@ class tp_gu_kena extends toba_tp_basico
 	{
 		echo "<div class='login-titulo'>". toba_recurso::imagen_proyecto("inicio.png",true);
                 echo "<div>2016</div>";
-		echo "<div>".utf8_decode("versión")." ".toba::proyecto()->get_version()."</div>";
-		echo "</div>";
-		echo "\n<div align='center' class='cuerpo'>\n";		
+//		echo "<div>".utf8_decode("versión")." ".toba::proyecto()->get_version()."</div>";
+                echo "<div><a style='color:blue' href='ord_1386_2013_46.pdf'>Ver ".utf8_decode('Ordenanza N°1386')."</a></div>";
+                echo "<div><a style='color:blue' href='instructivo_autoridades_mesa_2016.pdf'>Ver Instructivo</a></div>";
+		echo "</div>";                
+		echo "<div align='center' class='cuerpo'>\n";		
 	}
 
 	function post_contenido()

@@ -152,7 +152,7 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	'gu_kena', --carga_fuente
 	NULL, --carga_lista
 	'id_nro_ue', --carga_col_clave
-	'nombre', --carga_col_desc
+	'sigla', --carga_col_desc
 	'0', --carga_permite_no_seteado
 	NULL, --carga_no_seteado
 	'0', --carga_no_seteado_ocultar

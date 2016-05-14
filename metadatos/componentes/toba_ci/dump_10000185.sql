@@ -74,18 +74,6 @@ INSERT INTO apex_objeto_mt_me (objeto_mt_me_proyecto, objeto_mt_me, ev_procesar_
 --- INICIO Grupo de desarrollo 10
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'gu_kena', --proyecto
-	'10000238', --dep_id
-	'10000185', --objeto_consumidor
-	'10000187', --objeto_proveedor
-	'claustros', --identificador
-	NULL, --parametros_a
-	NULL, --parametros_b
-	NULL, --parametros_c
-	NULL, --inicializar
-	NULL  --orden
-);
-INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
-	'gu_kena', --proyecto
 	'10000253', --dep_id
 	'10000185', --objeto_consumidor
 	'10000194', --objeto_proveedor
@@ -110,10 +98,10 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 );
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'gu_kena', --proyecto
-	'10000243', --dep_id
+	'10000297', --dep_id
 	'10000185', --objeto_consumidor
-	'10000191', --objeto_proveedor
-	'datos', --identificador
+	'10000212', --objeto_proveedor
+	'cuadro_listas_dir', --identificador
 	NULL, --parametros_a
 	NULL, --parametros_b
 	NULL, --parametros_c
@@ -122,10 +110,22 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 );
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'gu_kena', --proyecto
-	'10000237', --dep_id
+	'10000296', --dep_id
 	'10000185', --objeto_consumidor
-	'10000186', --objeto_proveedor
-	'filtro', --identificador
+	'10000211', --objeto_proveedor
+	'cuadro_listas_sup', --identificador
+	NULL, --parametros_a
+	NULL, --parametros_b
+	NULL, --parametros_c
+	NULL, --inicializar
+	NULL  --orden
+);
+INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
+	'gu_kena', --proyecto
+	'10000243', --dep_id
+	'10000185', --objeto_consumidor
+	'10000191', --objeto_proveedor
+	'datos', --identificador
 	NULL, --parametros_a
 	NULL, --parametros_b
 	NULL, --parametros_c
@@ -143,9 +143,9 @@ INSERT INTO apex_objeto_ci_pantalla (objeto_ci_proyecto, objeto_ci, pantalla, id
 	'gu_kena', --objeto_ci_proyecto
 	'10000185', --objeto_ci
 	'10000079', --pantalla
-	'pant_inicial', --identificador
+	'pant_listas', --identificador
 	'1', --orden
-	'Pantalla Inicial', --etiqueta
+	'Listas', --etiqueta
 	NULL, --descripcion
 	NULL, --tip
 	'apex', --imagen_recurso_origen
@@ -187,14 +187,14 @@ INSERT INTO apex_objetos_pantalla (proyecto, pantalla, objeto_ci, orden, dep_id)
 	'10000079', --pantalla
 	'10000185', --objeto_ci
 	'0', --orden
-	'10000237'  --dep_id
+	'10000296'  --dep_id
 );
 INSERT INTO apex_objetos_pantalla (proyecto, pantalla, objeto_ci, orden, dep_id) VALUES (
 	'gu_kena', --proyecto
 	'10000079', --pantalla
 	'10000185', --objeto_ci
 	'1', --orden
-	'10000238'  --dep_id
+	'10000297'  --dep_id
 );
 INSERT INTO apex_objetos_pantalla (proyecto, pantalla, objeto_ci, orden, dep_id) VALUES (
 	'gu_kena', --proyecto

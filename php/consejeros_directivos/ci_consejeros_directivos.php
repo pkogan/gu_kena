@@ -302,5 +302,56 @@ class ci_consejeros_directivos extends ci_principal
             $ar = $this->controlador()->dep('datos')->tabla('acta')->cant_b_n_r($this->controlador->s__unidad, 1, 2);
             return $ar[0];
         }
+        
+        //-----------------------------------------------------------------------------------
+	//---- EXPORTACION EXCEL ----------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+        function vista_excel(toba_vista_excel $salida){
+            $salida->set_nombre_archivo("Escrutinio Directivo.xls");
+            $excel = $salida->get_excel();
+            
+            //Estilo de la celda que hara de separacion entre claustros
+            $estilo_claustro = array(
+ 			'font' => array('bold' => true),
+ 			'fill' => array(
+             		'type' => PHPExcel_Style_Fill::FILL_SOLID ,
+		            'rotation'   => 0,
+		            'startcolor' => array('rgb' => 'F29C46'),
+             	),
+ 		);
+            
+            //Directivo Estudiantes
+            //Obtengo el cursor de escritura en excel
+            $cursor = $salida->get_cursor();
+            $excel->getActiveSheet()->setCellValueByColumnAndRow($cursor[0], $cursor[1],'Estudiantes');
+            $excel->getActiveSheet()->getStyleByColumnAndRow($cursor[0], $cursor[1])->applyFromArray($estilo_claustro);
+            $salida->separacion(1);            
+            $this->dependencia('form_dato_e')->vista_excel($salida);
+            $salida->separacion(1);
+            $this->dependencia('cuadro_dhondt_e')->vista_excel($salida);
+            
+            //Directivo Graduados
+            //Obtengo el cursor de escritura en excel
+            $salida->separacion(3);
+            $cursor = $salida->get_cursor();
+            $excel->getActiveSheet()->setCellValueByColumnAndRow($cursor[0], $cursor[1],'Graduados');
+            $excel->getActiveSheet()->getStyleByColumnAndRow($cursor[0], $cursor[1])->applyFromArray($estilo_claustro);
+            $salida->separacion(1);            
+            $this->dependencia('form_dato_g')->vista_excel($salida);
+            $salida->separacion(1);
+            $this->dependencia('cuadro_dhondt_g')->vista_excel($salida);
+            
+            //Directivo No Docente
+            //Obtengo el cursor de escritura en excel
+            $salida->separacion(3);
+            $cursor = $salida->get_cursor();            
+            $excel->getActiveSheet()->setCellValueByColumnAndRow($cursor[0], $cursor[1],'No Docente');
+            $excel->getActiveSheet()->getStyleByColumnAndRow($cursor[0], $cursor[1])->applyFromArray($estilo_claustro);
+            $salida->separacion(1);            
+            $this->dependencia('form_dato_nd')->vista_excel($salida);
+            $salida->separacion(1);
+            $this->dependencia('cuadro_dhondt_nd')->vista_excel($salida);
+
+        }
 }
 ?>

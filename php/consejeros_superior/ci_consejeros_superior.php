@@ -6,8 +6,7 @@ class ci_consejeros_superior extends toba_ci
     protected $s__votos_nd;
     protected $s__votos_d;
     
-    protected $s__salida_excel;
-    protected $s__titulo_excel;
+    protected $s__total_emp;
     
     //---- Cuadro -----------------------------------------------------------------------
 
@@ -21,9 +20,14 @@ class ci_consejeros_superior extends toba_ci
             // en cada unidad
             $ar = $this->cargar_cant_empadronados($unidades, 3);
             
+            //Ante ultima fila carga los votos totales de cada lista
+            $pos = sizeof($ar);
+            $ar[$pos]['sigla'] ="<span style='color:blue'>TOTAL</span>";
+            $ar[$pos]['cant_empadronados'] = $this->s__total_emp;
+            
             //Ultima fila carga los votos ponderados de cada lista
             $pos = sizeof($ar);
-            $ar[$pos]['nombre'] = 'VOTOS PONDERADOS';
+            $ar[$pos]['sigla'] = "<span style='color:red'>PONDERADOS</span>";
                         
             //Obtener las listas del claustro estudiantes=3
             $listas = $this->dep('datos')->tabla('lista_csuperior')->get_listas_actuales(3); 
@@ -46,10 +50,11 @@ class ci_consejeros_superior extends toba_ci
                 //en cada unidad
                 $ar = $this->cargar_cant_votos($lista['id_nro_lista'], $ar, 3);
                 
-                //Cargar los votos ponderados para cada lista agregado como última fila
+                //Cargar los votos totales/ponderados para cada lista agregado como ante/última fila
                 //para claustro estudiantes=3
+                $ar[$pos-1][$lista['id_nro_lista']] = 0;
                 $ar[$pos][$lista['id_nro_lista']] = 0;
-                $ar = $this->cargar_votos_ponderados($lista['id_nro_lista'], $ar, 3);
+                $ar = $this->cargar_votos_totales_ponderados($lista['id_nro_lista'], $ar, 3);
                 
                 $i++;
             }
@@ -74,6 +79,8 @@ class ci_consejeros_superior extends toba_ci
             $bnr[2] = $r;
             
             $this->dep('cuadro_superior_e')->agregar_columnas($bnr);
+            
+            
             $ar = $this->cargar_cant_b_n_r($ar, 3);
             
             return $ar;
@@ -81,13 +88,24 @@ class ci_consejeros_superior extends toba_ci
         
         //Metodo responsable de cargar los votos blancos, nulos y recurridos de cada unidad electoral
         function cargar_cant_b_n_r($unidades, $id_claustro){
-            for($i=0; $i<sizeof($unidades)-1; $i++){//Recorro las unidades
+            $p = sizeof($unidades)-2;
+            //Inicializo para realizar la sumatoria
+            $unidades[$p]['total_votos_blancos'] = 0;
+            $unidades[$p]['total_votos_nulos'] = 0;
+            $unidades[$p]['total_votos_recurridos'] = 0;
+            for($i=0; $i<$p; $i++){//Recorro las unidades
                 //Agrega la cantidad de votos blancos,nulos y recurridos calculado en acta para cada unidad con claustro y tipo superior=1
                 $ar = $this->dep('datos')->tabla('acta')->cant_b_n_r($unidades[$i]['id_nro_ue'], $id_claustro, 1);
                 if(sizeof($ar)>0){
                     $unidades[$i]['total_votos_blancos'] = $ar[0]['blancos'];
                     $unidades[$i]['total_votos_nulos'] = $ar[0]['nulos'];
                     $unidades[$i]['total_votos_recurridos'] = $ar[0]['recurridos'];
+                    
+                    //Agrego en la anteultima fila la sumatoria total
+                    
+                    $unidades[$p]['total_votos_blancos'] += $ar[0]['blancos'];
+                    $unidades[$p]['total_votos_nulos'] += $ar[0]['nulos'];
+                    $unidades[$p]['total_votos_recurridos'] += $ar[0]['recurridos'];
                 }
             }
             return $unidades;
@@ -96,33 +114,41 @@ class ci_consejeros_superior extends toba_ci
         //Metodo responsable de cargar la segunda columna con la cantidad de empadronados
         // en cada unidad electoral
         function cargar_cant_empadronados($unidades, $id_claustro){
+            $p = sizeof($unidades)-2;
+            $this->s__total_emp = 0;
             for($i=0; $i<sizeof($unidades); $i++){//Recorro las unidades
                 //Agrega la cantidad de empadronados calculado en acta para cada unidad con claustro 
                 $unidades[$i]['cant_empadronados'] = $this->dep('datos')->tabla('mesa')->cant_empadronados($unidades[$i]['id_nro_ue'], $id_claustro);
-                
+                $this->s__total_emp += $unidades[$i]['cant_empadronados'];
             }
             return $unidades;
         }
         
         function cargar_cant_votos($id_lista, $unidades, $id_claustro){
-            for($i=0; $i<sizeof($unidades)-1; $i++){//Recorro las unidades
+            for($i=0; $i<sizeof($unidades)-2; $i++){//Recorro las unidades
                 //Agrega la cantidad de empadronados calculado en acta para cada unidad con claustro  y tipo 'superior'
-                $unidades[$i][$id_lista] = $this->dep('datos')->tabla('voto_lista_csuperior')->cant_votos($id_lista, $unidades[$i]['id_nro_ue'], $id_claustro);
-                
+                $unidades[$i][$id_lista] = $this->dep('datos')->tabla('voto_lista_csuperior')->cant_votos($id_lista, $unidades[$i]['id_nro_ue'], $id_claustro);                
             }
             return $unidades;
         }
         
-        function cargar_votos_ponderados($id_lista, $unidades, $id_claustro){
-            $pos = sizeof($unidades)-1;
-            //Recorro las unidades exluyendo la última fila que tiene los votos ponderados
-            for($i=0; $i<$pos; $i++){
+        function cargar_votos_totales_ponderados($id_lista, $unidades, $id_claustro){
+            $pos_total = sizeof($unidades) -2;//Fila que contiene los votos totales
+            $pos_pond = sizeof($unidades)-1;//Fila que contiene los votos ponderados
+            
+            //Recorro las unidades exluyendo las dos últimas filas que tiene los votos totales y ponderados
+            for($i=0; $i<$pos_total; $i++){
                 if(isset($unidades[$i][$id_lista]) && isset($unidades[$i]['cant_empadronados'])){
                     //Suma el cociente entre cant de votos de la 
                     //lista en la UEn / cant empadronados del claustro en la UEn
                     $cociente = $unidades[$i][$id_lista]/$unidades[$i]['cant_empadronados'];
                     
-                    $unidades[$pos][$id_lista] += $cociente;
+                    $unidades[$pos_pond][$id_lista] += $cociente;
+                }
+                
+                if(isset($unidades[$i][$id_lista])){
+                    //Suma los votos 
+                    $unidades[$pos_total][$id_lista] += $unidades[$i][$id_lista];
                 }
             }
             
@@ -210,10 +236,15 @@ class ci_consejeros_superior extends toba_ci
             // en cada unidad
             $ar = $this->cargar_cant_empadronados($unidades, 4);
             
+            //Ante ultima fila carga los votos totales de cada lista
+            $pos = sizeof($ar);
+            $ar[$pos]['sigla'] ="<span style='color:blue'>TOTAL</span>";
+            $ar[$pos]['cant_empadronados'] = $this->s__total_emp;
+            
             //Ultima fila carga los votos ponderados de cada lista
             $pos = sizeof($ar);
-            $ar[$pos]['nombre'] = 'VOTOS PONDERADOS';
-                        
+            $ar[$pos]['sigla'] = "<span style='color:red'>PONDERADOS</span>";
+                          
             //Obtener las listas del claustro graduados=4
             $listas = $this->dep('datos')->tabla('lista_csuperior')->get_listas_actuales(4); 
             
@@ -235,10 +266,11 @@ class ci_consejeros_superior extends toba_ci
                 //en cada unidad
                 $ar = $this->cargar_cant_votos($lista['id_nro_lista'], $ar, 4);
                 
-                //Cargar los votos ponderados para cada lista agregado como última fila
+                //Cargar los votos totales/ponderados para cada lista agregado como ante/última fila
                 //para claustro graduados=4
+                $ar[$pos-1][$lista['id_nro_lista']] = 0;
                 $ar[$pos][$lista['id_nro_lista']] = 0;
-                $ar = $this->cargar_votos_ponderados($lista['id_nro_lista'], $ar, 4);
+                $ar = $this->cargar_votos_totales_ponderados($lista['id_nro_lista'], $ar, 4);
                 
                 $i++;
             }
@@ -265,6 +297,12 @@ class ci_consejeros_superior extends toba_ci
             $bnr[2] = $r;
             
             $this->dep('cuadro_superior_g')->agregar_columnas($bnr);
+            
+            $p = sizeof($ar)-2;
+            //Inicializo para realizar la sumatoria
+            $ar[$p]['total_votos_blancos'] = 0;
+            $ar[$p]['total_votos_nulos'] = 0;
+            $ar[$p]['total_votos_recurridos'] = 0;
             $ar = $this->cargar_cant_b_n_r($ar, 4);
             
             return $ar;
@@ -350,10 +388,15 @@ class ci_consejeros_superior extends toba_ci
             // en cada unidad
             $ar = $this->cargar_cant_empadronados($unidades, 1);
             
+            //Ante ultima fila carga los votos totales de cada lista
+            $pos = sizeof($ar);
+            $ar[$pos]['sigla'] ="<span style='color:blue'>TOTAL</span>";
+            $ar[$pos]['cant_empadronados'] = $this->s__total_emp;
+            
             //Ultima fila carga los votos ponderados de cada lista
             $pos = sizeof($ar);
-            $ar[$pos]['nombre'] = 'VOTOS PONDERADOS';
-                        
+            $ar[$pos]['sigla'] = "<span style='color:red'>PONDERADOS</span>";
+                       
             //Obtener las listas del claustro no docente = 1
             $listas = $this->dep('datos')->tabla('lista_csuperior')->get_listas_actuales(1); 
             
@@ -375,10 +418,11 @@ class ci_consejeros_superior extends toba_ci
                 //en cada unidad
                 $ar = $this->cargar_cant_votos($lista['id_nro_lista'], $ar, 1);
                 
-                //Cargar los votos ponderados para cada lista agregado como última fila
+                //Cargar los votos totales/ponderados para cada lista agregado como ante/última fila
                 //para claustro no docente = 1
+                $ar[$pos-1][$lista['id_nro_lista']] = 0;
                 $ar[$pos][$lista['id_nro_lista']] = 0;
-                $ar = $this->cargar_votos_ponderados($lista['id_nro_lista'], $ar, 1);
+                $ar = $this->cargar_votos_totales_ponderados($lista['id_nro_lista'], $ar, 1);
                 
                 $i++;
             }
@@ -404,6 +448,12 @@ class ci_consejeros_superior extends toba_ci
             $bnr[2] = $r;
             
             $this->dep('cuadro_superior_nd')->agregar_columnas($bnr);
+            
+            $p = sizeof($ar)-2;
+            //Inicializo para realizar la sumatoria
+            $ar[$p]['total_votos_blancos'] = 0;
+            $ar[$p]['total_votos_nulos'] = 0;
+            $ar[$p]['total_votos_recurridos'] = 0;
             $ar = $this->cargar_cant_b_n_r($ar, 1);
             
             return $ar;

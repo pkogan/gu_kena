@@ -72,7 +72,7 @@ INSERT INTO apex_objeto_cuadro (objeto_cuadro_proyecto, objeto_cuadro, titulo, s
 	NULL, --eof_customizado
 	'0', --siempre_con_titulo
 	'0', --exportar_paginado
-	'1', --exportar
+	'0', --exportar
 	'0', --exportar_rtf
 	NULL, --pdf_propiedades
 	NULL, --pdf_respetar_paginacion
@@ -102,7 +102,7 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 	'gu_kena', --objeto_cuadro_proyecto
 	'10000160', --objeto_cuadro
 	'10000438', --objeto_cuadro_col
-	'nombre', --clave
+	'sigla', --clave
 	'1', --orden
 	'Unidad Electoral', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
@@ -125,7 +125,7 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 	NULL, --vinculo_target
 	NULL, --vinculo_celda
 	NULL, --vinculo_servicio
-	'0', --permitir_html
+	'1', --permitir_html
 	NULL, --grupo
 	NULL  --evento_asociado
 );

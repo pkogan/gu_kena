@@ -44,5 +44,19 @@ class ci_validar extends gu_kena_ci
             return $m;
 	}
 
+        //-----------------------------------------------------------------------------------
+	//---- cuadro_listas -----------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+        function conf__cuadro_listas_sup(gu_kena_ei_cuadro $cuadro)
+	{
+            $m = $this->dep('datos')->tabla('lista_csuperior')->get_ultimo_listado();
+            return $m;
+	}
+	
+        function conf__cuadro_listas_dir(gu_kena_ei_cuadro $cuadro)
+	{
+            $m = $this->dep('datos')->tabla('lista_cdirectivo')->get_ultimo_listado();
+            return $m;
+	}
 }
 ?>

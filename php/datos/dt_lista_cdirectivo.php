@@ -43,6 +43,21 @@ class dt_lista_cdirectivo extends gu_kena_datos_tabla
 		return toba::db('gu_kena')->consultar($sql);
 	}
 
-
+        //usado por ci_validar
+        function get_ultimo_listado()
+	{
+		$sql = "SELECT
+			t_lc.id_nro_lista,
+			t_ue.sigla as unidad_electoral,
+			t_lc.nombre,
+			t_c.descripcion as claustro,
+			t_lc.fecha
+		FROM
+			lista_cdirectivo as t_lc	LEFT OUTER JOIN unidad_electoral as t_ue ON (t_lc.id_ue = t_ue.id_nro_ue)
+			LEFT OUTER JOIN claustro as t_c ON (t_lc.id_claustro = t_c.id)
+                        WHERE t_lc.fecha = (SELECT max(fecha) FROM lista_cdirectivo)
+		ORDER BY t_ue.id_nro_ue,t_c.id";
+		return toba::db('gu_kena')->consultar($sql);
+	}
 }
 ?>

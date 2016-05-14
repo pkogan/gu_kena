@@ -39,6 +39,7 @@ class dt_voto_lista_csuperior extends gu_kena_datos_tabla
 		return toba::db('gu_kena')->consultar($sql);
 	}
         
+        //usado por ci_consejeros_superior
         function cant_votos($id_lista, $id_nro_ue, $id_claustro){
             $sql = "SELECT sum(t_v.cant_votos) votos FROM voto_lista_csuperior t_v "
                     . "INNER JOIN acta t_a ON t_a.id_acta = t_v.id_acta "
@@ -46,6 +47,7 @@ class dt_voto_lista_csuperior extends gu_kena_datos_tabla
                     . "INNER JOIN sede t_s ON t_s.id_sede = t_m.id_sede "
                     . "WHERE t_v.id_lista = $id_lista "
                     . "AND t_m.id_claustro = $id_claustro "
+                    . " AND t_m.estado > 1 "
                     . "AND t_s.id_ue = $id_nro_ue "
                     . "ORDER BY votos";
             

@@ -62,6 +62,7 @@ class dt_mesa extends gu_kena_datos_tabla
 		return toba::db('gu_kena')->consultar($sql);
 	}
 
+        //usado por ci_validar
         function get_ultimo_listado($id_mesa = null)
 	{
             $where = "";
@@ -79,7 +80,7 @@ class dt_mesa extends gu_kena_datos_tabla
 			t_m.estado,
                         t_c.descripcion as claustro,
                         t_s.nombre as sede,
-                        t_ue.nombre as unidad_electoral
+                        t_ue.sigla as unidad_electoral
                         
 		FROM
 			mesa as t_m	
@@ -93,7 +94,7 @@ class dt_mesa extends gu_kena_datos_tabla
         function get_cant_cargadas($id_claustro){
             $sql = "SELECT count(id_mesa) as porc FROM mesa "
                     . "WHERE fecha = (SELECT max(fecha) FROM mesa) "
-                    . "AND estado >= 1 "
+                    . "AND estado > 1 "
                     . "AND ficticio = false "
                     . "AND id_claustro = $id_claustro";
             $ar = toba::db('gu_kena')->consultar($sql);

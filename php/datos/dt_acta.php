@@ -177,6 +177,7 @@ class dt_acta extends gu_kena_datos_tabla
             
 	}
         
+        //usado por ci_consejeros_superior
         function cant_b_n_r($id_ue, $id_claustro, $id_tipo){
             $sql = "SELECT sum(total_votos_blancos) as blancos, sum(total_votos_nulos) as nulos, sum(total_votos_recurridos) as recurridos"
                     . " FROM acta t_a"
@@ -185,7 +186,8 @@ class dt_acta extends gu_kena_datos_tabla
                     . " WHERE t_s.id_ue = $id_ue "
                     . " AND t_m.id_claustro = $id_claustro "
                     . " AND t_a.id_tipo = $id_tipo"
-                    . " AND t_m.fecha = (SELECT max(fecha) FROM mesa)";
+                    . " AND t_m.fecha = (SELECT max(fecha) FROM mesa)"
+                    . " AND t_m.estado > 1";
             return toba::db('gu_kena')->consultar($sql);
         }
         
