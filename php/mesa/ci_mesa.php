@@ -20,15 +20,18 @@ class ci_mesa extends toba_ci
         function evt__procesar(){
             //Modificar el estado de la mesa
                 $m = $this->dep('datos')->tabla('mesa')->get();
-                if(strcasecmp($this->s__perfil[0], 'junta_electoral') == 0){
+                $p = array_search('junta_electoral', $this->s__perfil);
+                if($p != false){//Ingreso con perfil junta_electoral
                     $m['estado'] = 3;//Cambia el estado de la mesa a Confirmado
                 }
                 else{
-                     if(strcasecmp($this->s__perfil[0], 'secretaria') == 0){
+                    $p = array_search('secretaria', $this->s__perfil);
+                     if($p != false){//Ingreso con perfil secretaria
                          $m['estado'] = 4;//Cambia el estado de la mesa a Definitivo
                      }
                      else{
-                      if(strcasecmp($this->s__perfil[0], 'autoridad_mesa') == 0){
+                       $p = array_search('autoridad_mesa', $this->s__perfil);  
+                      if($p != false){//Ingreso con perfil autoridad de mesa
                           $m['estado'] = 1;//Cambia el estado de la mesa a Cargado
                       }
                      }
@@ -75,8 +78,8 @@ class ci_mesa extends toba_ci
             $this->s__perfil = toba::manejador_sesiones()->get_perfiles_funcionales();
 //            print_r($this->s__perfil);  
             
-            
-            if(strcasecmp($this->s__perfil[0], 'autoridad_mesa') == 0){
+            $p = array_search('autoridad_mesa', $this->s__perfil);
+            if($p != false){//Es autoridad de mesa
                 //Cargar datos del usuario especifico
                 //obtengo el nombre de usuario logueado
                 $usr = toba::manejador_sesiones()->get_id_usuario_instancia();
@@ -106,7 +109,8 @@ class ci_mesa extends toba_ci
                 $this->dep('datos')->tabla('mesa')->cargar($datos);
                 $this->s__mesa = $this->dep('datos')->tabla('mesa')->get();
                 	
-                if(strcasecmp($this->s__perfil[0], 'junta_electoral') == 0){
+                $p = array_search('junta_electoral', $this->s__perfil);
+                if($p != false){//Es junta electoral
                     $this->controlador()->evento('procesar')->set_etiqueta('Confirmar');
                     $this->controlador()->evento('enviar')->ocultar();
 
@@ -119,7 +123,8 @@ class ci_mesa extends toba_ci
                     }
                 }
                 else{
-                     if(strcasecmp($this->s__perfil[0], 'secretaria') == 0){
+                    $p = array_search('secretaria', $this->s__perfil);
+                     if($p != false){//Es secretaria
                          $this->controlador()->evento('procesar')->set_etiqueta('Validar');
                           $this->controlador()->evento('enviar')->ocultar();
 
