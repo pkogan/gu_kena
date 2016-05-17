@@ -627,7 +627,7 @@ class ci_consejeros_superior extends toba_ci
 	//---- EXPORTACION EXCEL ----------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
         function vista_excel(toba_vista_excel $salida){
-            $salida->set_nombre_archivo("Escrutinio Superior.xls");
+            $salida->set_nombre_archivo("EscrutinioSuperior.xls");
             $excel = $salida->get_excel();
             
             
