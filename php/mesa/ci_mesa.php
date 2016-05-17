@@ -21,17 +21,17 @@ class ci_mesa extends toba_ci
             //Modificar el estado de la mesa
                 $m = $this->dep('datos')->tabla('mesa')->get();
                 $p = array_search('junta_electoral', $this->s__perfil);
-                if($p != false){//Ingreso con perfil junta_electoral
+                if($p !== false){//Ingreso con perfil junta_electoral
                     $m['estado'] = 3;//Cambia el estado de la mesa a Confirmado
                 }
                 else{
                     $p = array_search('secretaria', $this->s__perfil);
-                     if($p != false){//Ingreso con perfil secretaria
+                     if($p !== false){//Ingreso con perfil secretaria
                          $m['estado'] = 4;//Cambia el estado de la mesa a Definitivo
                      }
                      else{
                        $p = array_search('autoridad_mesa', $this->s__perfil);  
-                      if($p != false){//Ingreso con perfil autoridad de mesa
+                      if($p !== false){//Ingreso con perfil autoridad de mesa
                           $m['estado'] = 1;//Cambia el estado de la mesa a Cargado
                       }
                      }
@@ -79,7 +79,7 @@ class ci_mesa extends toba_ci
 //            print_r($this->s__perfil);  
             
             $p = array_search('autoridad_mesa', $this->s__perfil);
-            if($p != false){//Es autoridad de mesa
+            if($p !== false){//Es autoridad de mesa
                 //Cargar datos del usuario especifico
                 //obtengo el nombre de usuario logueado
                 $usr = toba::manejador_sesiones()->get_id_usuario_instancia();
@@ -110,7 +110,7 @@ class ci_mesa extends toba_ci
                 $this->s__mesa = $this->dep('datos')->tabla('mesa')->get();
                 	
                 $p = array_search('junta_electoral', $this->s__perfil);
-                if($p != false){//Es junta electoral
+                if($p !== false){//Es junta electoral
                     $this->controlador()->evento('procesar')->set_etiqueta('Confirmar');
                     $this->controlador()->evento('enviar')->ocultar();
 
@@ -123,8 +123,8 @@ class ci_mesa extends toba_ci
                     }
                 }
                 else{
-                    $p = array_search('secretaria', $this->s__perfil);
-                     if($p != false){//Es secretaria
+                    $p = array_search('secretaria', $this->s__perfil);//print_r(isset($p)?'no es false':'es false');
+                     if($p !== false){//Es secretaria
                          $this->controlador()->evento('procesar')->set_etiqueta('Validar');
                           $this->controlador()->evento('enviar')->ocultar();
 
@@ -299,40 +299,43 @@ class ci_mesa extends toba_ci
 
 	function conf__form_ml_superior(gu_kena_ei_formulario_ml $form_ml)
 	{         
-            $ar = array();
             if(isset($this->s__acta_superior)){
-                $ar[0]['votos'] = $this->s__acta_superior['total_votos_blancos'];
-                $ar[1]['votos'] = $this->s__acta_superior['total_votos_nulos'];
-                $ar[2]['votos'] = $this->s__acta_superior['total_votos_recurridos'];
-                
-                //obtener los votos cargados, asociados a este acta
-                $votos = $this->dep('datos')->tabla('voto_lista_csuperior')->get_listado_votos_sup($this->s__acta_superior['id_acta']);
-                
-            }
-            if(sizeof($ar) > 0){
-                $ar[0]['id_nro_lista'] = -1;
-                $ar[0]['nombre'] = "VOTOS EN BLANCO";            
-//                $ar[0] = $blancos;
+                $ar = array();
+                $votos = array();
+                if(isset($this->s__acta_superior)){
+                    $ar[0]['votos'] = $this->s__acta_superior['total_votos_blancos'];
+                    $ar[1]['votos'] = $this->s__acta_superior['total_votos_nulos'];
+                    $ar[2]['votos'] = $this->s__acta_superior['total_votos_recurridos'];
 
-                $ar[1]['id_nro_lista'] = -2;
-                $ar[1]['nombre'] = "VOTOS NULOS";
-//                $ar[1] = $nulos;
+                    //obtener los votos cargados, asociados a este acta
+                    $votos = $this->dep('datos')->tabla('voto_lista_csuperior')->get_listado_votos_sup($this->s__acta_superior['id_acta']);
 
-                $ar[2]['id_nro_lista'] = -3;
-                $ar[2]['nombre'] = "VOTOS RECURRIDOS";
-//                $ar[2] = $recurridos;
-                
-//                $ar = array_merge($ar, $arr);
-            }
-            if(sizeof($votos) > 0){//existen votos cargados
-                $ar = array_merge($votos, $ar);
-                $form_ml->set_datos($ar);
-            }
-            else{//no existen votos cargados
-                $listas = $this->dep('datos')->tabla('lista_csuperior')->get_listas_actuales($this->s__claustro);
-                if(sizeof($listas)>0){//Existen listas
-                    $ar = array_merge($listas, $ar);
+                }
+                if(sizeof($ar) > 0){
+                    $ar[0]['id_nro_lista'] = -1;
+                    $ar[0]['nombre'] = "VOTOS EN BLANCO";            
+    //                $ar[0] = $blancos;
+
+                    $ar[1]['id_nro_lista'] = -2;
+                    $ar[1]['nombre'] = "VOTOS NULOS";
+    //                $ar[1] = $nulos;
+
+                    $ar[2]['id_nro_lista'] = -3;
+                    $ar[2]['nombre'] = "VOTOS RECURRIDOS";
+    //                $ar[2] = $recurridos;
+
+    //                $ar = array_merge($ar, $arr);
+                }
+                if(sizeof($votos) > 0){//existen votos cargados
+                    $ar = array_merge($votos, $ar);
                     $form_ml->set_datos($ar);
+                }
+                else{//no existen votos cargados
+                    $listas = $this->dep('datos')->tabla('lista_csuperior')->get_listas_actuales($this->s__claustro);
+                    if(sizeof($listas)>0){//Existen listas
+                        $ar = array_merge($listas, $ar);
+                        $form_ml->set_datos($ar);
+                    }
                 }
             }
         }
