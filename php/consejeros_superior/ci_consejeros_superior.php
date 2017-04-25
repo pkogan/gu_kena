@@ -13,8 +13,9 @@ class ci_consejeros_superior extends toba_ci
 	function conf__cuadro_superior_e(gu_kena_ei_cuadro $cuadro)
 	{
             $this->dep('cuadro_superior_e')->colapsar();//No se muestra el cuadro en un principio
-            
-            $unidades = $this->dep('datos')->tabla('unidad_electoral')->get_descripciones();
+             
+        //Obtengo todas las unidades menos los asentamientos y rectorado. 1:Administración central, 2:Facultad/Centro Regional/ Escuela 3:Asentamiento
+            $unidades = $this->dep('datos')->tabla('unidad_electoral')->get_descripciones_por_nivel(array(2));           
             
             //Cargar la cantidad de empadronados para el claustro estudiantes=3
             // en cada unidad
@@ -32,11 +33,11 @@ class ci_consejeros_superior extends toba_ci
             //Obtener las listas del claustro estudiantes=3
             $listas = $this->dep('datos')->tabla('lista_csuperior')->get_listas_actuales(3); 
             
-            //Agregar las etiquetas de todas las listas
+            //Agregar las etiquetas de todas las listas (columnas dinámicas)
             $i = 1;
             foreach($listas as $lista){
                 $l['clave'] = $lista['id_nro_lista'];
-                $l['titulo'] = $lista['nombre'];
+                $l['titulo'] = substr($lista['nombre'], 0, 11). $lista['sigla'];
                 $l['estilo'] = 'col-cuadro-resultados';
                 $l['estilo_titulo'] = 'tit-cuadro-resultados';
                 //$l['permitir_html'] = true;
@@ -82,7 +83,7 @@ class ci_consejeros_superior extends toba_ci
             
             
             $ar = $this->cargar_cant_b_n_r($ar, 3);
-            
+            $ar= $this->cargar_cant_votantes($ar,$listas);
             return $ar;
         }
         
@@ -94,7 +95,7 @@ class ci_consejeros_superior extends toba_ci
             $unidades[$p]['total_votos_nulos'] = 0;
             $unidades[$p]['total_votos_recurridos'] = 0;
             for($i=0; $i<$p; $i++){//Recorro las unidades
-                //Agrega la cantidad de votos blancos,nulos y recurridos calculado en acta para cada unidad con claustro y tipo superior=1
+              //Agrega la cantidad de votos blancos,nulos y recurridos calculado en acta para cada unidad con claustro y tipo superior=1
                 $ar = $this->dep('datos')->tabla('acta')->cant_b_n_r($unidades[$i]['id_nro_ue'], $id_claustro, 1);
                 if(sizeof($ar)>0){
                     $unidades[$i]['total_votos_blancos'] = $ar[0]['blancos'];
@@ -114,12 +115,12 @@ class ci_consejeros_superior extends toba_ci
         //Metodo responsable de cargar la segunda columna con la cantidad de empadronados
         // en cada unidad electoral
         function cargar_cant_empadronados($unidades, $id_claustro){
-            $p = sizeof($unidades)-2;
             $this->s__total_emp = 0;
             for($i=0; $i<sizeof($unidades); $i++){//Recorro las unidades
-                //Agrega la cantidad de empadronados calculado en acta para cada unidad con claustro 
+                //Agrega la cantidad de empadronados calculado en acta para cada unidad con claustro /en dt_mesa?
                 $unidades[$i]['cant_empadronados'] = $this->dep('datos')->tabla('mesa')->cant_empadronados($unidades[$i]['id_nro_ue'], $id_claustro);
                 $this->s__total_emp += $unidades[$i]['cant_empadronados'];
+               
             }
             return $unidades;
         }
@@ -127,10 +128,35 @@ class ci_consejeros_superior extends toba_ci
         function cargar_cant_votos($id_lista, $unidades, $id_claustro){
             for($i=0; $i<sizeof($unidades)-2; $i++){//Recorro las unidades
                 //Agrega la cantidad de empadronados calculado en acta para cada unidad con claustro  y tipo 'superior'
-                $unidades[$i][$id_lista] = $this->dep('datos')->tabla('voto_lista_csuperior')->cant_votos($id_lista, $unidades[$i]['id_nro_ue'], $id_claustro);                
+                $unidades[$i][$id_lista] = $this->dep('datos')->tabla('voto_lista_csuperior')->cant_votos($id_lista, $unidades[$i]['id_nro_ue'], $id_claustro);
             }
             return $unidades;
         }
+        
+        
+        
+        function cargar_cant_votantes($unidades, $listas){ 
+        //realiza la suma de los votos que hay en las distintas columnas
+            $p = sizeof($unidades)-2;
+            $cant_columnas= sizeof($listas);
+            $unidades[$p]['cant_votantes'] = 0;
+            //Inicializo para realizar la sumatoria
+            $cant_total = 0;
+            for($i=0; $i<$p; $i++){ //Recorre las unidades
+                $votantes_ue = 0;
+                for($c=0; $c<$cant_columnas; $c++){
+                    $votantes_ue += $unidades[$i][($listas[$c]['id_nro_lista'])] ;  
+               }
+               $votantes_ue += $unidades[$i]['total_votos_blancos'];
+               $votantes_ue += $unidades[$i]['total_votos_nulos'];
+               $votantes_ue += $unidades[$i]['total_votos_recurridos'];
+                $unidades[$i]['cant_votantes'] = $votantes_ue; 
+                $cant_total += $votantes_ue;
+            }
+            $unidades[$p]['cant_votantes'] = $cant_total;
+            return $unidades;
+        }
+        
         
         function cargar_votos_totales_ponderados($id_lista, $unidades, $id_claustro){
             $pos_total = sizeof($unidades) -2;//Fila que contiene los votos totales
@@ -141,7 +167,7 @@ class ci_consejeros_superior extends toba_ci
                 if(isset($unidades[$i][$id_lista]) && isset($unidades[$i]['cant_empadronados'])){
                     //Suma el cociente entre cant de votos de la 
                     //lista en la UEn / cant empadronados del claustro en la UEn
-                    $cociente = $unidades[$i][$id_lista]/$unidades[$i]['cant_empadronados'];
+                    $cociente = round($unidades[$i][$id_lista]/$unidades[$i]['cant_empadronados'],6);
                     
                     $unidades[$pos_pond][$id_lista] += $cociente;
                 }
@@ -149,6 +175,7 @@ class ci_consejeros_superior extends toba_ci
                 if(isset($unidades[$i][$id_lista])){
                     //Suma los votos 
                     $unidades[$pos_total][$id_lista] += $unidades[$i][$id_lista];
+                    
                 }
             }
             
@@ -165,7 +192,8 @@ class ci_consejeros_superior extends toba_ci
 	//-----------------------------------------------------------------------------------
         function conf__cuadro_dhondt_e(gu_kena_ei_cuadro $cuadro)
 	{
-            $cargos = 10;//print_r($this->s__votos_e);
+            $cargos = 10;
+            //print_r($this->s__votos_e);
             //En $s__votos_e tengo todos los datos de los votos ponderados
             
             //Obtener las listas del claustro estudiantes=3
@@ -179,7 +207,7 @@ class ci_consejeros_superior extends toba_ci
                 //Calcula el cociente para cada cargo
                 for($i=1; $i<=$cargos; $i++){
                     //  Cant votos ponderados / numero de cargo
-                    $x = $listas[$pos]['votos'] / $i;
+                    $x = round($listas[$pos]['votos'] / $i, 2);
                     array_push($ar, $x);
                     $listas[$pos][$i] = $x;
                 }
@@ -230,7 +258,9 @@ class ci_consejeros_superior extends toba_ci
 	{
             $this->dep('cuadro_superior_g')->colapsar();//No se muestra el cuadro en un principio
             
-            $unidades = $this->dep('datos')->tabla('unidad_electoral')->get_descripciones();
+            //Obtengo todas las unidades menos los asentamientos y rectorado. 
+            //1:Administración central, 2:Facultad/Centro Regional/ Escuela 3:Asentamiento
+            $unidades = $this->dep('datos')->tabla('unidad_electoral')->get_descripciones_por_nivel(array(2)); 
             
             //Cargar la cantidad de empadronados para el claustro graduados=4
             // en cada unidad
@@ -252,7 +282,7 @@ class ci_consejeros_superior extends toba_ci
             $i = 1;
             foreach($listas as $lista){
                 $l['clave'] = $lista['id_nro_lista'];
-                $l['titulo'] = $lista['nombre'];
+                $l['titulo'] = substr($lista['nombre'], 0, 11). $lista['sigla'];
                 $l['estilo'] = 'col-cuadro-resultados';
                 $l['estilo_titulo'] = 'tit-cuadro-resultados';
                 //$l['permitir_html'] = true;
@@ -303,7 +333,9 @@ class ci_consejeros_superior extends toba_ci
             $ar[$p]['total_votos_blancos'] = 0;
             $ar[$p]['total_votos_nulos'] = 0;
             $ar[$p]['total_votos_recurridos'] = 0;
+            
             $ar = $this->cargar_cant_b_n_r($ar, 4);
+            $ar= $this->cargar_cant_votantes($ar,$listas);
             
             return $ar;
         }
@@ -382,7 +414,9 @@ class ci_consejeros_superior extends toba_ci
 	{
             $this->dep('cuadro_superior_nd')->colapsar();//No se muestra el cuadro en un principio
             
-            $unidades = $this->dep('datos')->tabla('unidad_electoral')->get_descripciones();
+            //Obtengo todas las unidades menos los asentamientos. 
+            //1:Administración central, 2:Facultad/Centro Regional/ Escuela 3:Asentamiento
+            $unidades = $this->dep('datos')->tabla('unidad_electoral')->get_descripciones_por_nivel(array(1,2)); 
             
             //Cargar la cantidad de empadronados para el claustro no docente = 1
             // en cada unidad
@@ -404,7 +438,7 @@ class ci_consejeros_superior extends toba_ci
             $i = 1;
             foreach($listas as $lista){
                 $l['clave'] = $lista['id_nro_lista'];
-                $l['titulo'] = $lista['nombre'];
+                $l['titulo'] = substr($lista['nombre'], 0, 11). $lista['sigla'];
                 $l['estilo'] = 'col-cuadro-resultados';
                 $l['estilo_titulo'] = 'tit-cuadro-resultados';
                 //$l['permitir_html'] = true;
@@ -454,7 +488,9 @@ class ci_consejeros_superior extends toba_ci
             $ar[$p]['total_votos_blancos'] = 0;
             $ar[$p]['total_votos_nulos'] = 0;
             $ar[$p]['total_votos_recurridos'] = 0;
+            
             $ar = $this->cargar_cant_b_n_r($ar, 1);
+            $ar= $this->cargar_cant_votantes($ar,$listas);
             
             return $ar;
 	}

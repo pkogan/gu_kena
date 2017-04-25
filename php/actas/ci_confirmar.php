@@ -11,7 +11,7 @@ class ci_confirmar extends toba_ci
             $filtro->set_datos($this->s__filtro);
 	}
 
-	function evt__filtro__filtrar($datos)
+	function evt__filtro__filtrar($datos) //$datos trae el contenido de lo que se filtro
 	{
             $this->s__filtro = $datos;
             

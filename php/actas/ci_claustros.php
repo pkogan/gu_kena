@@ -19,9 +19,9 @@ class ci_claustros extends ci_confirmar
 
 	function evt__cuadro_estudiantes__seleccion($datos)
 	{
-            $dato['k'] = 10000045;
+            $dato['k'] = 10000045; // guarda el componente actual para cuando retorne
             $dato['c'] = $datos['id_mesa'];
-            toba::vinculador()->navegar_a("",10000044,$dato);
+            toba::vinculador()->navegar_a("",10000044,$dato); //navega a el controlador con el id especificado (en este caso operación mesa)
         }
 
         //-----------------------------------------------------------------------------------

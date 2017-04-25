@@ -16,7 +16,7 @@ class dt_unidad_electoral extends gu_kena_datos_tabla
 		return toba::db('gu_kena')->consultar($sql);
 	}
 
-
+//HACER OTRO METODO PARA GET_DESCRIPCIONES POR TIPO (AGREGANDO ATRIBUTONIVEL O TIPO: RECTORADO, FACULTAD, ASENTAMIENTO)
 	function get_descripciones($id = null)
 	{
             $where = "";
@@ -26,6 +26,22 @@ class dt_unidad_electoral extends gu_kena_datos_tabla
             return toba::db('gu_kena')->consultar($sql);
 	}
 
+        function get_descripciones_por_nivel($niveles = NULL)
+	{
+            $where = "";
+            if(isset($niveles)){
+                $where = " WHERE nivel in (".  implode(',', $niveles).")";
+//                $cant_niv = sizeof($niveles)-1;
+//                $where = " WHERE";
+//                for($i=0; $i<$cant_niv; $i++){
+//                    $where = "$where nivel = $niveles[$i] OR";
+//                }
+//                $where = "$where nivel = $niveles[$cant_niv] ";
+            }
+                
+            $sql = "SELECT id_nro_ue, nombre, sigla FROM unidad_electoral $where ORDER BY nombre";
+            return toba::db('gu_kena')->consultar($sql);
+	}
 
 
         /*function get_nombre($id_nro_ue){

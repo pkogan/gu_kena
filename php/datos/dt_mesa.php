@@ -24,13 +24,17 @@ class dt_mesa extends gu_kena_datos_tabla
             return $ar[0];
         }
         
-        function cant_empadronados($id_nro_ue, $id_claustro){
-            $sql = "SELECT sum(t_m.cant_empadronados) as cant FROM mesa t_m "
-                    . "INNER JOIN sede t_s ON t_s.id_sede = t_m.id_sede"
-                    . " INNER JOIN unidad_electoral t_ue ON t_ue.id_nro_ue = t_s.id_ue "
+        function cant_empadronados($id_nro_ue, $id_claustro,$id_tipo_acta=1){
+            $sql = "SELECT sum(t_m.cant_empadronados) as cant FROM unidad_electoral t_ue "
+                    . "INNER JOIN sede t_s ON t_ue.id_nro_ue = t_s.id_ue "
+                    . " inner JOIN acta t_a ON t_s.id_sede = t_a.id_sede"
+                        . " inner JOIN mesa t_m  ON t_a.de = t_m.id_mesa "
                     . "WHERE t_ue.id_nro_ue = $id_nro_ue"
+                    . " AND t_a.id_tipo = $id_tipo_acta "
                     . "AND t_m.id_claustro = $id_claustro"
-                    . "AND t_m.fecha = (SELECT max(fecha) FROM mesa)";
+                    . "AND t_m.fecha = (SELECT max(fecha) FROM mesa) "
+                   ;   //agregado para probar en la consulta (cuando se borren el atributo ficticio se borra esta condición)
+            
             $ar = toba::db('gu_kena')->consultar($sql);
             return $ar[0]['cant'];
         }
