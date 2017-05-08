@@ -53,12 +53,12 @@ class ci_mesa extends toba_ci
         function evt__enviar(){
             if($this->dep('datos')->tabla('mesa')->esta_cargada()){
                 $m = $this->dep('datos')->tabla('mesa')->get();
-//                print_r($m);
+         //     print_r($m);
                 $m['estado'] = 2;//Cambia el estado de la mesa a Enviado
                 $this->dep('datos')->tabla('mesa')->set($m);
-//                print_r($m['id_mesa']);
+        //      print_r($m['id_mesa']);
                 $this->dep('datos')->tabla('mesa')->sincronizar();
-//                $this->dep('datos')->tabla('mesa')->resetear();
+        //      $this->dep('datos')->tabla('mesa')->resetear();
                 
                 $m = $this->dep('datos')->tabla('mesa')->get_listado($m['id_mesa']);
                 if($m[0]['estado'] == 2){//Obtengo de la BD y verifico que hizo cambios en la BD
@@ -76,7 +76,7 @@ class ci_mesa extends toba_ci
         function conf(){
             //Obtengo el perfil funcional del usuario logueado, devuelve un array
             $this->s__perfil = toba::manejador_sesiones()->get_perfiles_funcionales();
-//            print_r($this->s__perfil);  
+         //   print_r($this->s__perfil);  
             
             $p = array_search('autoridad_mesa', $this->s__perfil);
             if($p !== false){//Es autoridad de mesa
@@ -85,7 +85,6 @@ class ci_mesa extends toba_ci
                 $usr = toba::manejador_sesiones()->get_id_usuario_instancia();
                 
                 $id_mesa = $this->dep('datos')->tabla('mesa')->get_de_usr($usr);
-                
                 if(sizeof($id_mesa)>0){
                     $this->s__id_mesa = $id_mesa[0]['id_mesa'];
                     $datos['id_mesa'] = $this->s__id_mesa;
@@ -149,6 +148,7 @@ class ci_mesa extends toba_ci
                         //primer parametro corresponde al id_mesa = de en acta
                         $this->s__actas = $this->dep('datos')->tabla('acta')->get_ultimas_descripciones_de($this->s__id_mesa);
                        //Si tengo tres actas asociadas a esta mesa ent muestro el form_ml_directivo_extra
+                       
                        if(sizeof($this->s__actas) == 3){//form extra corresponde al cons. dir. del asentamiento
                             //$this->dep('form_extra')->set_titulo('Consejo Directivo de Asentamiento Universitario');
                        }else{ //Sino colapsar
@@ -161,27 +161,21 @@ class ci_mesa extends toba_ci
                            }
                        }
                        
-                       //Separacion de actas
+                       //Separacion de actas    
                        foreach($this->s__actas as $pos => $un_acta){
                             //id_tipo=1 => superior
-                            //id_tipo=2 => directivo
+                            //id_tipo=2 => directivo facultad, escuela, etc
+                           //id_tipo=3 => directivo asentamiento
                             if($un_acta['id_tipo'] == 1)//acta superior
                                     $this->s__acta_superior = $un_acta;
-                            else{
-                                if(sizeof($this->s__actas) == 2 ){//No hay form extra
-                                    $this->s__acta_directivo = $un_acta;
-                                }
-                                else{//hay mas actas
-                                    if($un_acta['id_tipo'] == 2){//acta directivo
-                                        if($un_acta['de'] == $un_acta['para'])
-                                            $this->s__acta_extra = $un_acta;
-                                        else
-                                            $this->s__acta_directivo = $un_acta;
-                                    }
-                                }
-                            }
-                       }
-                    
+                            elseif($un_acta['id_tipo'] == 2){   
+                                $this->s__acta_directivo = $un_acta;
+                                    
+                                }elseif($un_acta['id_tipo'] == 3){
+                                     $this->s__acta_extra = $un_acta;
+                                     
+                                }    
+                       } 
             }
         }
         
@@ -392,6 +386,7 @@ class ci_mesa extends toba_ci
 
 	function conf__form_ml_extra(gu_kena_ei_formulario_ml $form_ml)
 	{
+            //print_r($this->s__acta_extra);
             if(isset($this->s__acta_extra)){
                 $ar = array();
                 if(isset($this->s__acta_extra)){

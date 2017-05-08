@@ -1,7 +1,7 @@
 <?php
 class dt_acta extends gu_kena_datos_tabla
 {
-	function get_listado($id_acta = null)
+	function get_listado($id_acta = null) //VER SI SE USA MODIFICAR "PARA"(si no se lo usa el "t_a.para", se puede borrar)!!!
 	{
             if(isset($id_acta)){
                 $where = "WHERE id_acta = $id_acta";
@@ -16,15 +16,15 @@ class dt_acta extends gu_kena_datos_tabla
                     t_a.total_votos_nulos,
                     t_a.total_votos_recurridos,
                     t_t.descripcion as id_tipo_nombre,
-                    t_a.de,
-                    t_a.para
-            FROM
+                    t_a.de  "
+                    //t_a.para
+            ."FROM
                     acta as t_a	LEFT OUTER JOIN tipo as t_t ON (t_a.id_tipo = t_t.id_tipo) 
                     $where ";
             return toba::db('gu_kena')->consultar($sql);
 	}
         
-        function get_ultimo_listado($id_acta = null)
+        function get_ultimo_listado($id_acta = null) 
 	{
             if(isset($id_acta)){
                 $where = "AND id_acta = $id_acta";
@@ -39,35 +39,32 @@ class dt_acta extends gu_kena_datos_tabla
                     t_a.total_votos_nulos,
                     t_a.total_votos_recurridos,
                     t_t.descripcion as tipo,
-                    t_a.de,
-                    t_a.para,
-                    t_sde.nombre as sede_de,
-                    t_spara.nombre as sede_para
-            FROM
+                    t_a.de, 
+                    t_sde.nombre as sede_de, "
+                    ." t_a.id_sede as sede_para "
+            ."FROM
                     acta as t_a	
                     LEFT OUTER JOIN tipo as t_t ON (t_a.id_tipo = t_t.id_tipo) 
                     INNER JOIN mesa t_de ON (t_de.id_mesa = t_a.de)
-                    INNER JOIN mesa t_para ON (t_para.id_mesa = t_a.para)
                     INNER JOIN sede t_sde ON (t_de.id_sede = t_sde.id_sede)
-                    INNER JOIN sede t_spara ON (t_para.id_sede = t_spara.id_sede)
-                    WHERE t_de.fecha = (SELECT max(fecha) FROM mesa)
-                    AND t_de.ficticio = false AND t_para.ficticio = false 
-                    $where ";
+                    INNER JOIN sede t_spara ON (t_spara.id_sede = t_a.id_sede)
+                    WHERE t_de.fecha = (SELECT max(fecha) FROM mesa)"
+                    ."$where ";
             return toba::db('gu_kena')->consultar($sql);
 	}
 
-        function get_descripciones($de = null, $para = null)
+        function get_descripciones($de = null, $sede = null) //$sede es la sede a la que pertenece el acta
 	{
             $where = array();
             if(isset($de) && isset($para)){
-                $where = "WHERE de = $de AND para = $para";
+                $where = "WHERE de = $de AND id_sede = $sede";
             }
             else{
                 if(isset($de)){
                     $where = "WHERE de=$de";
                 }
                 if(isset($para)){
-                    $where = "WHERE para=$para";
+                    $where = "WHERE id_sede=$sede";
                 }
             }
             
@@ -77,14 +74,14 @@ class dt_acta extends gu_kena_datos_tabla
                     . "total_votos_recurridos,"
                     . "t_a.id_tipo,"
                     . "t_t.descripcion as tipo,"
-                    . "de,"
-                    . "para "
+                    . "de," 
                     . "FROM acta as t_a "
                     . "INNER JOIN tipo as t_t ON (t_t.id_tipo = t_a.id_tipo)" 
                     . " $where ORDER BY id_acta";
             
             return toba::db('gu_kena')->consultar($sql);
 	}
+        
         
         function get_ultimas_descripciones_de($de = null)
 	{
@@ -100,9 +97,9 @@ class dt_acta extends gu_kena_datos_tabla
                     . "t_a.id_tipo,"
                     . "t_t.descripcion as tipo,"
                     . "t_a.de,"
-                    . "t_a.para,"
-                    . "t_s.nombre as unidad_electoral,"
-                    . "t_u.nombre as sede,"
+                    //. "t_a.para,"
+                    . "t_s.nombre as sede,"
+                    . "t_u.nombre as unidad_electoral,"
                     . "t_c.descripcion as claustro,"
                     . "t_m.nro_mesa "
                     . "FROM acta as t_a "
@@ -112,7 +109,7 @@ class dt_acta extends gu_kena_datos_tabla
                     . "INNER JOIN sede as t_s ON (t_s.id_sede = t_m.id_sede) "
                     . "INNER JOIN unidad_electoral as t_u ON (t_u.id_nro_ue = t_s.id_ue) " 
                     . "WHERE t_m.fecha = (SELECT max(fecha) FROM mesa )"
-                    . " AND t_m.ficticio = false $where "
+                    . " $where "
                     . "ORDER BY id_acta";
             
             return toba::db('gu_kena')->consultar($sql);
@@ -149,7 +146,7 @@ class dt_acta extends gu_kena_datos_tabla
                             LEFT JOIN unidad_electoral t_ude ON (t_ude.id_nro_ue = t_sde.id_ue)
                             LEFT JOIN tipo t_t ON (t_t.id_tipo = t_a.id_tipo)
                             WHERE t_de.fecha = (SELECT max(fecha) FROM mesa )
-                            AND t_de.ficticio = false 
+                             
                          $where ORDER BY t_ude.id_nro_ue";
                 
                 return toba::db('gu_kena')->consultar($sql);       
@@ -163,13 +160,13 @@ class dt_acta extends gu_kena_datos_tabla
                     . "t_a.id_tipo,"
                     . "t_t.descripcion as tipo,"
                     . "de,"
-                    . "para "
+                    //. "para "
                     . "FROM acta as t_a "
                     . "LEFT JOIN tipo as t_t ON (t_t.id_tipo = t_a.id_tipo) 
-                        LEFT JOIN mesa t_de ON (t_de.id_mesa = t_a.de)
-                        LEFT JOIN mesa t_para ON (t_para.id_mesa = t_a.para)
-                        WHERE t_de.fecha = (SELECT max(fecha) FROM mesa )"
-                        ." AND t_para.fecha = (SELECT max(fecha) FROM mesa )"
+                       LEFT JOIN mesa t_de ON (t_de.id_mesa = t_a.de)"
+                    //."LEFT JOIN mesa t_para ON (t_para.id_mesa = t_a.para)"
+                    ."WHERE t_de.fecha = (SELECT max(fecha) FROM mesa )"
+                    //." AND t_para.fecha = (SELECT max(fecha) FROM mesa )"
                     . "ORDER BY id_acta";
             
                 return toba::db('gu_kena')->consultar($sql);
@@ -177,15 +174,15 @@ class dt_acta extends gu_kena_datos_tabla
             
 	}
         
-        //usado por ci_consejeros_superior. cant de votos blancos, nulos y recurridos 
+        //usado por ci_consejeros_superior y direcivo cant de votos blancos, nulos y recurridos 
         //para una u_e, tipo(sup, dir) y claustro
-        function cant_b_n_r($id_ue, $id_claustro, $id_tipo){
+        function cant_b_n_r($id_ue, $id_claustro, $id_tipo){ //modificada ok con BD
             $sql = "SELECT sum(total_votos_blancos) as blancos, "
                     . "sum(total_votos_nulos) as nulos, "
                     . "sum(total_votos_recurridos) as recurridos"
                     . " FROM acta t_a"
-                    . " INNER JOIN mesa t_m ON (t_m.id_mesa = t_a.para)"
-                    . " INNER JOIN sede t_s ON (t_m.id_sede = t_s.id_sede)"
+                    . " INNER JOIN mesa t_m ON (t_m.id_mesa = t_a.de)"
+                    . " INNER JOIN sede t_s ON (t_a.id_sede = t_s.id_sede)"
                     . " WHERE t_s.id_ue = $id_ue "
                     . " AND t_m.id_claustro = $id_claustro "
                     . " AND t_a.id_tipo = $id_tipo"

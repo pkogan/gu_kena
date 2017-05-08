@@ -16,7 +16,7 @@ class dt_lista_csuperior extends gu_kena_datos_tabla
             
             $sql = "SELECT id_nro_lista, nombre, sigla FROM lista_csuperior "
                     . "WHERE fecha = (SELECT max(fecha) FROM lista_csuperior ) $where "
-                    . "ORDER BY id_nro_lista";
+                    ."  order by nombre"; //. "ORDER BY id_nro_lista";
             return toba::db('gu_kena')->consultar($sql);
         }
         
@@ -51,7 +51,7 @@ class dt_lista_csuperior extends gu_kena_datos_tabla
 		FROM
 			lista_csuperior as t_lc	LEFT OUTER JOIN claustro as t_c ON (t_lc.id_claustro = t_c.id)
                         WHERE t_lc.fecha = (SELECT max(fecha) FROM lista_csuperior)
-		ORDER BY t_c.id";
+		ORDER BY t_c.id, t_lc.nombre";
 		return toba::db('gu_kena')->consultar($sql);
 	}
 }

@@ -32,8 +32,7 @@ class dt_mesa extends gu_kena_datos_tabla
                     . "WHERE t_ue.id_nro_ue = $id_nro_ue"
                     . " AND t_a.id_tipo = $id_tipo_acta "
                     . "AND t_m.id_claustro = $id_claustro"
-                    . "AND t_m.fecha = (SELECT max(fecha) FROM mesa) "
-                   ;   //agregado para probar en la consulta (cuando se borren el atributo ficticio se borra esta condición)
+                    . "AND t_m.fecha = (SELECT max(fecha) FROM mesa) ";   
             
             $ar = toba::db('gu_kena')->consultar($sql);
             return $ar[0]['cant'];
@@ -99,7 +98,7 @@ class dt_mesa extends gu_kena_datos_tabla
             $sql = "SELECT count(id_mesa) as porc FROM mesa "
                     . "WHERE fecha = (SELECT max(fecha) FROM mesa) "
                     . "AND estado > 1 "
-                    . "AND ficticio = false "
+                    //. "AND ((id_mesa between 1 AND 103) OR id_mesa >= 110) " //actas ficticias
                     . "AND id_claustro = $id_claustro";
             $ar = toba::db('gu_kena')->consultar($sql);
             return $ar[0]['porc'];
@@ -109,7 +108,6 @@ class dt_mesa extends gu_kena_datos_tabla
             $sql = "SELECT count(id_mesa) as porc FROM mesa "
                     . "WHERE fecha = (SELECT max(fecha) FROM mesa) "
                     . "AND estado >= 3 "
-                    . "AND ficticio = false "
                     . "AND id_claustro = $id_claustro";
             $ar = toba::db('gu_kena')->consultar($sql);
             return $ar[0]['porc'];
@@ -119,7 +117,6 @@ class dt_mesa extends gu_kena_datos_tabla
             $sql = "SELECT count(id_mesa) as porc FROM mesa "
                     . "WHERE fecha = (SELECT max(fecha) FROM mesa) "
                     . "AND estado = 4"
-                    . "AND ficticio = false "
                     . "AND id_claustro = $id_claustro";
             $ar = toba::db('gu_kena')->consultar($sql);
             return $ar[0]['porc'];
@@ -128,14 +125,13 @@ class dt_mesa extends gu_kena_datos_tabla
         function get_total_mesas($id_claustro){
             $sql = "SELECT count(id_mesa) as total FROM mesa "
                     . "WHERE fecha = (SELECT max(fecha) FROM mesa) "
-                    . "AND ficticio = false "
                     . "AND id_claustro = $id_claustro";
             $ar = toba::db('gu_kena')->consultar($sql);
             return $ar[0]['total'];
         }
         
         function get_de_usr($usuario){
-            $sql = "SELECT id_mesa FROM mesa WHERE autoridad LIKE '$usuario'";
+            $sql = "SELECT id_mesa FROM mesa WHERE autoridad LIKE '$usuario' and fecha = (SELECT max(fecha) FROM mesa)";
             return toba::db('gu_kena')->consultar($sql);
         }
         
@@ -164,9 +160,8 @@ class dt_mesa extends gu_kena_datos_tabla
                             LEFT JOIN estado t_e ON (t_e.id_estado = t_m.estado)
                             LEFT JOIN sede t_sde ON (t_sde.id_sede = t_m.id_sede)
                             LEFT JOIN unidad_electoral t_ude ON (t_ude.id_nro_ue = t_sde.id_ue)
-                            WHERE t_m.fecha = (SELECT max(fecha) FROM mesa ) 
-                            AND t_m.ficticio = false 
-                         $where ORDER BY t_ude.id_nro_ue";
+                            WHERE t_m.fecha = (SELECT max(fecha) FROM mesa )" 
+                         ."$where ORDER BY t_ude.id_nro_ue";
                 
                 return toba::db('gu_kena')->consultar($sql);       
             }
@@ -179,13 +174,12 @@ class dt_mesa extends gu_kena_datos_tabla
                     . "t_a.id_tipo,"
                     . "t_t.descripcion as tipo,"
                     . "de,"
-                    . "para "
+                    //. "para "
                     . "FROM acta as t_a "
                     . "LEFT JOIN tipo as t_t ON (t_t.id_tipo = t_a.id_tipo) 
-                        LEFT JOIN mesa t_de ON (t_de.id_mesa = t_a.de)
-                        LEFT JOIN mesa t_para ON (t_para.id_mesa = t_a.para)
-                        WHERE t_de.fecha = (SELECT max(fecha) FROM mesa )"
-                        ." AND t_para.fecha = (SELECT max(fecha) FROM mesa )"
+                        LEFT JOIN mesa t_de ON (t_de.id_mesa = t_a.de)"
+                       // LEFT JOIN mesa t_para ON (t_para.id_mesa = t_a.para)
+                        ." WHERE t_de.fecha = (SELECT max(fecha) FROM mesa )"
                     . "ORDER BY id_acta";
             
                 return toba::db('gu_kena')->consultar($sql);

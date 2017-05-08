@@ -283,24 +283,48 @@ class ci_consejeros_directivos extends ci_principal
 	//---- formulario que muestra datos de votos blancos, nulos y recurridos en cada unidad electoral 
 	//-----------------------------------------------------------------------------------
 	function conf__form_dato_e(gu_kena_ei_formulario $form)
-	{
-            //Agrega la cantidad de votos blancos,nulos y recurridos calculado en acta para cada unidad con claustro estudiante y tipo directivo=2
-            $ar = $this->controlador()->dep('datos')->tabla('acta')->cant_b_n_r($this->controlador->s__unidad, 3, 2);
-            return $ar[0];
+	{ 
+//Agrega la cantidad de votos blancos,nulos y recurridos calculado en acta para cada unidad con claustro estudiante y tipo directivo=2/3
+            $u_e = $this->controlador->s__unidad;
+            
+            $nivel = $this->controlador()->dep('datos')->tabla('unidad_electoral')->get_nivel($u_e);
+            if($nivel['nivel']==3){ 
+                $ar = $this->controlador()->dep('datos')->tabla('acta')->cant_b_n_r($u_e, 3, 3);
+            }
+            else{
+                    $ar = $this->controlador()->dep('datos')->tabla('acta')->cant_b_n_r($u_e, 3, 2);
+            }
+          return $ar[0];
         }
         
         function conf__form_dato_g(gu_kena_ei_formulario $form)
 	{
-            //Agrega la cantidad de votos blancos,nulos y recurridos calculado en acta para cada unidad con claustro graduados y tipo directivo=2
-            $ar = $this->controlador()->dep('datos')->tabla('acta')->cant_b_n_r($this->controlador->s__unidad, 4, 2);
-            return $ar[0];
+   //Agrega la cantidad de votos blancos,nulos y recurridos calculado en acta para cada unidad con claustro graduados y tipo directivo=2/3
+            $u_e = $this->controlador->s__unidad;
+            
+            $nivel = $this->controlador()->dep('datos')->tabla('unidad_electoral')->get_nivel($u_e);
+            if($nivel['nivel']==3){ 
+                $ar = $this->controlador()->dep('datos')->tabla('acta')->cant_b_n_r($u_e, 4, 3);
+            }
+            else{
+                    $ar = $this->controlador()->dep('datos')->tabla('acta')->cant_b_n_r($u_e, 4, 2);
+            }
+          return $ar[0];
         }
         
         function conf__form_dato_nd(gu_kena_ei_formulario $form)
 	{
-            //Agrega la cantidad de votos blancos,nulos y recurridos calculado en acta para cada unidad con claustro no docente y tipo directivo=2
-            $ar = $this->controlador()->dep('datos')->tabla('acta')->cant_b_n_r($this->controlador->s__unidad, 1, 2);
-            return $ar[0];
+    //Agrega la cantidad de votos blancos,nulos y recurridos calculado en acta para cada unidad con claustro no docente y tipo directivo=2/3
+            $u_e = $this->controlador->s__unidad;
+            
+            $nivel = $this->controlador()->dep('datos')->tabla('unidad_electoral')->get_nivel($u_e);
+            if($nivel['nivel']==3){ 
+                $ar = $this->controlador()->dep('datos')->tabla('acta')->cant_b_n_r($u_e, 1, 3);
+            }
+            else{
+                    $ar = $this->controlador()->dep('datos')->tabla('acta')->cant_b_n_r($u_e, 1, 2);
+            }
+          return $ar[0];
         }
         
         //-----------------------------------------------------------------------------------

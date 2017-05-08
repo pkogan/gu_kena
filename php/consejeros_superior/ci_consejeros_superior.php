@@ -23,12 +23,12 @@ class ci_consejeros_superior extends toba_ci
             
             //Ante ultima fila carga los votos totales de cada lista
             $pos = sizeof($ar);
-            $ar[$pos]['sigla'] ="<span style='color:blue'>TOTAL</span>";
+            $ar[$pos]['sigla'] ="<span style='color:blue; font-weight:bold'>TOTAL</span>";
             $ar[$pos]['cant_empadronados'] = $this->s__total_emp;
             
             //Ultima fila carga los votos ponderados de cada lista
             $pos = sizeof($ar);
-            $ar[$pos]['sigla'] = "<span style='color:red'>PONDERADOS</span>";
+            $ar[$pos]['sigla'] = "<span style='color:red; font-weight:bold'>PONDERADOS</span>";
                         
             //Obtener las listas del claustro estudiantes=3
             $listas = $this->dep('datos')->tabla('lista_csuperior')->get_listas_actuales(3); 
@@ -40,6 +40,7 @@ class ci_consejeros_superior extends toba_ci
                 $l['titulo'] = substr($lista['nombre'], 0, 11). $lista['sigla'];
                 $l['estilo'] = 'col-cuadro-resultados';
                 $l['estilo_titulo'] = 'tit-cuadro-resultados';
+                
                 //$l['permitir_html'] = true;
                 
                 $grupo[$i] = $lista['id_nro_lista'];
@@ -60,6 +61,8 @@ class ci_consejeros_superior extends toba_ci
                 $i++;
             }
             $this->dep('cuadro_superior_e')->set_grupo_columnas('Listas',$grupo);
+           
+            
               
             $this->s__votos_e = $ar;//Guardar los votos para el calculo dhondt
             
@@ -67,16 +70,19 @@ class ci_consejeros_superior extends toba_ci
             $b['clave'] = 'total_votos_blancos';
             $b['titulo'] = 'Blancos';
             $b['estilo'] = 'col-cuadro-resultados';
+            $b['estilo_titulo'] = 'tit-cuadro-resultados';
             $bnr[0] = $b;
             
             $n['clave'] = 'total_votos_nulos';
             $n['titulo'] = 'Nulos';
             $n['estilo'] = 'col-cuadro-resultados';
+            $n['estilo_titulo'] = 'tit-cuadro-resultados';
             $bnr[1] = $n;
             
             $r['clave'] = 'total_votos_recurridos';
             $r['titulo'] = 'Recurridos';
             $r['estilo'] = 'col-cuadro-resultados';
+            $r['estilo_titulo'] = 'tit-cuadro-resultados';
             $bnr[2] = $r;
             
             $this->dep('cuadro_superior_e')->agregar_columnas($bnr);
@@ -84,6 +90,8 @@ class ci_consejeros_superior extends toba_ci
             
             $ar = $this->cargar_cant_b_n_r($ar, 3);
             $ar= $this->cargar_cant_votantes($ar,$listas);
+            //$this->cambiar_estilo_total($ar); //ver porqué no agrega estilo
+            
             return $ar;
         }
         
@@ -93,9 +101,9 @@ class ci_consejeros_superior extends toba_ci
             //Inicializo para realizar la sumatoria
             $unidades[$p]['total_votos_blancos'] = 0;
             $unidades[$p]['total_votos_nulos'] = 0;
-            $unidades[$p]['total_votos_recurridos'] = 0;
+            $unidades[$p]['total_votos_recurridos'] = 0;            
             for($i=0; $i<$p; $i++){//Recorro las unidades
-              //Agrega la cantidad de votos blancos,nulos y recurridos calculado en acta para cada unidad con claustro y tipo superior=1
+              //Agrega la cantidad de votos blancos,nulos y recurridos calculado en acta para cada unidad con claustro y tipo superior=1            
                 $ar = $this->dep('datos')->tabla('acta')->cant_b_n_r($unidades[$i]['id_nro_ue'], $id_claustro, 1);
                 if(sizeof($ar)>0){
                     $unidades[$i]['total_votos_blancos'] = $ar[0]['blancos'];
@@ -108,7 +116,7 @@ class ci_consejeros_superior extends toba_ci
                     $unidades[$p]['total_votos_nulos'] += $ar[0]['nulos'];
                     $unidades[$p]['total_votos_recurridos'] += $ar[0]['recurridos'];
                 }
-            }
+            }    
             return $unidades;
         }
         
@@ -176,12 +184,30 @@ class ci_consejeros_superior extends toba_ci
                     //Suma los votos 
                     $unidades[$pos_total][$id_lista] += $unidades[$i][$id_lista];
                     
+                    
+                    
                 }
             }
+            //$aux = "<span style='color:red'>".$unidades[$pos_total][$id_lista].""."</span>";
+            //$unidades[$pos_total][$id_lista] = $aux;
             
+            //print_r($unidades);
+            //print_r($pos_total);
             return $unidades;
         }
 
+        function cambiar_estilo_total($unidades){ //deberia ingresar las listas para recorrerlas
+            $pos_total = sizeof($unidades) -2;
+            $artotal= $unidades[$pos_total];
+            $cant = sizeof($artotal);
+            //print_r("cant:".$cant." Artotal: ");
+            //print_r($artotal);
+            //print_r("\n");
+            $aux = "<span style='color:red'>".$artotal['cant_empadronados']."</span>";
+            //print_r($aux);
+            $artotal['cant_empadronados']= $aux;
+        }
+        
 	function evt__cuadro_superior_e__seleccion($datos)
 	{
 		
@@ -306,7 +332,7 @@ class ci_consejeros_superior extends toba_ci
             }
             
             if(isset($grupo))
-                $this->dep('cuadro_superior_g')->set_grupo_columnas('Listas',$grupo);
+                $this->dep('cuadro_superior_g')->set_grupo_columnas("<span class='tit-cuadro-resultados'> Listas</span>",$grupo);
               
             $this->s__votos_g = $ar;//Guardar los votos para el calculo dhondt
             
@@ -314,16 +340,19 @@ class ci_consejeros_superior extends toba_ci
             $b['clave'] = 'total_votos_blancos';
             $b['titulo'] = 'Blancos';
             $b['estilo'] = 'col-cuadro-resultados';
+            $b['estilo_titulo'] = 'tit-cuadro-resultados';
             $bnr[0] = $b;
             
             $n['clave'] = 'total_votos_nulos';
             $n['titulo'] = 'Nulos';
             $n['estilo'] = 'col-cuadro-resultados';
+            $n['estilo_titulo'] = 'tit-cuadro-resultados';
             $bnr[1] = $n;
             
             $r['clave'] = 'total_votos_recurridos';
             $r['titulo'] = 'Recurridos';
             $r['estilo'] = 'col-cuadro-resultados';
+            $r['estilo_titulo'] = 'tit-cuadro-resultados';
             $bnr[2] = $r;
             
             $this->dep('cuadro_superior_g')->agregar_columnas($bnr);
@@ -364,7 +393,7 @@ class ci_consejeros_superior extends toba_ci
                 //Calcula el cociente para cada cargo
                 for($i=1; $i<=$cargos; $i++){
                     //  Cant votos ponderados / numero de cargo
-                    $x = $listas[$pos]['votos'] / $i;
+                    $x = round($listas[$pos]['votos'] / $i,2);
                     array_push($ar, $x);
                     $listas[$pos][$i] = $x;
                 }
@@ -468,17 +497,20 @@ class ci_consejeros_superior extends toba_ci
             //Agregar datos totales de blancos, nulos y recurridos
             $b['clave'] = 'total_votos_blancos';
             $b['titulo'] = 'Blancos';
+            $b['estilo_titulo'] = 'tit-cuadro-resultados';
             $b['estilo'] = 'col-cuadro-resultados';
             $bnr[0] = $b;
             
             $n['clave'] = 'total_votos_nulos';
             $n['titulo'] = 'Nulos';
             $n['estilo'] = 'col-cuadro-resultados';
+            $n['estilo_titulo'] = 'tit-cuadro-resultados';
             $bnr[1] = $n;
             
             $r['clave'] = 'total_votos_recurridos';
             $r['titulo'] = 'Recurridos';
             $r['estilo'] = 'col-cuadro-resultados';
+            $r['estilo_titulo'] = 'tit-cuadro-resultados';
             $bnr[2] = $r;
             
             $this->dep('cuadro_superior_nd')->agregar_columnas($bnr);
@@ -519,7 +551,7 @@ class ci_consejeros_superior extends toba_ci
                 //Calcula el cociente para cada cargo
                 for($i=1; $i<=$cargos; $i++){
                     //  Cant votos ponderados / numero de cargo
-                    $x = $listas[$pos]['votos'] / $i;
+                    $x = round($listas[$pos]['votos'] / $i, 4);
                     array_push($ar, $x);
                     $listas[$pos][$i] = $x;
                 }
@@ -528,7 +560,7 @@ class ci_consejeros_superior extends toba_ci
             usort($listas, function($a, $b) {return $b['votos'] - $a['votos'];});
 //          Ordeno el arreglo de cocientes para resaltar los mayores
             array_multisort($ar, SORT_DESC);
-            
+       
             //Resalta los resultados mayores
             for($i=0; $i<$cargos; $i++){//Recorro el arreglo de valores ordenados
                    
@@ -604,14 +636,19 @@ class ci_consejeros_superior extends toba_ci
             $definitivas = $this->dep('datos')->tabla('mesa')->get_cant_definitivas(3);
             
             $total = $this->dep('datos')->tabla('mesa')->get_total_mesas(3);
-            
-            $datos['cargadas'] = ($cargadas * 100 / $total);
-            $datos['cargadas'] = round($datos['cargadas'], 2). " % ($cargadas de $total)";
-            $datos['confirmadas'] = ($confirmadas * 100 / $total);
-            $datos['confirmadas'] = round($datos['confirmadas'],2). " % ($confirmadas de $total)";
-            $datos['definitivas'] = ($definitivas * 100 / $total);
-            $datos['definitivas'] = round($datos['definitivas'],2). " % ($definitivas de $total)";
-            
+            if ($total != 0){
+                $datos['cargadas'] = ($cargadas * 100 / $total);
+                $datos['cargadas'] = round($datos['cargadas'], 2). " % ($cargadas de $total)";
+                $datos['confirmadas'] = ($confirmadas * 100 / $total);
+                $datos['confirmadas'] = round($datos['confirmadas'],2). " % ($confirmadas de $total)";
+                $datos['definitivas'] = ($definitivas * 100 / $total);
+                $datos['definitivas'] = round($datos['definitivas'],2). " % ($definitivas de $total)";
+            }
+            else {
+                $datos['cargadas'] = $cargadas . " % ($cargadas de $total)";
+                $datos['confirmadas'] = $confirmadas . " % ($confirmadas de $total)";
+                $datos['definitivas'] = $definitivas . " % ($definitivas de $total)";
+             }
             return $datos;
 	}
 
@@ -626,15 +663,21 @@ class ci_consejeros_superior extends toba_ci
             $definitivas = $this->dep('datos')->tabla('mesa')->get_cant_definitivas(4);
             
             $total = $this->dep('datos')->tabla('mesa')->get_total_mesas(4);
-            
-            $datos['cargadas'] = ($cargadas * 100 / $total);
-            $datos['cargadas'] = round($datos['cargadas'], 2). " % ($cargadas de $total)";
-            $datos['confirmadas'] = ($confirmadas * 100 / $total);
-            $datos['confirmadas'] = round($datos['confirmadas'],2). " % ($confirmadas de $total)";
-            $datos['definitivas'] = ($definitivas * 100 / $total);
-            $datos['definitivas'] = round($datos['definitivas'],2). " % ($definitivas de $total)";
-            
-            return $datos;
+            if ($total != 0) {
+                    $datos['cargadas'] = ($cargadas * 100 / $total);
+                    $datos['cargadas'] = round($datos['cargadas'], 2) . " % ($cargadas de $total)";
+                    $datos['confirmadas'] = ($confirmadas * 100 / $total);
+                    $datos['confirmadas'] = round($datos['confirmadas'], 2) . " % ($confirmadas de $total)";
+                    $datos['definitivas'] = ($definitivas * 100 / $total);
+                    $datos['definitivas'] = round($datos['definitivas'], 2) . " % ($definitivas de $total)";
+                }
+                else{
+                    $datos['cargadas'] = $cargadas . " % ($cargadas de $total)";
+                    $datos['confirmadas'] = $confirmadas . " % ($confirmadas de $total)";
+                    $datos['definitivas'] = $definitivas .  " % ($definitivas de $total)";
+                }
+
+        return $datos;
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -648,15 +691,20 @@ class ci_consejeros_superior extends toba_ci
             $definitivas = $this->dep('datos')->tabla('mesa')->get_cant_definitivas(1);
             
             $total = $this->dep('datos')->tabla('mesa')->get_total_mesas(1);
-            
-            $datos['cargadas'] = ($cargadas * 100 / $total);
-            $datos['cargadas'] = round($datos['cargadas'], 2). " % ($cargadas de $total)";
-            $datos['confirmadas'] = ($confirmadas * 100 / $total);
-            $datos['confirmadas'] = round($datos['confirmadas'],2). " % ($confirmadas de $total)";
-            $datos['definitivas'] = ($definitivas * 100 / $total);
-            $datos['definitivas'] = round($datos['definitivas'],2). " % ($definitivas de $total)";
-            
-            return $datos;
+            if ($total != 0) {
+                $datos['cargadas'] = ($cargadas * 100 / $total);
+                $datos['cargadas'] = round($datos['cargadas'], 2) . " % ($cargadas de $total)";
+                $datos['confirmadas'] = ($confirmadas * 100 / $total);
+                $datos['confirmadas'] = round($datos['confirmadas'], 2) . " % ($confirmadas de $total)";
+                $datos['definitivas'] = ($definitivas * 100 / $total);
+                $datos['definitivas'] = round($datos['definitivas'], 2) . " % ($definitivas de $total)";
+            } 
+            else {
+                $datos['cargadas'] = $cargadas . " % ($cargadas de $total)";
+                $datos['confirmadas'] = $confirmadas . " % ($confirmadas de $total)";
+                $datos['definitivas'] = $definitivas . " % ($definitivas de $total)";
+             }
+        return $datos;
 	}
         
         //-----------------------------------------------------------------------------------

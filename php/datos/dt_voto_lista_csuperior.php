@@ -19,7 +19,8 @@ class dt_voto_lista_csuperior extends gu_kena_datos_tabla
 			t_v.cant_votos as votos
 			
 		FROM
-			voto_lista_csuperior as t_v, lista_csuperior as t_l	
+			voto_lista_csuperior as t_v, 
+                        lista_csuperior as t_l	
                 WHERE t_l.id_nro_lista=t_v.id_lista and t_v.id_acta=".$acta
                         ." ORDER BY t_v.id_lista";
 		
@@ -49,7 +50,7 @@ class dt_voto_lista_csuperior extends gu_kena_datos_tabla
                     . "AND t_m.id_claustro = $id_claustro "
                     . " AND t_m.estado > 1 "
                     . "AND t_s.id_ue = $id_nro_ue "
-                    . "AND t_m.ficticio = false " //agregada solo para revisar (luego quitar)
+                    //. "AND t_m.ficticio = false " //agregada solo para revisar (luego quitar)
                     . "ORDER BY votos";
             
             $ar = toba::db('gu_kena')->consultar($sql);

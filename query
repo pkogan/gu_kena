@@ -1,0 +1,50 @@
+
+       ---   Query para agregar nuevas mesas, actas y listas similares a las del año anterior   ---
+
+--------------------------------------------------------------------------------------------------------------
+-----------------------------------        MESAS           ---------------------------------------------------
+--------------------------------------------------------------------------------------------------------------
+
+select nro_mesa, cant_empadronados,id_claustro, id_sede, '2017-05-16' as fecha,-1 as estado,autoridad from mesa 
+        where  fecha = '2016-05-17' and id_claustro = 3
+        order by autoridad
+
+insert into mesa (nro_mesa, cant_empadronados, id_claustro,id_sede,  fecha, estado,autoridad) 
+       select nro_mesa, cant_empadronados,id_claustro, id_sede, '2017-05-16' as fecha,-1 as estado,autoridad from mesa 
+        where  fecha = '2016-05-17' and id_claustro = 3
+
+
+
+--------------------------------------------------------------------------------------------------------------
+---------------------------------             ACTAS         --------------------------------------------------
+--------------------------------------------------------------------------------------------------------------
+
+select total_votos_blancos,total_votos_nulos, total_votos_recurridos, id_tipo, m2.id_mesa, acta.id_sede, m2.autoridad
+ from acta inner join mesa on acta.de=mesa.id_mesa and  mesa.fecha = '2016-05-17' and mesa.id_claustro = 3 
+        inner join mesa m2 on mesa.autoridad=m2.autoridad and m2.fecha = '2017-05-16'
+ order by m2.autoridad,acta.id_tipo    
+
+insert into acta (total_votos_blancos,total_votos_nulos, total_votos_recurridos, id_tipo, de, id_sede) 
+      select 0,0,0, id_tipo, m2.id_mesa, acta.id_sede
+ from acta inner join mesa on acta.de=mesa.id_mesa and  mesa.fecha = '2016-05-17' and mesa.id_claustro = 3 
+        inner join mesa m2 on mesa.autoridad=m2.autoridad and m2.fecha = '2017-05-16'
+
+ --- para solucionar error de 0 en votos blancos, nulos y recurridos ---
+update acta set total_votos_blancos=0,total_votos_nulos=0, total_votos_recurridos=0
+where id_acta > 3050
+
+select * from acta inner join mesa on acta.de=mesa.id_mesa
+order by id_acta
+
+
+
+--------------------------------------------------------------------------------------------------------------
+----------------------------------       LISTAS CDIRECTIVO Y CSUPERIOR              --------------------------
+--------------------------------------------------------------------------------------------------------------
+
+insert into lista_cdirectivo (id_ue,nombre, id_claustro,fecha)
+select id_ue,'xxx'||nombre,id_claustro,'2017-05-16' as fecha from lista_cdirectivo where fecha='2016-05-17' and id_claustro = 3
+
+insert into lista_csuperior (nombre, id_claustro,fecha,sigla)
+select 'xxx'||nombre,id_claustro,'2017-05-16' as fecha, sigla from lista_csuperior
+ where fecha='2016-05-17' and id_claustro = 3
