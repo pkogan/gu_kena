@@ -194,7 +194,7 @@ class ci_mesa extends toba_ci
 
                 $ar['nro_mesa'] = $this->s__mesa['nro_mesa'];
                 $ar['cant_empadronados'] = $this->s__mesa['cant_empadronados'];
-
+                
                 return $ar;
             }
         }	

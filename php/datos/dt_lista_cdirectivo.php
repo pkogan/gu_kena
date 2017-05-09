@@ -18,7 +18,7 @@ class dt_lista_cdirectivo extends gu_kena_datos_tabla
                     INNER JOIN lista_cdirectivo t_l ON (t_l.id_ue = t_u.id_nro_ue)
                     WHERE t_a.id_acta = $id_acta AND t_m.id_claustro = t_l.id_claustro
                     AND t_l.fecha = (SELECT max(fecha) FROM lista_cdirectivo)"
-                    . " order by t_l.nombre";
+                    . " order by t_l.id_nro_lista";
                     
             return toba::db('gu_kena')->consultar($sql);
         }

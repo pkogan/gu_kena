@@ -196,7 +196,8 @@ class ci_consejeros_superior extends toba_ci
             return $unidades;
         }
 
-        function cambiar_estilo_total($unidades){ //deberia ingresar las listas para recorrerlas
+        /*function cambiar_estilo_total($unidades){ 
+//deberia ingresar las listas para recorrerlas FALTA HACER!!!
             $pos_total = sizeof($unidades) -2;
             $artotal= $unidades[$pos_total];
             $cant = sizeof($artotal);
@@ -207,6 +208,8 @@ class ci_consejeros_superior extends toba_ci
             //print_r($aux);
             $artotal['cant_empadronados']= $aux;
         }
+         * 
+         */
         
 	function evt__cuadro_superior_e__seleccion($datos)
 	{

@@ -16,7 +16,7 @@ class dt_unidad_electoral extends gu_kena_datos_tabla
 		return toba::db('gu_kena')->consultar($sql);
 	}
 
-//HACER OTRO METODO PARA GET_DESCRIPCIONES POR TIPO (AGREGANDO ATRIBUTONIVEL O TIPO: RECTORADO, FACULTAD, ASENTAMIENTO)
+
 	function get_descripciones($id = null)
 	{
             $where = "";
