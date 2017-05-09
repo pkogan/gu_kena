@@ -106,7 +106,7 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 	'3', --orden
 	'Cantidad Votantes', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
-	'4', --estilo
+	'col-cuadro-resultados', --estilo
 	NULL, --ancho
 	'1', --formateo
 	NULL, --vinculo_indice
@@ -140,7 +140,7 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 	'1', --orden
 	'Unidad Electoral', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
-	'4', --estilo
+	'col-cuadro-resultados', --estilo
 	NULL, --ancho
 	'1', --formateo
 	NULL, --vinculo_indice
@@ -171,7 +171,7 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 	'2', --orden
 	'Cantidad Empadronados', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
-	'4', --estilo
+	'col-cuadro-resultados', --estilo
 	NULL, --ancho
 	'1', --formateo
 	NULL, --vinculo_indice
