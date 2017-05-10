@@ -176,7 +176,6 @@ class ci_consejeros_superior extends toba_ci
                     //Suma el cociente entre cant de votos de la 
                     //lista en la UEn / cant empadronados del claustro en la UEn
                     $cociente = round($unidades[$i][$id_lista]/$unidades[$i]['cant_empadronados'],6);
-                    
                     $unidades[$pos_pond][$id_lista] += $cociente;
                 }
                 
@@ -236,7 +235,7 @@ class ci_consejeros_superior extends toba_ci
                 //Calcula el cociente para cada cargo
                 for($i=1; $i<=$cargos; $i++){
                     //  Cant votos ponderados / numero de cargo
-                    $x = round($listas[$pos]['votos'] / $i, 2);
+                    $x = $listas[$pos]['votos'] / $i;
                     array_push($ar, $x);
                     $listas[$pos][$i] = $x;
                 }
@@ -258,7 +257,7 @@ class ci_consejeros_superior extends toba_ci
                         $c = $lista['votos'] / $ar[$cargos-1];
                     $listas[$pos]['final'] = floor($c);
                     $this->s__salida_excel[$pos] = $listas[$pos]; 
-            
+                    
                     //Resalta los mayores
                     $p = array_search($ar[$i], $lista, TRUE);
                         if($p != null){//Encontro el valor en esta fila
@@ -385,7 +384,7 @@ class ci_consejeros_superior extends toba_ci
             $cargos = 4;//print_r($this->s__votos_e);
             //En $s__votos_e tengo todos los datos de los votos ponderados
             
-            //Obtener las listas del claustro estudiantes=3
+            //Obtener las listas del claustro graduados=4
             $listas = $this->dep('datos')->tabla('lista_csuperior')->get_listas_actuales(4); 
             
             $ar = array();
@@ -396,7 +395,7 @@ class ci_consejeros_superior extends toba_ci
                 //Calcula el cociente para cada cargo
                 for($i=1; $i<=$cargos; $i++){
                     //  Cant votos ponderados / numero de cargo
-                    $x = round($listas[$pos]['votos'] / $i,2);
+                    $x = $listas[$pos]['votos'] / $i;
                     array_push($ar, $x);
                     $listas[$pos][$i] = $x;
                 }
@@ -554,7 +553,7 @@ class ci_consejeros_superior extends toba_ci
                 //Calcula el cociente para cada cargo
                 for($i=1; $i<=$cargos; $i++){
                     //  Cant votos ponderados / numero de cargo
-                    $x = round($listas[$pos]['votos'] / $i, 4);
+                    $x = $listas[$pos]['votos'] / $i;
                     array_push($ar, $x);
                     $listas[$pos][$i] = $x;
                 }
