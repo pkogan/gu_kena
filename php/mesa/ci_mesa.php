@@ -14,7 +14,7 @@ class ci_mesa extends toba_ci
         
         //indica a donde debe retornar luego de guardar/verificar los datos
         protected $s__retorno;
-        
+        protected $s__retorno_estado;
         protected $s__perfil;
     
         function evt__procesar(){
@@ -42,10 +42,12 @@ class ci_mesa extends toba_ci
                 $this->dep('datos')->tabla('mesa')->resetear();
                 
                 
-            if(isset($this->s__retorno)){//debe retornar a confirmar   
-                toba::vinculador()->navegar_a("",$this->s__retorno,true);  
+            if(isset($this->s__retorno)){//debe retornar a confirmar
+                 $dato['f'] = $this->s__retorno_estado;
+                toba::vinculador()->navegar_a("",$this->s__retorno,$dato);  
                 $this->s__retorno = null; 
                 $this->s__id_mesa = null;
+                $this->s__retorno_estado = null;
             }
         }
         
@@ -103,6 +105,7 @@ class ci_mesa extends toba_ci
                 $this->s__id_mesa = toba::memoria()->get_parametro('c');//el parametro c tiene el id mesa
             
                 $this->s__retorno = toba::memoria()->get_parametro('k');//el parametro k tiene la dir de retorno
+                $this->s__retorno_estado = toba::memoria()->get_parametro('f');
             
                 $datos['id_mesa'] = $this->s__id_mesa;
                 $this->dep('datos')->tabla('mesa')->cargar($datos);
