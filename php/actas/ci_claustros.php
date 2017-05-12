@@ -36,7 +36,8 @@ class ci_claustros extends ci_confirmar
 	{
 			$dato['k'] = 10000045; // guarda el componente actual para cuando retorne
 			$dato['c'] = $datos['id_mesa'];
-                        $dato['f'] = $this->controlador->s__filtro['estado']['valor'];
+                        if(isset($this->controlador->s__filtro['estado']['valor']))
+                            $dato['f'] = $this->controlador->s__filtro['estado']['valor'];
                        // $_SESSION['filtro_formulario_mesas'] = $this->controlador->s__filtro;
 			//$this->controlador->s__filtro_guardado=$this->controlador->s__filtro;
 			toba::vinculador()->navegar_a("",10000044,$dato); //navega a el controlador con el id especificado (en este caso operación mesa)

@@ -43,7 +43,10 @@ class ci_mesa extends toba_ci
                 
                 
             if(isset($this->s__retorno)){//debe retornar a confirmar
-                 $dato['f'] = $this->s__retorno_estado;
+                if($this->s__retorno_estado=='')
+                    $dato = true;
+                else
+                    $dato['f'] = $this->s__retorno_estado;
                 toba::vinculador()->navegar_a("",$this->s__retorno,$dato);  
                 $this->s__retorno = null; 
                 $this->s__id_mesa = null;
@@ -106,6 +109,7 @@ class ci_mesa extends toba_ci
             
                 $this->s__retorno = toba::memoria()->get_parametro('k');//el parametro k tiene la dir de retorno
                 $this->s__retorno_estado = toba::memoria()->get_parametro('f');
+                
             
                 $datos['id_mesa'] = $this->s__id_mesa;
                 $this->dep('datos')->tabla('mesa')->cargar($datos);
