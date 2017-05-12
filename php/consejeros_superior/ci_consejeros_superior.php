@@ -175,18 +175,21 @@ class ci_consejeros_superior extends toba_ci
                 if(isset($unidades[$i][$id_lista]) && isset($unidades[$i]['cant_empadronados'])){
                     //Suma el cociente entre cant de votos de la 
                     //lista en la UEn / cant empadronados del claustro en la UEn
-                    $cociente = round($unidades[$i][$id_lista]/$unidades[$i]['cant_empadronados'],6);
+                    $cociente = $unidades[$i][$id_lista]/$unidades[$i]['cant_empadronados'];
                     $unidades[$pos_pond][$id_lista] += $cociente;
                 }
                 
                 if(isset($unidades[$i][$id_lista])){
                     //Suma los votos 
                     $unidades[$pos_total][$id_lista] += $unidades[$i][$id_lista];
-                    
+
                     
                     
                 }
             }
+            $unidades[$pos_pond][$id_lista] = round($unidades[$pos_pond][$id_lista],6);
+
+            
             //$aux = "<span style='color:red'>".$unidades[$pos_total][$id_lista].""."</span>";
             //$unidades[$pos_total][$id_lista] = $aux;
             
