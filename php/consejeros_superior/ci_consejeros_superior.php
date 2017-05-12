@@ -238,7 +238,7 @@ class ci_consejeros_superior extends toba_ci
                 //Calcula el cociente para cada cargo
                 for($i=1; $i<=$cargos; $i++){
                     //  Cant votos ponderados / numero de cargo
-                    $x = $listas[$pos]['votos'] / $i;
+                    $x = $this->truncate($listas[$pos]['votos'] / $i,2);
                     array_push($ar, $x);
                     $listas[$pos][$i] = $x;
                 }
@@ -279,7 +279,13 @@ class ci_consejeros_superior extends toba_ci
             
             return $listas;
 	}
-
+        function truncate($val, $f="0")
+{
+    if(($p = strpos($val, '.')) !== false) {
+        $val = floatval(substr($val, 0, $p + 1 + $f));
+    }
+    return $val;
+}
         
 	//-----------------------------------------------------------------------------------
 	//---- cuadro_superior_g ------------------------------------------------------------
