@@ -175,7 +175,15 @@ class ci_mesa extends toba_ci
                             //id_tipo=1 => superior
                             //id_tipo=2 => directivo facultad, escuela, etc
                            //id_tipo=3 => directivo asentamiento
-                            if($un_acta['id_tipo'] == 1)//acta superior
+                           switch($un_acta['id_tipo']){
+                               case 1: $this->s__acta_superior = $un_acta;break;
+                               case 2: $this->s__acta_directivo = $un_acta; break;
+                               case 3: $this->s__acta_extra = $un_acta; break;
+                               case 4: $this->s__acta_rector = $un_acta; break;
+                               case 5: $this->s__acta_decano = $un_acta; break;
+                               case 6: $this->s__acta_director = $un_acta; break;
+                           }
+                            /*if($un_acta['id_tipo'] == 1)//acta superior
                                     $this->s__acta_superior = $un_acta;
                             elseif($un_acta['id_tipo'] == 2){   
                                 $this->s__acta_directivo = $un_acta;
@@ -183,7 +191,7 @@ class ci_mesa extends toba_ci
                                 }elseif($un_acta['id_tipo'] == 3){
                                      $this->s__acta_extra = $un_acta;
                                      
-                                }    
+                                }   */ 
                        } 
             }
             //print_r($this->s__acta_directivo);
