@@ -2,12 +2,25 @@
 	border: 1px solid #231f20;
 	background-color: #514a84;
 	color: #ffffff;
-	vertical-align: top;
 	padding: 5px;
+        font-size: 120%;
+        font-weight:bold;
+        text-align: center;
 }
+
 
 .col-cuadro-resultados {
 	border: 1px double #231f20;
-	text-align: right;
-	
+	text-align: center;
+	font-size: 120%;
+        
+}
+
+.col-cuadro-resultados .u-e{
+    font-weight:bold;
+}
+
+.col-cuadro-listas{
+    font-weight: 100;
+    text-align: center;
 }

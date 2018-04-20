@@ -5,7 +5,10 @@ class ci_mesa extends toba_ci
         protected $s__acta_directivo;
         protected $s__acta_superior;
         protected $s__acta_extra;
-        
+        protected $s__acta_rector;
+        protected $s__acta_decano;
+        protected $s__acta_director;
+
         protected $s__claustro;
         protected $s__id_nro_ue;
         protected $s__id_sede;
@@ -14,7 +17,7 @@ class ci_mesa extends toba_ci
         
         //indica a donde debe retornar luego de guardar/verificar los datos
         protected $s__retorno;
-        
+        protected $s__retorno_estado;
         protected $s__perfil;
     
         function evt__procesar(){
@@ -42,10 +45,15 @@ class ci_mesa extends toba_ci
                 $this->dep('datos')->tabla('mesa')->resetear();
                 
                 
-            if(isset($this->s__retorno)){//debe retornar a confirmar   
-                toba::vinculador()->navegar_a("",$this->s__retorno,true);  
+            if(isset($this->s__retorno)){//debe retornar a confirmar
+                if($this->s__retorno_estado=='')
+                    $dato = true;
+                else
+                    $dato['f'] = $this->s__retorno_estado;
+                toba::vinculador()->navegar_a("",$this->s__retorno,$dato);  
                 $this->s__retorno = null; 
                 $this->s__id_mesa = null;
+                $this->s__retorno_estado = null;
             }
         }
         
@@ -53,12 +61,12 @@ class ci_mesa extends toba_ci
         function evt__enviar(){
             if($this->dep('datos')->tabla('mesa')->esta_cargada()){
                 $m = $this->dep('datos')->tabla('mesa')->get();
-//                print_r($m);
+         //     print_r($m);
                 $m['estado'] = 2;//Cambia el estado de la mesa a Enviado
                 $this->dep('datos')->tabla('mesa')->set($m);
-//                print_r($m['id_mesa']);
+        //      print_r($m['id_mesa']);
                 $this->dep('datos')->tabla('mesa')->sincronizar();
-//                $this->dep('datos')->tabla('mesa')->resetear();
+        //      $this->dep('datos')->tabla('mesa')->resetear();
                 
                 $m = $this->dep('datos')->tabla('mesa')->get_listado($m['id_mesa']);
                 if($m[0]['estado'] == 2){//Obtengo de la BD y verifico que hizo cambios en la BD
@@ -76,7 +84,7 @@ class ci_mesa extends toba_ci
         function conf(){
             //Obtengo el perfil funcional del usuario logueado, devuelve un array
             $this->s__perfil = toba::manejador_sesiones()->get_perfiles_funcionales();
-//            print_r($this->s__perfil);  
+         //   print_r($this->s__perfil);  
             
             $p = array_search('autoridad_mesa', $this->s__perfil);
             if($p !== false){//Es autoridad de mesa
@@ -85,7 +93,6 @@ class ci_mesa extends toba_ci
                 $usr = toba::manejador_sesiones()->get_id_usuario_instancia();
                 
                 $id_mesa = $this->dep('datos')->tabla('mesa')->get_de_usr($usr);
-                
                 if(sizeof($id_mesa)>0){
                     $this->s__id_mesa = $id_mesa[0]['id_mesa'];
                     $datos['id_mesa'] = $this->s__id_mesa;
@@ -104,6 +111,8 @@ class ci_mesa extends toba_ci
                 $this->s__id_mesa = toba::memoria()->get_parametro('c');//el parametro c tiene el id mesa
             
                 $this->s__retorno = toba::memoria()->get_parametro('k');//el parametro k tiene la dir de retorno
+                $this->s__retorno_estado = toba::memoria()->get_parametro('f');
+                
             
                 $datos['id_mesa'] = $this->s__id_mesa;
                 $this->dep('datos')->tabla('mesa')->cargar($datos);
@@ -133,14 +142,13 @@ class ci_mesa extends toba_ci
                 }
             }
             
-          if(isset($this->s__id_mesa)){//Si el pedido viene de la operacion Confirmar/Cargar//              
+            if(isset($this->s__id_mesa)){//Si el pedido viene de la operacion Confirmar/Cargar//              
                 $this->s__claustro = $this->s__mesa['id_claustro'];
                 $this->s__id_nro_ue = $this->dep('datos')->tabla('sede')->get_unidad($this->s__mesa['id_sede']);
                 $this->s__id_sede = $this->s__mesa['id_sede'];
             }
-            
-            
         }
+        
         //---- Pantalla -------------------------------------------------------------------
 
 	function conf__pant_edicion(){
@@ -149,6 +157,7 @@ class ci_mesa extends toba_ci
                         //primer parametro corresponde al id_mesa = de en acta
                         $this->s__actas = $this->dep('datos')->tabla('acta')->get_ultimas_descripciones_de($this->s__id_mesa);
                        //Si tengo tres actas asociadas a esta mesa ent muestro el form_ml_directivo_extra
+                       //print_r($this->s__actas);
                        if(sizeof($this->s__actas) == 3){//form extra corresponde al cons. dir. del asentamiento
                             //$this->dep('form_extra')->set_titulo('Consejo Directivo de Asentamiento Universitario');
                        }else{ //Sino colapsar
@@ -161,28 +170,23 @@ class ci_mesa extends toba_ci
                            }
                        }
                        
-                       //Separacion de actas
+                       //Separacion de actas    
                        foreach($this->s__actas as $pos => $un_acta){
                             //id_tipo=1 => superior
-                            //id_tipo=2 => directivo
+                            //id_tipo=2 => directivo facultad, escuela, etc
+                           //id_tipo=3 => directivo asentamiento
                             if($un_acta['id_tipo'] == 1)//acta superior
                                     $this->s__acta_superior = $un_acta;
-                            else{
-                                if(sizeof($this->s__actas) == 2 ){//No hay form extra
-                                    $this->s__acta_directivo = $un_acta;
-                                }
-                                else{//hay mas actas
-                                    if($un_acta['id_tipo'] == 2){//acta directivo
-                                        if($un_acta['de'] == $un_acta['para'])
-                                            $this->s__acta_extra = $un_acta;
-                                        else
-                                            $this->s__acta_directivo = $un_acta;
-                                    }
-                                }
-                            }
-                       }
-                    
+                            elseif($un_acta['id_tipo'] == 2){   
+                                $this->s__acta_directivo = $un_acta;
+                                    
+                                }elseif($un_acta['id_tipo'] == 3){
+                                     $this->s__acta_extra = $un_acta;
+                                     
+                                }    
+                       } 
             }
+            //print_r($this->s__acta_directivo);
         }
         
         
@@ -190,6 +194,7 @@ class ci_mesa extends toba_ci
 
 	function conf__form_datos(toba_ei_formulario $form)
 	{
+            
             if ($this->dep('datos')->tabla('mesa')->esta_cargada()) {
 		//Obtener los datos necesarios para mostrar en formulario 
                 $ar['claustro'] = $this->dep('datos')->tabla('claustro')->get_descripcion($this->s__claustro);
@@ -200,7 +205,7 @@ class ci_mesa extends toba_ci
 
                 $ar['nro_mesa'] = $this->s__mesa['nro_mesa'];
                 $ar['cant_empadronados'] = $this->s__mesa['cant_empadronados'];
-
+                
                 return $ar;
             }
         }	
@@ -239,6 +244,7 @@ class ci_mesa extends toba_ci
                 }
                 else{//no existen votos cargados
                     $listas = $this->dep('datos')->tabla('lista_cdirectivo')->get_listas_a_votar($this->s__acta_directivo['id_acta']);
+                    
                     if(sizeof($listas)>0){//Existen listas
                         $ar = array_merge($listas, $ar);
                         $form_ml->set_datos($ar);
@@ -392,6 +398,7 @@ class ci_mesa extends toba_ci
 
 	function conf__form_ml_extra(gu_kena_ei_formulario_ml $form_ml)
 	{
+            //print_r($this->s__acta_extra);
             if(isset($this->s__acta_extra)){
                 $ar = array();
                 if(isset($this->s__acta_extra)){
@@ -479,5 +486,117 @@ class ci_mesa extends toba_ci
         }
         
         
+	//-----------------------------------------------------------------------------------
+	//---- form_ml_decano ---------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__form_ml_decano(form_ml_decano $form_ml)
+	{
+            if(isset($this->s__acta_decano)){
+                $ar = array();
+                $votos = array();
+                if(isset($this->s__acta_decano)){
+                    $ar[0]['votos'] = $this->s__acta_decano['total_votos_blancos'];
+                    $ar[1]['votos'] = $this->s__acta_decano['total_votos_nulos'];
+                    $ar[2]['votos'] = $this->s__acta_decano['total_votos_recurridos'];
+
+                    //obtener los votos cargados, asociados a este acta
+                    $votos = $this->dep('datos')->tabla('voto_lista_decano')->get_listado_votos($this->s__acta_decano['id_acta']);
+
+                }
+                if(sizeof($ar) > 0){
+                    $ar[0]['id_nro_lista'] = -1;
+                    $ar[0]['nombre'] = "VOTOS EN BLANCO";            
+    //                $ar[0] = $blancos;
+
+                    $ar[1]['id_nro_lista'] = -2;
+                    $ar[1]['nombre'] = "VOTOS NULOS";
+    //                $ar[1] = $nulos;
+
+                    $ar[2]['id_nro_lista'] = -3;
+                    $ar[2]['nombre'] = "VOTOS RECURRIDOS";
+    //                $ar[2] = $recurridos;
+
+    //                $ar = array_merge($ar, $arr);
+                }
+                if(sizeof($votos) > 0){//existen votos cargados
+                    $ar = array_merge($votos, $ar);
+                    $form_ml->set_datos($ar);
+                }
+                else{//no existen votos cargados
+                    $listas = $this->dep('datos')->tabla('lista_decano')->get_listas_a_votar($this->s__acta_decano['id_acta']);
+                    if(sizeof($listas)>0){//Existen listas
+                        $ar = array_merge($listas, $ar);
+                        $form_ml->set_datos($ar);
+                    }
+                }
+            }
+	}
+
+	function evt__form_ml_decano__modificacion($datos)
+	{
+            print_r($this->s__acta_decano);
+            if(isset($this->s__acta_decano)){
+                $acta['id_acta'] = $this->s__acta_decano['id_acta'];
+                $this->dep('datos')->tabla('acta')->cargar($acta);
+                
+                //votos blancos tienen id_nro_lista=-1 
+                //votos nulos tienen id_nro_lista=-2 
+                //votos recurridos tienen id_nro_lista=-3
+                print_r($acta);
+                foreach($datos as $pos => $dato){
+                    switch($dato['id_nro_lista']){
+                        case -1://Votos blancos
+                            $acta['total_votos_blancos'] = $dato['votos'];
+                            break;
+                        case -2://Votos nulos
+                            $acta['total_votos_nulos'] = $dato['votos'];
+                            break;
+                        case -3://Votos recurridos
+                            $acta['total_votos_recurridos'] = $dato['votos'];
+                            break;
+                        default://Votos de listas
+                            $voto = array();
+                            $voto['id_lista'] = $dato['id_nro_lista'];
+                            $voto['id_acta'] = $this->s__acta_decano['id_acta'];
+//                            print_r($voto);
+                            $this->dep('datos')->tabla('voto_lista_decano')->cargar($voto);
+                            if($this->dep('datos')->tabla('voto_lista_decano')->esta_cargada())
+                                //obtengo el puntero al registro cargado
+                                  $voto = $this->dep('datos')->tabla('voto_lista_decano')->get();
+                            
+                            $voto['cant_votos'] = $dato['votos'];
+                            
+                            $this->dep('datos')->tabla('voto_lista_decano')->set($voto);                            
+                            $this->dep('datos')->tabla('voto_lista_decano')->sincronizar();
+                            $this->dep('datos')->tabla('voto_lista_decano')->resetear();
+                                                           
+                            break;
+                    }
+                }
+                $this->dep('datos')->tabla('acta')->set($acta);
+                $this->dep('datos')->tabla('acta')->sincronizar();
+                $this->dep('datos')->tabla('acta')->resetear();
+//              
+            }
+            else {
+                print_r("vacio");
+            }
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- form_ml_rector ---------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__form_ml_rector(form_ml_rector $form_ml)
+	{
+            //completar
+	}
+
+	function evt__form_ml_rector__modificacion($datos)
+	{
+            //completar
+	}
+
 }
 ?>

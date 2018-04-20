@@ -169,6 +169,24 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	NULL, --inicializar
 	NULL  --orden
 );
+--- FIN Grupo de desarrollo 10
+
+--- INICIO Grupo de desarrollo 2
+INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
+	'gu_kena', --proyecto
+	'2000059', --dep_id
+	'10000170', --objeto_consumidor
+	'2000052', --objeto_proveedor
+	'form_ml_decano', --identificador
+	NULL, --parametros_a
+	NULL, --parametros_b
+	NULL, --parametros_c
+	NULL, --inicializar
+	NULL  --orden
+);
+--- FIN Grupo de desarrollo 2
+
+--- INICIO Grupo de desarrollo 10
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'gu_kena', --proyecto
 	'10000220', --dep_id
@@ -193,6 +211,24 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	NULL, --inicializar
 	NULL  --orden
 );
+--- FIN Grupo de desarrollo 10
+
+--- INICIO Grupo de desarrollo 2
+INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
+	'gu_kena', --proyecto
+	'2000067', --dep_id
+	'10000170', --objeto_consumidor
+	'2000062', --objeto_proveedor
+	'form_ml_rector', --identificador
+	NULL, --parametros_a
+	NULL, --parametros_b
+	NULL, --parametros_c
+	NULL, --inicializar
+	NULL  --orden
+);
+--- FIN Grupo de desarrollo 2
+
+--- INICIO Grupo de desarrollo 10
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'gu_kena', --proyecto
 	'10000221', --dep_id
@@ -235,9 +271,9 @@ INSERT INTO apex_objeto_ci_pantalla (objeto_ci_proyecto, objeto_ci, pantalla, id
 		</tr>
 		<tr style="vertical-align: top;">
 			<td>
-				[dep id=form_ml_superior]</td>
+				<p>[dep id=form_ml_rector]</p><p>[dep id=form_ml_superior]</p></td>
 			<td>
-				[dep id=form_ml_directivo]<p>[dep id=form_ml_extra]</p></td>
+				<p>[dep id=form_ml_decano]</p><p>[dep id=form_ml_directivo]</p><p>[dep id=form_ml_extra]</p></td>
 		</tr>
 	</tbody>
 </table>
@@ -255,13 +291,27 @@ INSERT INTO apex_objetos_pantalla (proyecto, pantalla, objeto_ci, orden, dep_id)
 	'10000071', --pantalla
 	'10000170', --objeto_ci
 	'1', --orden
-	'10000220'  --dep_id
+	'2000059'  --dep_id
+);
+INSERT INTO apex_objetos_pantalla (proyecto, pantalla, objeto_ci, orden, dep_id) VALUES (
+	'gu_kena', --proyecto
+	'10000071', --pantalla
+	'10000170', --objeto_ci
+	'3', --orden
+	'2000067'  --dep_id
 );
 INSERT INTO apex_objetos_pantalla (proyecto, pantalla, objeto_ci, orden, dep_id) VALUES (
 	'gu_kena', --proyecto
 	'10000071', --pantalla
 	'10000170', --objeto_ci
 	'2', --orden
+	'10000220'  --dep_id
+);
+INSERT INTO apex_objetos_pantalla (proyecto, pantalla, objeto_ci, orden, dep_id) VALUES (
+	'gu_kena', --proyecto
+	'10000071', --pantalla
+	'10000170', --objeto_ci
+	'4', --orden
 	'10000221'  --dep_id
 );
 INSERT INTO apex_objetos_pantalla (proyecto, pantalla, objeto_ci, orden, dep_id) VALUES (
@@ -275,7 +325,7 @@ INSERT INTO apex_objetos_pantalla (proyecto, pantalla, objeto_ci, orden, dep_id)
 	'gu_kena', --proyecto
 	'10000071', --pantalla
 	'10000170', --objeto_ci
-	'3', --orden
+	'5', --orden
 	'10000259'  --dep_id
 );
 
