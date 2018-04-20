@@ -159,11 +159,12 @@ class dt_acta extends gu_kena_datos_tabla
                     . "total_votos_recurridos,"
                     . "t_a.id_tipo,"
                     . "t_t.descripcion as tipo,"
-                    . "de,"
+                    . "de "
                     //. "para "
                     . "FROM acta as t_a "
                     . "LEFT JOIN tipo as t_t ON (t_t.id_tipo = t_a.id_tipo) 
-                       LEFT JOIN mesa t_de ON (t_de.id_mesa = t_a.de)"
+                       LEFT JOIN mesa t_de ON (t_de.id_mesa = t_a.de)
+                       LEFT JOIN sede t_s ON (t_s.id_sede = t_a.id_sede) "
                     //."LEFT JOIN mesa t_para ON (t_para.id_mesa = t_a.para)"
                     ."WHERE t_de.fecha = (SELECT max(fecha) FROM mesa )"
                     //." AND t_para.fecha = (SELECT max(fecha) FROM mesa )"

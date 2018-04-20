@@ -98,7 +98,6 @@ class dt_mesa extends gu_kena_datos_tabla
             $sql = "SELECT count(id_mesa) as porc FROM mesa "
                     . "WHERE fecha = (SELECT max(fecha) FROM mesa) "
                     . "AND estado > 1 "
-                    //. "AND ((id_mesa between 1 AND 103) OR id_mesa >= 110) " //actas ficticias
                     . "AND id_claustro = $id_claustro";
             $ar = toba::db('gu_kena')->consultar($sql);
             return $ar[0]['porc'];
@@ -174,12 +173,10 @@ class dt_mesa extends gu_kena_datos_tabla
                     . "t_a.id_tipo,"
                     . "t_t.descripcion as tipo,"
                     . "de,"
-                    //. "para "
                     . "FROM acta as t_a "
                     . "LEFT JOIN tipo as t_t ON (t_t.id_tipo = t_a.id_tipo) 
-                        LEFT JOIN mesa t_de ON (t_de.id_mesa = t_a.de)"
-                       // LEFT JOIN mesa t_para ON (t_para.id_mesa = t_a.para)
-                        ." WHERE t_de.fecha = (SELECT max(fecha) FROM mesa )"
+                       LEFT JOIN mesa t_de ON (t_de.id_mesa = t_a.de)"
+                    ." WHERE t_de.fecha = (SELECT max(fecha) FROM mesa )"
                     . "ORDER BY id_acta";
             
                 return toba::db('gu_kena')->consultar($sql);

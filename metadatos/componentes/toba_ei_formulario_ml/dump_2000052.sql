@@ -1,27 +1,27 @@
 ------------------------------------------------------------
---[10000172]--  Mesa - CI - form_ml_directivo 
+--[2000052]--  Mesa - CI - form_ml_decano 
 ------------------------------------------------------------
 
 ------------------------------------------------------------
 -- apex_objeto
 ------------------------------------------------------------
 
---- INICIO Grupo de desarrollo 10
+--- INICIO Grupo de desarrollo 2
 INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, clase_proyecto, clase, punto_montaje, subclase, subclase_archivo, objeto_categoria_proyecto, objeto_categoria, nombre, titulo, colapsable, descripcion, fuente_datos_proyecto, fuente_datos, solicitud_registrar, solicitud_obj_obs_tipo, solicitud_obj_observacion, parametro_a, parametro_b, parametro_c, parametro_d, parametro_e, parametro_f, usuario, creacion, posicion_botonera) VALUES (
 	'gu_kena', --proyecto
-	'10000172', --objeto
+	'2000052', --objeto
 	NULL, --anterior
 	NULL, --identificador
 	NULL, --reflexivo
 	'toba', --clase_proyecto
 	'toba_ei_formulario_ml', --clase
 	'10000003', --punto_montaje
-	'form_ml_directivo', --subclase
-	'mesa/form_ml_directivo.php', --subclase_archivo
+	'form_ml_decano', --subclase
+	'mesa/form_ml_decano.php', --subclase_archivo
 	NULL, --objeto_categoria_proyecto
 	NULL, --objeto_categoria
-	'Mesa - CI - form_ml_directivo', --nombre
-	'Consejeros Directivos de Facultad o Centro Regional', --titulo
+	'Mesa - CI - form_ml_decano', --nombre
+	'Decano', --titulo
 	'0', --colapsable
 	NULL, --descripcion
 	'gu_kena', --fuente_datos_proyecto
@@ -36,20 +36,20 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	NULL, --parametro_e
 	NULL, --parametro_f
 	NULL, --usuario
-	'2016-04-27 09:54:02', --creacion
+	'2017-06-24 22:25:29', --creacion
 	'abajo'  --posicion_botonera
 );
---- FIN Grupo de desarrollo 10
+--- FIN Grupo de desarrollo 2
 
 ------------------------------------------------------------
 -- apex_objeto_eventos
 ------------------------------------------------------------
 
---- INICIO Grupo de desarrollo 10
+--- INICIO Grupo de desarrollo 2
 INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, etiqueta, maneja_datos, sobre_fila, confirmacion, estilo, imagen_recurso_origen, imagen, en_botonera, ayuda, orden, ci_predep, implicito, defecto, display_datos_cargados, grupo, accion, accion_imphtml_debug, accion_vinculo_carpeta, accion_vinculo_item, accion_vinculo_objeto, accion_vinculo_popup, accion_vinculo_popup_param, accion_vinculo_target, accion_vinculo_celda, accion_vinculo_servicio, es_seleccion_multiple, es_autovinculo) VALUES (
 	'gu_kena', --proyecto
-	'10000190', --evento_id
-	'10000172', --objeto
+	'2000038', --evento_id
+	'2000052', --objeto
 	'modificacion', --identificador
 	'&Modificacion', --etiqueta
 	'1', --maneja_datos
@@ -79,14 +79,14 @@ INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, eti
 	'0', --es_seleccion_multiple
 	'0'  --es_autovinculo
 );
---- FIN Grupo de desarrollo 10
+--- FIN Grupo de desarrollo 2
 
 ------------------------------------------------------------
 -- apex_objeto_ut_formulario
 ------------------------------------------------------------
 INSERT INTO apex_objeto_ut_formulario (objeto_ut_formulario_proyecto, objeto_ut_formulario, tabla, titulo, ev_agregar, ev_agregar_etiq, ev_mod_modificar, ev_mod_modificar_etiq, ev_mod_eliminar, ev_mod_eliminar_etiq, ev_mod_limpiar, ev_mod_limpiar_etiq, ev_mod_clave, clase_proyecto, clase, auto_reset, ancho, ancho_etiqueta, expandir_descripcion, campo_bl, scroll, filas, filas_agregar, filas_agregar_online, filas_agregar_abajo, filas_agregar_texto, filas_borrar_en_linea, filas_undo, filas_ordenar, filas_ordenar_en_linea, columna_orden, filas_numerar, ev_seleccion, alto, analisis_cambios, no_imprimir_efs_sin_estado, resaltar_efs_con_estado, template, template_impresion) VALUES (
 	'gu_kena', --objeto_ut_formulario_proyecto
-	'10000172', --objeto_ut_formulario
+	'2000052', --objeto_ut_formulario
 	NULL, --tabla
 	NULL, --titulo
 	NULL, --ev_agregar
@@ -130,10 +130,10 @@ INSERT INTO apex_objeto_ut_formulario (objeto_ut_formulario_proyecto, objeto_ut_
 -- apex_objeto_ei_formulario_ef
 ------------------------------------------------------------
 
---- INICIO Grupo de desarrollo 10
+--- INICIO Grupo de desarrollo 2
 INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_formulario, objeto_ei_formulario_proyecto, identificador, elemento_formulario, columnas, obligatorio, oculto_relaja_obligatorio, orden, etiqueta, etiqueta_estilo, descripcion, colapsado, desactivado, estilo, total, inicializacion, permitir_html, deshabilitar_rest_func, estado_defecto, solo_lectura, solo_lectura_modificacion, carga_metodo, carga_clase, carga_include, carga_dt, carga_consulta_php, carga_sql, carga_fuente, carga_lista, carga_col_clave, carga_col_desc, carga_maestros, carga_cascada_relaj, cascada_mantiene_estado, carga_permite_no_seteado, carga_no_seteado, carga_no_seteado_ocultar, edit_tamano, edit_maximo, edit_mascara, edit_unidad, edit_rango, edit_filas, edit_columnas, edit_wrap, edit_resaltar, edit_ajustable, edit_confirmar_clave, edit_expreg, popup_item, popup_proyecto, popup_editable, popup_ventana, popup_carga_desc_metodo, popup_carga_desc_clase, popup_carga_desc_include, popup_puede_borrar_estado, fieldset_fin, check_valor_si, check_valor_no, check_desc_si, check_desc_no, check_ml_toggle, fijo_sin_estado, editor_ancho, editor_alto, editor_botonera, selec_cant_minima, selec_cant_maxima, selec_utilidades, selec_tamano, selec_ancho, selec_serializar, selec_cant_columnas, upload_extensiones, punto_montaje, placeholder) VALUES (
-	'10000199', --objeto_ei_formulario_fila
-	'10000172', --objeto_ei_formulario
+	'2000075', --objeto_ei_formulario_fila
+	'2000052', --objeto_ei_formulario
 	'gu_kena', --objeto_ei_formulario_proyecto
 	'nombre', --identificador
 	'ef_fijo', --elemento_formulario
@@ -212,8 +212,8 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	NULL  --placeholder
 );
 INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_formulario, objeto_ei_formulario_proyecto, identificador, elemento_formulario, columnas, obligatorio, oculto_relaja_obligatorio, orden, etiqueta, etiqueta_estilo, descripcion, colapsado, desactivado, estilo, total, inicializacion, permitir_html, deshabilitar_rest_func, estado_defecto, solo_lectura, solo_lectura_modificacion, carga_metodo, carga_clase, carga_include, carga_dt, carga_consulta_php, carga_sql, carga_fuente, carga_lista, carga_col_clave, carga_col_desc, carga_maestros, carga_cascada_relaj, cascada_mantiene_estado, carga_permite_no_seteado, carga_no_seteado, carga_no_seteado_ocultar, edit_tamano, edit_maximo, edit_mascara, edit_unidad, edit_rango, edit_filas, edit_columnas, edit_wrap, edit_resaltar, edit_ajustable, edit_confirmar_clave, edit_expreg, popup_item, popup_proyecto, popup_editable, popup_ventana, popup_carga_desc_metodo, popup_carga_desc_clase, popup_carga_desc_include, popup_puede_borrar_estado, fieldset_fin, check_valor_si, check_valor_no, check_desc_si, check_desc_no, check_ml_toggle, fijo_sin_estado, editor_ancho, editor_alto, editor_botonera, selec_cant_minima, selec_cant_maxima, selec_utilidades, selec_tamano, selec_ancho, selec_serializar, selec_cant_columnas, upload_extensiones, punto_montaje, placeholder) VALUES (
-	'10000200', --objeto_ei_formulario_fila
-	'10000172', --objeto_ei_formulario
+	'2000076', --objeto_ei_formulario_fila
+	'2000052', --objeto_ei_formulario
 	'gu_kena', --objeto_ei_formulario_proyecto
 	'votos', --identificador
 	'ef_editable_numero', --elemento_formulario
@@ -292,8 +292,8 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	NULL  --placeholder
 );
 INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_formulario, objeto_ei_formulario_proyecto, identificador, elemento_formulario, columnas, obligatorio, oculto_relaja_obligatorio, orden, etiqueta, etiqueta_estilo, descripcion, colapsado, desactivado, estilo, total, inicializacion, permitir_html, deshabilitar_rest_func, estado_defecto, solo_lectura, solo_lectura_modificacion, carga_metodo, carga_clase, carga_include, carga_dt, carga_consulta_php, carga_sql, carga_fuente, carga_lista, carga_col_clave, carga_col_desc, carga_maestros, carga_cascada_relaj, cascada_mantiene_estado, carga_permite_no_seteado, carga_no_seteado, carga_no_seteado_ocultar, edit_tamano, edit_maximo, edit_mascara, edit_unidad, edit_rango, edit_filas, edit_columnas, edit_wrap, edit_resaltar, edit_ajustable, edit_confirmar_clave, edit_expreg, popup_item, popup_proyecto, popup_editable, popup_ventana, popup_carga_desc_metodo, popup_carga_desc_clase, popup_carga_desc_include, popup_puede_borrar_estado, fieldset_fin, check_valor_si, check_valor_no, check_desc_si, check_desc_no, check_ml_toggle, fijo_sin_estado, editor_ancho, editor_alto, editor_botonera, selec_cant_minima, selec_cant_maxima, selec_utilidades, selec_tamano, selec_ancho, selec_serializar, selec_cant_columnas, upload_extensiones, punto_montaje, placeholder) VALUES (
-	'10000217', --objeto_ei_formulario_fila
-	'10000172', --objeto_ei_formulario
+	'2000077', --objeto_ei_formulario_fila
+	'2000052', --objeto_ei_formulario
 	'gu_kena', --objeto_ei_formulario_proyecto
 	'id_nro_lista', --identificador
 	'ef_oculto', --elemento_formulario
@@ -304,15 +304,15 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	NULL, --etiqueta
 	NULL, --etiqueta_estilo
 	NULL, --descripcion
-	NULL, --colapsado
-	NULL, --desactivado
+	'0', --colapsado
+	'0', --desactivado
 	NULL, --estilo
-	NULL, --total
+	'0', --total
 	NULL, --inicializacion
-	NULL, --permitir_html
-	NULL, --deshabilitar_rest_func
+	'0', --permitir_html
+	'0', --deshabilitar_rest_func
 	NULL, --estado_defecto
-	NULL, --solo_lectura
+	'0', --solo_lectura
 	'0', --solo_lectura_modificacion
 	NULL, --carga_metodo
 	NULL, --carga_clase
@@ -371,4 +371,4 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	NULL, --punto_montaje
 	NULL  --placeholder
 );
---- FIN Grupo de desarrollo 10
+--- FIN Grupo de desarrollo 2

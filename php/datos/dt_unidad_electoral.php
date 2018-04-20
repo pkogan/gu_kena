@@ -22,7 +22,8 @@ class dt_unidad_electoral extends gu_kena_datos_tabla
             $where = "";
             if(isset($id))
                 $where = " WHERE id_nro_ue = $id ";
-            $sql = "SELECT id_nro_ue, nombre, sigla FROM unidad_electoral $where ORDER BY nombre";
+            $sql = "SELECT id_nro_ue, nombre, sigla FROM unidad_electoral $where "
+                    . "ORDER BY nombre";
             return toba::db('gu_kena')->consultar($sql);
 	}
         
@@ -31,7 +32,8 @@ class dt_unidad_electoral extends gu_kena_datos_tabla
             $where = "";
             if(isset($id))
                 $where = " WHERE id_nro_ue = $id ";
-            $sql = "SELECT id_nro_ue, nombre, sigla FROM unidad_electoral $where ORDER BY nombre";
+            $sql = "SELECT id_nro_ue, nombre, sigla FROM unidad_electoral $where "
+                    . "ORDER BY nombre";
             return toba::db('gu_kena')->consultar($sql);
 	}
         
@@ -41,7 +43,8 @@ class dt_unidad_electoral extends gu_kena_datos_tabla
             if(isset($niveles)){
                 $where = " WHERE nivel in (".  implode(',', $niveles).")";
             }        
-            $sql = "SELECT id_nro_ue, nombre, sigla FROM unidad_electoral $where ORDER BY nombre";
+            $sql = "SELECT id_nro_ue, nombre, sigla FROM unidad_electoral "
+                    . "$where ORDER BY nombre";
             return toba::db('gu_kena')->consultar($sql);
 	}
         
