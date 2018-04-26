@@ -228,8 +228,8 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	'10000167', --objeto_consumidor
 	'2000056', --objeto_proveedor
 	'voto_lista_decano', --identificador
-	NULL, --parametros_a
-	NULL, --parametros_b
+	'1', --parametros_a
+	'1', --parametros_b
 	NULL, --parametros_c
 	NULL, --inicializar
 	'13'  --orden
@@ -240,8 +240,8 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	'10000167', --objeto_consumidor
 	'2000059', --objeto_proveedor
 	'voto_lista_rector', --identificador
-	NULL, --parametros_a
-	NULL, --parametros_b
+	'1', --parametros_a
+	'1', --parametros_b
 	NULL, --parametros_c
 	NULL, --inicializar
 	'14'  --orden

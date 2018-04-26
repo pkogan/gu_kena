@@ -1,18 +1,7 @@
 <?php
 class dt_voto_lista_decano extends gu_kena_datos_tabla
 {
-	function evt__validar_ingreso($fila, $id=null)
-	{
-	}
-
-	/**
-	 * Ventana de validacion que se invoca antes de sincronizar una fila con la base
-	 * El proceso puede ser abortado con un toba_error, el mensaje se muestra al usuario
-	 * @param array $fila Asociativo clave-valor de la fila a validar
-	 */
-	function evt__validar_fila($fila)
-	{
-	}
+	
         //obtiene el listado de voto_lista_cdirectivo correspondientes al acta que recibe como parametro 
         function get_listado_votos($id_acta)
 	{

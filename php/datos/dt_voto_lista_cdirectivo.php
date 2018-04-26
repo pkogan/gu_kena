@@ -9,7 +9,7 @@ class dt_voto_lista_cdirectivo extends gu_kena_datos_tabla
 
 
 //obtiene el listado de voto_lista_cdirectivo correspondientes al acta que recibe como parametro 
-        function get_listado_votos_dir($id_acta)
+        function get_listado_votos($id_acta)
 	{
             $sql = "SELECT t_l.id_nro_lista, 
                            t_l.nombre,

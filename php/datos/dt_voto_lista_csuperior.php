@@ -9,7 +9,7 @@ class dt_voto_lista_csuperior extends gu_kena_datos_tabla
 
 
 //obtiene el listado de voto_lista_csuperior correspondientes al acta que recibe como parametro del acta 
-        function get_listado_votos_sup($acta)
+        function get_listado_votos($acta)
 	{
 		
 		$sql = "SELECT

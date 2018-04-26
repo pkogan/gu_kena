@@ -21,7 +21,7 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	NULL, --objeto_categoria_proyecto
 	NULL, --objeto_categoria
 	'Mesa - CI - form_ml_rector', --nombre
-	NULL, --titulo
+	'Rector', --titulo
 	'0', --colapsable
 	NULL, --descripcion
 	'gu_kena', --fuente_datos_proyecto
@@ -101,7 +101,7 @@ INSERT INTO apex_objeto_ut_formulario (objeto_ut_formulario_proyecto, objeto_ut_
 	NULL, --clase_proyecto
 	NULL, --clase
 	NULL, --auto_reset
-	NULL, --ancho
+	'100%', --ancho
 	NULL, --ancho_etiqueta
 	NULL, --expandir_descripcion
 	NULL, --campo_bl
@@ -147,7 +147,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'0', --colapsado
 	'0', --desactivado
 	NULL, --estilo
-	'0', --total
+	'1', --total
 	NULL, --inicializacion
 	'0', --permitir_html
 	'0', --deshabilitar_rest_func

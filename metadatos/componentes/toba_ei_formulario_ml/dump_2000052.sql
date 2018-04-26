@@ -101,7 +101,7 @@ INSERT INTO apex_objeto_ut_formulario (objeto_ut_formulario_proyecto, objeto_ut_
 	NULL, --clase_proyecto
 	NULL, --clase
 	NULL, --auto_reset
-	'400px', --ancho
+	'100%', --ancho
 	NULL, --ancho_etiqueta
 	NULL, --expandir_descripcion
 	NULL, --campo_bl
@@ -140,7 +140,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'nombre', --columnas
 	'0', --obligatorio
 	'0', --oculto_relaja_obligatorio
-	'1', --orden
+	'2', --orden
 	NULL, --etiqueta
 	NULL, --etiqueta_estilo
 	NULL, --descripcion
@@ -220,7 +220,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'votos', --columnas
 	'1', --obligatorio
 	'0', --oculto_relaja_obligatorio
-	'2', --orden
+	'3', --orden
 	NULL, --etiqueta
 	NULL, --etiqueta_estilo
 	NULL, --descripcion
@@ -300,7 +300,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'id_nro_lista', --columnas
 	'0', --obligatorio
 	'0', --oculto_relaja_obligatorio
-	'3', --orden
+	'1', --orden
 	NULL, --etiqueta
 	NULL, --etiqueta_estilo
 	NULL, --descripcion
