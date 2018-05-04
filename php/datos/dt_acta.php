@@ -192,5 +192,21 @@ class dt_acta extends gu_kena_datos_tabla
             return toba::db('gu_kena')->consultar($sql);
         }
         
+        function cant_bnr_acta($filtro, $fecha){ 
+            $sql = "SELECT sum(total_votos_blancos) as blancos, "
+                    . "sum(total_votos_nulos) as nulos, "
+                    . "sum(total_votos_recurridos) as recurridos,"
+                    . "t_s.id_sede "
+                    . " FROM acta t_a"
+                    . " INNER JOIN mesa t_m ON (t_m.id_mesa = t_a.de)"
+                    . " INNER JOIN sede t_s ON (t_a.id_sede = t_s.id_sede)"
+                    . " WHERE t_s.id_ue = ".$filtro['id_ue']
+                    . " AND t_m.id_claustro = ".$filtro['id_claustro']
+                    . " AND t_a.id_tipo = ".$filtro['id_tipo']
+                    . " AND t_m.fecha = '$fecha' "
+                    . " GROUP BY t_s.id_sede";
+                        
+            return toba::db('gu_kena')->consultar($sql);
+        }
 }
 ?>
