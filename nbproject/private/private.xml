@@ -2,6 +2,13 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/home/celeste/toba_2.7.2/proyectos/gu_kena/php/datos/dt_lista_decano.php</file>
+            <file>file:/home/celeste/toba_2.7.2/proyectos/gu_kena/php/datos/dt_voto_lista_cdirectivo.php</file>
+            <file>file:/home/celeste/toba_2.7.2/proyectos/gu_kena/php/rector/ci_rector.php</file>
+            <file>file:/home/celeste/toba_2.7.2/proyectos/gu_kena/php/datos/dt_lista_rector.php</file>
+            <file>file:/home/celeste/toba_2.7.2/proyectos/gu_kena/php/datos/dt_voto_lista_rector.php</file>
+            <file>file:/home/celeste/toba_2.7.2/proyectos/gu_kena/php/datos/dt_acta.php</file>
+        </group>
     </open-files>
 </project-private>
