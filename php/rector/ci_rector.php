@@ -8,29 +8,69 @@ class ci_rector extends toba_ci
     
     protected $s__total_emp;
     
+    public $s__fecha = '2016-05-17';
+    
     //---- Cuadro -----------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------
+	//---- cuadro_rector_e ------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
 
 	function conf__cuadro_rector_e(gu_kena_ei_cuadro $cuadro)
 	{
-             
-        //Obtengo todas las unidades menos los asentamientos y rectorado. 1:Administración central, 2:Facultad/Centro Regional/ Escuela 3:Asentamiento
-            /*$unidades = $this->dep('datos')->tabla('unidad_electoral')->get_descripciones_por_nivel(array(2));           
+            $res = $this->cargar_cuadro_rector('cuadro_rector_e', 3);// 3 = Estudiantes 
+            return $res;
+        }
+        
+        //-----------------------------------------------------------------------------------
+	//---- cuadro_rector_g ------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__cuadro_rector_g(gu_kena_ei_cuadro $cuadro)
+	{
+            $res = $this->cargar_cuadro_rector('cuadro_rector_g', 4);// 4 = Graduados
+            return $res;
+        }
+	//-----------------------------------------------------------------------------------
+	//---- cuadro_rector_nd -----------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__cuadro_rector_nd(gu_kena_ei_cuadro $cuadro)
+	{
+            $res = $this->cargar_cuadro_rector('cuadro_rector_nd', 1);// 1 = No docente
+            return $res;
+	}
+
+        //-----------------------------------------------------------------------------------
+	//---- cuadro_rector_d ------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__cuadro_rector_d(gu_kena_ei_cuadro $cuadro)
+	{
+            $res = $this->cargar_cuadro_rector('cuadro_rector_d', 2);// 2 = Docente
+            return $res;
+	}
+        
+        function cargar_cuadro_rector($cuadro, $id_claustro){
+            //Obtengo todas las unidades electorales
+            $unidades = $this->dep('datos')->tabla('unidad_electoral')->get_descripciones();           
             
-            //Cargar la cantidad de empadronados para el claustro estudiantes=3
-            // en cada unidad
-            $ar = $this->cargar_cant_empadronados($unidades, 3);
-            
+            //Cargar la cantidad de empadronados para el claustro $id_claustro
+            // en cada unidad como segunda columna
+            $ar = $this->cargar_cant_empadronados($unidades, $id_claustro);
+            //Cargar la cantidad de votantes para el claustro estudiantes=3
+            // en cada unidad como tercer columna
+            $ar= $this->cargar_cant_votantes($ar,$listas);
             //Ante ultima fila carga los votos totales de cada lista
             $pos = sizeof($ar);
             $ar[$pos]['sigla'] ="<span style='color:blue; font-weight:bold'>TOTAL</span>";
-            $ar[$pos]['cant_empadronados'] = $this->s__total_emp;
+            $ar[$pos]['cant_empadronados'] = "<span style='color:blue; font-weight:bold'>".$this->s__total_emp."</span>";
             
             //Ultima fila carga los votos ponderados de cada lista
             $pos = sizeof($ar);
             $ar[$pos]['sigla'] = "<span style='color:red; font-weight:bold'>PONDERADOS</span>";
                         
             //Obtener las listas del claustro estudiantes=3
-            $listas = $this->dep('datos')->tabla('lista_csuperior')->get_listas_actuales(3); 
+            $listas = $this->dep('datos')->tabla('lista_rector')->get_listas($this->s__fecha); 
             
             //Agregar las etiquetas de todas las listas (columnas dinámicas)
             $i = 1;
@@ -40,26 +80,26 @@ class ci_rector extends toba_ci
                 $l['estilo'] = 'col-cuadro-resultados';
                 $l['estilo_titulo'] = 'tit-cuadro-resultados';
                 
-                //$l['permitir_html'] = true;
+                $l['permitir_html'] = true;
                 
                 $grupo[$i] = $lista['id_nro_lista'];
                 
                 $columnas[$i] = $l;
-                $this->dep('cuadro_superior_e')->agregar_columnas($columnas);
+                $this->dep($cuadro)->agregar_columnas($columnas);
                 
-                //Cargar la cantidad de votos para cada lista de claustro estudiantes=3 
+                //Cargar la cantidad de votos para cada lista de claustro $id_claustro 
                 //en cada unidad
-                $ar = $this->cargar_cant_votos($lista['id_nro_lista'], $ar, 3);
+                $ar = $this->cargar_cant_votos($lista['id_nro_lista'], $ar, $id_claustro);
                 
                 //Cargar los votos totales/ponderados para cada lista agregado como ante/última fila
                 //para claustro estudiantes=3
                 $ar[$pos-1][$lista['id_nro_lista']] = 0;
                 $ar[$pos][$lista['id_nro_lista']] = 0;
-                $ar = $this->cargar_votos_totales_ponderados($lista['id_nro_lista'], $ar, 3);
+                $ar = $this->cargar_votos_totales_ponderados($lista['id_nro_lista'], $ar, $id_claustro);
                 
                 $i++;
             }
-            $this->dep('cuadro_superior_e')->set_grupo_columnas('Listas',$grupo);
+            $this->dep($cuadro)->set_grupo_columnas('Listas',$grupo);
            
                           
             $this->s__votos_e = $ar;//Guardar los votos para el calculo dhondt
@@ -83,14 +123,14 @@ class ci_rector extends toba_ci
             $r['estilo_titulo'] = 'tit-cuadro-resultados';
             $bnr[2] = $r;
             
-            $this->dep('cuadro_superior_e')->agregar_columnas($bnr);
+            $this->dep($cuadro)->agregar_columnas($bnr);
             
             
-            $ar = $this->cargar_cant_b_n_r($ar, 3);
-            $ar= $this->cargar_cant_votantes($ar,$listas);
+            $ar = $this->cargar_cant_b_n_r($ar, $id_claustro);
+            
             //$this->cambiar_estilo_total($ar); //ver porqué no agrega estilo
-            
-            return $ar;*/
+            //print_r($ar);
+            return $ar;
         }
         
         //Metodo responsable de cargar los votos blancos, nulos y recurridos de cada unidad electoral
@@ -101,8 +141,8 @@ class ci_rector extends toba_ci
             $unidades[$p]['total_votos_nulos'] = 0;
             $unidades[$p]['total_votos_recurridos'] = 0;            
             for($i=0; $i<$p; $i++){//Recorro las unidades
-              //Agrega la cantidad de votos blancos,nulos y recurridos calculado en acta para cada unidad con claustro y tipo superior=1            
-                $ar = $this->dep('datos')->tabla('acta')->cant_b_n_r($unidades[$i]['id_nro_ue'], $id_claustro, 1);
+              //Agrega la cantidad de votos blancos,nulos y recurridos calculado en acta para cada unidad con claustro y tipo rector=4            
+                $ar = $this->dep('datos')->tabla('acta')->cant_b_n_r($unidades[$i]['id_nro_ue'], $id_claustro, 4);
                 if(sizeof($ar)>0){
                     $unidades[$i]['total_votos_blancos'] = $ar[0]['blancos'];
                     $unidades[$i]['total_votos_nulos'] = $ar[0]['nulos'];
@@ -132,8 +172,8 @@ class ci_rector extends toba_ci
         
         function cargar_cant_votos($id_lista, $unidades, $id_claustro){
             for($i=0; $i<sizeof($unidades)-2; $i++){//Recorro las unidades
-                //Agrega la cantidad de empadronados calculado en acta para cada unidad con claustro  y tipo 'superior'
-                $unidades[$i][$id_lista] = $this->dep('datos')->tabla('voto_lista_csuperior')->cant_votos($id_lista, $unidades[$i]['id_nro_ue'], $id_claustro);
+                //Agrega la cantidad de empadronados calculado en acta para cada unidad con claustro  y tipo 'rector'
+                $unidades[$i][$id_lista] = $this->dep('datos')->tabla('voto_lista_rector')->cant_votos($id_lista, $unidades[$i]['id_nro_ue'], $id_claustro);
             }
             return $unidades;
         }    
@@ -167,10 +207,10 @@ class ci_rector extends toba_ci
             
             //Recorro las unidades exluyendo las dos últimas filas que tiene los votos totales y ponderados
             for($i=0; $i<$pos_total; $i++){
-                if(isset($unidades[$i][$id_lista]) && isset($unidades[$i]['cant_empadronados'])){
+                if(isset($unidades[$i][$id_lista]) && isset($unidades[$i]['cant_validos'])){
                     //Suma el cociente entre cant de votos de la 
-                    //lista en la UEn / cant empadronados del claustro en la UEn
-                    $cociente = $unidades[$i][$id_lista]/$unidades[$i]['cant_empadronados'];
+                    //lista en la UEn / cant votos validos del claustro en la UEn
+                    $cociente = $unidades[$i][$id_lista]/$unidades[$i]['cant_votantes'];
                     $unidades[$pos_pond][$id_lista] += $cociente;
                 }
                 
@@ -179,14 +219,8 @@ class ci_rector extends toba_ci
                     $unidades[$pos_total][$id_lista] += $unidades[$i][$id_lista];        
                 }
             }
-            $unidades[$pos_pond][$id_lista] = round($unidades[$pos_pond][$id_lista],6);
+            $unidades[$pos_pond][$id_lista] = "<span style='color:red'>".round($unidades[$pos_pond][$id_lista],6)."</span>";
 
-            
-            //$aux = "<span style='color:red'>".$unidades[$pos_total][$id_lista].""."</span>";
-            //$unidades[$pos_total][$id_lista] = $aux;
-            
-            //print_r($unidades);
-            //print_r($pos_total);
             return $unidades;
         }
 
@@ -205,11 +239,6 @@ class ci_rector extends toba_ci
          * 
          */
         
-	function evt__cuadro_superior_e__seleccion($datos)
-	{
-		
-	}
- 
         /*function truncate($val, $f="0")
         {
                if(($p = strpos($val, '.')) !== false) {
@@ -218,290 +247,7 @@ class ci_rector extends toba_ci
             return $val;
         }*/
         
-	//-----------------------------------------------------------------------------------
-	//---- cuadro_superior_g ------------------------------------------------------------
-	//-----------------------------------------------------------------------------------
-
-	function conf__cuadro_superior_g(gu_kena_ei_cuadro $cuadro)
-	{
-            /*$this->dep('cuadro_superior_g')->colapsar();//No se muestra el cuadro en un principio
-            
-            //Obtengo todas las unidades menos los asentamientos y rectorado. 
-            //1:Administración central, 2:Facultad/Centro Regional/ Escuela 3:Asentamiento
-            $unidades = $this->dep('datos')->tabla('unidad_electoral')->get_descripciones_por_nivel(array(2)); 
-            
-            //Cargar la cantidad de empadronados para el claustro graduados=4 en cada unidad
-            $ar = $this->cargar_cant_empadronados($unidades, 4);
-            
-            //Ante ultima fila carga los votos totales de cada lista
-            $pos = sizeof($ar);
-            $ar[$pos]['sigla'] ="<span style='color:blue;font-weight:bold'>TOTAL</span>";
-            $ar[$pos]['cant_empadronados'] = $this->s__total_emp;
-            
-            //Ultima fila carga los votos ponderados de cada lista
-            $pos = sizeof($ar);
-            $ar[$pos]['sigla'] = "<span style='color:red;font-weight:bold'>PONDERADOS</span>";
-                          
-            //Obtener las listas del claustro graduados=4
-            $listas = $this->dep('datos')->tabla('lista_csuperior')->get_listas_actuales(4); 
-            
-            //Agregar las etiquetas de todas las listas
-            $i = 1;
-            foreach($listas as $lista){
-                $l['clave'] = $lista['id_nro_lista'];
-                $l['titulo'] = substr($lista['nombre'], 0, 11). $lista['sigla'];
-                $l['estilo'] = 'col-cuadro-resultados';
-                $l['estilo_titulo'] = 'tit-cuadro-resultados';
-                //$l['permitir_html'] = true;
-                
-                $grupo[$i] = $lista['id_nro_lista'];
-                
-                $columnas[$i] = $l;
-                $this->dep('cuadro_superior_g')->agregar_columnas($columnas);
-                
-                //Cargar la cantidad de votos para cada lista de claustro graduados=4 en cada unidad
-                $ar = $this->cargar_cant_votos($lista['id_nro_lista'], $ar, 4);
-                
-                //Cargar los votos totales/ponderados para cada lista agregado como ante/última fila
-                //para claustro graduados=4
-                $ar[$pos-1][$lista['id_nro_lista']] = 0;
-                $ar[$pos][$lista['id_nro_lista']] = 0;
-                $ar = $this->cargar_votos_totales_ponderados($lista['id_nro_lista'], $ar, 4);
-                
-                $i++;
-            }
-            
-            if(isset($grupo))
-                $this->dep('cuadro_superior_g')->set_grupo_columnas('Listas',$grupo);
-              
-            $this->s__votos_g = $ar;//Guardar los votos para el calculo dhondt
-            
-            //Agregar datos totales de blancos, nulos y recurridos
-            $b['clave'] = 'total_votos_blancos';
-            $b['titulo'] = 'Blancos';
-            $b['estilo'] = 'col-cuadro-resultados';
-            $b['estilo_titulo'] = 'tit-cuadro-resultados';
-            $bnr[0] = $b;
-            
-            $n['clave'] = 'total_votos_nulos';
-            $n['titulo'] = 'Nulos';
-            $n['estilo'] = 'col-cuadro-resultados';
-            $n['estilo_titulo'] = 'tit-cuadro-resultados';
-            $bnr[1] = $n;
-            
-            $r['clave'] = 'total_votos_recurridos';
-            $r['titulo'] = 'Recurridos';
-            $r['estilo'] = 'col-cuadro-resultados';
-            $r['estilo_titulo'] = 'tit-cuadro-resultados';
-            $bnr[2] = $r;
-            
-            $this->dep('cuadro_superior_g')->agregar_columnas($bnr);
-            
-            $p = sizeof($ar)-2;
-            //Inicializo para realizar la sumatoria
-            $ar[$p]['total_votos_blancos'] = 0;
-            $ar[$p]['total_votos_nulos'] = 0;
-            $ar[$p]['total_votos_recurridos'] = 0;
-            
-            $ar = $this->cargar_cant_b_n_r($ar, 4);
-            $ar= $this->cargar_cant_votantes($ar,$listas);
-            
-            return $ar;*/
-        }
-
-	function evt__cuadro_superior_g__seleccion($seleccion)
-	{
-	}
-        
-	//-----------------------------------------------------------------------------------
-	//---- cuadro_superior_nd -----------------------------------------------------------
-	//-----------------------------------------------------------------------------------
-
-	function conf__cuadro_superior_nd(gu_kena_ei_cuadro $cuadro)
-	{
-            /*$this->dep('cuadro_superior_nd')->colapsar();//No se muestra el cuadro en un principio
-            
-            //Obtengo todas las unidades menos los asentamientos. 
-            //1:Administración central, 2:Facultad/Centro Regional/ Escuela 3:Asentamiento
-            $unidades = $this->dep('datos')->tabla('unidad_electoral')->get_descripciones_por_nivel(array(1,2)); 
-            
-            //Cargar la cantidad de empadronados para el claustro no docente = 1 en cada unidad
-            $ar = $this->cargar_cant_empadronados($unidades, 1);
-            
-            //Ante ultima fila carga los votos totales de cada lista
-            $pos = sizeof($ar);
-            $ar[$pos]['sigla'] ="<span style='color:blue;font-weight:bold '>TOTAL</span>";
-            $ar[$pos]['cant_empadronados'] = $this->s__total_emp;
-            
-            //Ultima fila carga los votos ponderados de cada lista
-            $pos = sizeof($ar);
-            $ar[$pos]['sigla'] = "<span style='color:red;font-weight:bold '>PONDERADOS</span>";
-                       
-            //Obtener las listas del claustro no docente = 1
-            $listas = $this->dep('datos')->tabla('lista_csuperior')->get_listas_actuales(1); 
-            
-            //Agregar las etiquetas de todas las listas
-            $i = 1;
-            foreach($listas as $lista){
-                $l['clave'] = $lista['id_nro_lista'];
-                $l['titulo'] = substr($lista['nombre'], 0, 11). $lista['sigla'];
-                $l['estilo'] = 'col-cuadro-resultados';
-                $l['estilo_titulo'] = 'tit-cuadro-resultados';
-                //$l['permitir_html'] = true;
-                
-                $grupo[$i] = $lista['id_nro_lista'];
-                
-                $columnas[$i] = $l;
-                $this->dep('cuadro_superior_nd')->agregar_columnas($columnas);
-                
-                //Cargar la cantidad de votos para cada lista de claustro no docente = 1 en cada unidad
-                $ar = $this->cargar_cant_votos($lista['id_nro_lista'], $ar, 1);
-                
-                //Cargar los votos totales/ponderados para cada lista agregado como ante/última fila
-                //para claustro no docente = 1
-                $ar[$pos-1][$lista['id_nro_lista']] = 0;
-                $ar[$pos][$lista['id_nro_lista']] = 0;
-                $ar = $this->cargar_votos_totales_ponderados($lista['id_nro_lista'], $ar, 1);
-                
-                $i++;
-            }
-            if(isset($grupo))
-                $this->dep('cuadro_superior_nd')->set_grupo_columnas('Listas',$grupo);
-              
-            $this->s__votos_nd = $ar;//Guardar los votos para el calculo dhondt
-            
-            //Agregar datos totales de blancos, nulos y recurridos
-            $b['clave'] = 'total_votos_blancos';
-            $b['titulo'] = 'Blancos';
-            $b['estilo_titulo'] = 'tit-cuadro-resultados';
-            $b['estilo'] = 'col-cuadro-resultados';
-            $bnr[0] = $b;
-            
-            $n['clave'] = 'total_votos_nulos';
-            $n['titulo'] = 'Nulos';
-            $n['estilo'] = 'col-cuadro-resultados';
-            $n['estilo_titulo'] = 'tit-cuadro-resultados';
-            $bnr[1] = $n;
-            
-            $r['clave'] = 'total_votos_recurridos';
-            $r['titulo'] = 'Recurridos';
-            $r['estilo'] = 'col-cuadro-resultados';
-            $r['estilo_titulo'] = 'tit-cuadro-resultados';
-            $bnr[2] = $r;
-            
-            $this->dep('cuadro_superior_nd')->agregar_columnas($bnr);
-            
-            $p = sizeof($ar)-2;
-            //Inicializo para realizar la sumatoria
-            $ar[$p]['total_votos_blancos'] = 0;
-            $ar[$p]['total_votos_nulos'] = 0;
-            $ar[$p]['total_votos_recurridos'] = 0;
-            
-            $ar = $this->cargar_cant_b_n_r($ar, 1);
-            $ar= $this->cargar_cant_votantes($ar,$listas);
-            
-            return $ar;*/
-	}
-
-	function evt__cuadro_superior_nd__seleccion($seleccion)
-	{
-	}
 	
-        //-----------------------------------------------------------------------------------
-	//---- cuadro_superior_d ------------------------------------------------------------
-	//-----------------------------------------------------------------------------------
-
-	function conf__cuadro_superior_d(gu_kena_ei_cuadro $cuadro)
-	{
-            /*$this->dep('cuadro_superior_d')->colapsar();//No se muestra el cuadro en un principio
-            //$cuadro->set_datos($this->dep('datos')->tabla('unidad_electoral')->get_descripciones());
-         
-            
-            //Obtengo todas las unidades menos los asentamientos y rectorado. 
-            //1:Administración central, 2:Facultad/Centro Regional/ Escuela 3:Asentamiento
-            $unidades = $this->dep('datos')->tabla('unidad_electoral')->get_descripciones_por_nivel(array(2)); 
-            
-            //Cargar la cantidad de empadronados para el claustro docente = 2 en cada unidad
-            $ar = $this->cargar_cant_empadronados($unidades, 2);
-            
-            //Ante ultima fila carga los votos totales de cada lista
-            $pos = sizeof($ar);
-            $ar[$pos]['sigla'] ="<span style='color:blue;font-weight:bold '>TOTAL</span>";
-            $ar[$pos]['cant_empadronados'] = $this->s__total_emp;
-            
-            //Ultima fila carga los votos ponderados de cada lista
-            $pos = sizeof($ar);
-            $ar[$pos]['sigla'] = "<span style='color:red;font-weight:bold '>PONDERADOS</span>";
-                       
-            //Obtener las listas del claustro docente = 2
-            $listas = $this->dep('datos')->tabla('lista_csuperior')->get_listas_actuales(2); 
-            
-            //Agregar las etiquetas de todas las listas
-            $i = 1;
-            foreach($listas as $lista){
-                $l['clave'] = $lista['id_nro_lista'];
-                $l['titulo'] = substr($lista['nombre'], 0, 11). $lista['sigla'];
-                $l['estilo'] = 'col-cuadro-resultados';
-                $l['estilo_titulo'] = 'tit-cuadro-resultados';
-                //$l['permitir_html'] = true;
-                
-                $grupo[$i] = $lista['id_nro_lista'];
-                
-                $columnas[$i] = $l;
-                $this->dep('cuadro_superior_d')->agregar_columnas($columnas);
-                
-                //Cargar la cantidad de votos para cada lista de claustro docente = 2 en cada unidad
-                $ar = $this->cargar_cant_votos($lista['id_nro_lista'], $ar, 2);
-                
-                //Cargar los votos totales/ponderados para cada lista agregado como ante/última fila
-                //para claustro docente = 2
-                $ar[$pos-1][$lista['id_nro_lista']] = 0;
-                $ar[$pos][$lista['id_nro_lista']] = 0;
-                $ar = $this->cargar_votos_totales_ponderados($lista['id_nro_lista'], $ar, 2);
-                
-                $i++;
-            }
-            if(isset($grupo))
-                $this->dep('cuadro_superior_d')->set_grupo_columnas('Listas',$grupo);
-              
-            $this->s__votos_d = $ar;//Guardar los votos para el calculo dhondt
-            
-            //Agregar datos totales de blancos, nulos y recurridos
-            $b['clave'] = 'total_votos_blancos';
-            $b['titulo'] = 'Blancos';
-            $b['estilo_titulo'] = 'tit-cuadro-resultados';
-            $b['estilo'] = 'col-cuadro-resultados';
-            $bnr[0] = $b;
-            
-            $n['clave'] = 'total_votos_nulos';
-            $n['titulo'] = 'Nulos';
-            $n['estilo'] = 'col-cuadro-resultados';
-            $n['estilo_titulo'] = 'tit-cuadro-resultados';
-            $bnr[1] = $n;
-            
-            $r['clave'] = 'total_votos_recurridos';
-            $r['titulo'] = 'Recurridos';
-            $r['estilo'] = 'col-cuadro-resultados';
-            $r['estilo_titulo'] = 'tit-cuadro-resultados';
-            $bnr[2] = $r;
-            
-            $this->dep('cuadro_superior_d')->agregar_columnas($bnr);
-            
-            $p = sizeof($ar)-2;
-            //Inicializo para realizar la sumatoria
-            $ar[$p]['total_votos_blancos'] = 0;
-            $ar[$p]['total_votos_nulos'] = 0;
-            $ar[$p]['total_votos_recurridos'] = 0;
-            
-            $ar = $this->cargar_cant_b_n_r($ar, 2);
-            $ar= $this->cargar_cant_votantes($ar,$listas);
-            
-            return $ar;*/
-	}
-
-	function evt__cuadro_superior_d__seleccion($seleccion)
-	{
-	}
 
         //-----------------------------------------------------------------------------------
 	//---- Configuraciones --------------------------------------------------------------
@@ -509,17 +255,81 @@ class ci_rector extends toba_ci
 
 	function conf()
 	{
-            //$this->pantalla()->tab('pant_docente')->ocultar();
+            $claustros = $this->dep('datos')->tabla('mesa')->get_claustro_novota($this->s__fecha);
+            
+            foreach($claustros as $key => $claustro){
+                switch($claustro['id']){
+                    case 1: //No hay votacion de no docentes, ent ocultar pantalla
+                        $this->pantalla()->tab('pant_no_docente')->ocultar(); break;
+                    case 2: //No hay votacion de docentes, ent ocultar pantalla
+                        $this->pantalla()->tab('pant_docente')->ocultar(); break;
+                    case 3: //No hay votacion de estudiantes, ent ocultar pantalla
+                        $this->pantalla()->tab('pant_estudiantes')->ocultar(); break;
+                    case 4: //No hay votacion de graduados, ent ocultar pantalla
+                        $this->pantalla()->tab('pant_graduados')->ocultar(); break;
+                }
+                
+            }
+            
             $this->generar_json('2016-05-17');
 	}
         
         function generar_json($fecha){
             
             $this->consulta($fecha);
+            //$this->consulta2($fecha);
+        }
+        
+        function consulta2($fecha){
+            //Obtener todas las categorias (rector, decano,...)
+            $categorias = $this->dep('datos')->tabla('tipo')->get_descripciones();
+            foreach($categorias as $una_categoria){
+                //Obtiene ue, claustro, lista, total, validos, empadronados, ponderado
+                $datos_totales = $this->dep('datos')->tabla('tipo')->get_datos_ponderados($una_categoria['id_tipo'], $fecha);
+                //print_r($datos_totales);
+                //Obtiene ue, claustro, nom_mesa, id_lista, total
+                $datos_votos = $this->dep('datos')->tabla('acta')->cant_votos_lista($una_categoria['id_tipo'], $fecha);
+                //print_r($datos_votos);
+                
+                $this->armar_array($datos_totales, $datos_votos);
+            }
             
         }
         
+        function armar_array($datos_totales, $datos_votos){
+            $arr = array();
+            foreach($datos_totales as $un_registro){
+                $un_lista = array();
+                $un_lista['lista'] = $un_registro['lista'];
+                $un_lista['sigla_lista'] = $un_registro['sigla_lista'];
+                $mesas = $this->obtener_datos($datos_votos, $un_registro['id_nro_ue'], $un_registro['id_claustro'], $un_registro['id_nro_lista']);
+                foreach ($mesas as $nom_mesa => $un_total){
+                    $un_lista[$nom_mesa] = $un_total;
+                }
+                $un_lista['total'] = $un_registro['total'];
+                $un_lista['ponderados'] = $un_registro['ponderado'];
+                
+                $arr[$un_registro['id_nro_ue']][$un_registro['id_claustro']]['data'] = $un_lista;
+                
+            }
+            print_r($arr[12]);
+        }
+        
+        function obtener_datos($datos_votos, $id_ue, $id_claustro, $id_lista){
+            $mesas = array();
+            foreach($datos_votos as $un_dato){
+                if($un_dato['id_ue'] == $id_ue && 
+                        $un_dato['id_claustro'] == $id_claustro &&
+                        $un_dato['id_lista'] == $id_lista ){
+                    $mesas[$un_dato['sede']] = $un_dato['cant_votos'];
+                }
+            }
+            return $mesas;
+        }
+        
         function consulta($fecha){
+            $mesas = $this->dep('datos')->tabla('mesa')->get_mesas($fecha);
+            
             //Obtener todas las categorias (rector, decano,...)
             $categorias = $this->dep('datos')->tabla('tipo')->get_descripciones();
             
@@ -841,23 +651,23 @@ class ci_rector extends toba_ci
 	//---- EXPORTACION EXCEL ----------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
         function vista_excel(toba_vista_excel $salida){
-            $salida->set_nombre_archivo("EscrutinioSuperior.xls");
+            $salida->set_nombre_archivo("EscrutinioRector.xls");
             $excel = $salida->get_excel();
             
             
-            $this->dependencia('cuadro_superior_e')->vista_excel($salida);
+            $this->dependencia('cuadro_rector_e')->vista_excel($salida);
             $salida->separacion(3);
             $this->dependencia('cuadro_dhondt_e')->vista_excel($salida);
             $salida->set_hoja_nombre("Estudiantes");
             
             $salida->crear_hoja();
-            $this->dependencia('cuadro_superior_g')->vista_excel($salida);
+            $this->dependencia('cuadro_rector_g')->vista_excel($salida);
             $salida->separacion(3);
             $this->dependencia('cuadro_dhondt_g')->vista_excel($salida);
             $salida->set_hoja_nombre("Graduados");
             
             $salida->crear_hoja();
-            $this->dependencia('cuadro_superior_nd')->vista_excel($salida);
+            $this->dependencia('cuadro_rector_nd')->vista_excel($salida);
             $salida->separacion(3);
             $this->dependencia('cuadro_dhondt_nd')->vista_excel($salida);
             $salida->set_hoja_nombre("No Docente");

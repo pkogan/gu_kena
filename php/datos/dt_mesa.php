@@ -183,5 +183,25 @@ class dt_mesa extends gu_kena_datos_tabla
             }
             
 	}
+        
+        function get_claustro_novota($fecha){
+            $sql = "select id
+                    from claustro
+                    where id not in(select distinct(id_claustro) 
+                                    from mesa 
+                                    where fecha='$fecha');";
+            return toba::db('gu_kena')->consultar($sql);
+        }
+        
+        function get_mesas($fecha){
+            $sql = "select id_mesa,
+                            concat(ue.sigla, s.sigla, m.nro_mesa) as nombre
+                    from mesa m
+                    inner join acta a on a.de = m.id_mesa
+                    inner join sede s on s.id_sede = a.id_sede
+                    inner join unidad_electoral ue on ue.id_nro_ue = s.id_ue
+                    where m.fecha = '$fecha'";
+            return toba::db('gu_kena')->consultar($sql);
+        }
 }
 ?>

@@ -192,19 +192,31 @@ class dt_acta extends gu_kena_datos_tabla
             return toba::db('gu_kena')->consultar($sql);
         }
         
-        function cant_bnr_acta($filtro, $fecha){ 
-            $sql = "SELECT sum(total_votos_blancos) as blancos, "
-                    . "sum(total_votos_nulos) as nulos, "
-                    . "sum(total_votos_recurridos) as recurridos,"
-                    . "t_s.id_sede "
-                    . " FROM acta t_a"
-                    . " INNER JOIN mesa t_m ON (t_m.id_mesa = t_a.de)"
-                    . " INNER JOIN sede t_s ON (t_a.id_sede = t_s.id_sede)"
-                    . " WHERE t_s.id_ue = ".$filtro['id_ue']
-                    . " AND t_m.id_claustro = ".$filtro['id_claustro']
-                    . " AND t_a.id_tipo = ".$filtro['id_tipo']
-                    . " AND t_m.fecha = '$fecha' "
-                    . " GROUP BY t_s.id_sede";
+        function cant_votos_lista($id_tipo, $fecha){ 
+            switch ($id_tipo){
+                case 1: //CONSEJO SUPERIOR
+                        $tabla_voto = 'voto_lista_csuperior'; break;
+                case 2: //CONSEJO DIRECTIVO
+                        $tabla_voto = 'voto_lista_cdirectivo'; break;
+                case 3: //CONSEJO DIRECTIVO ASENTAMIENTO
+                        $tabla_voto = 'voto_lista_cdirectivo'; break;
+                case 4: //RECTOR
+                        $tabla_voto = 'voto_lista_rector'; break;
+                case 5: //DECANO
+                        $tabla_voto = 'voto_lista_decano'; break;
+                case 6: //DIRECTOR ASENTAMIENTO
+                        $tabla_voto = 'voto_lista_decano'; break;
+            }
+            $sql = "select id_ue, id_claustro, 
+                        concat(ue.sigla, s.sigla, m.nro_mesa) sede, 
+                        vl.id_lista, cant_votos
+                    from acta a
+                    inner join mesa m on m.id_mesa = a.de
+                    inner join sede s on s.id_sede = a.id_sede
+                    inner join unidad_electoral ue on ue.id_nro_ue = s.id_ue
+                    inner join $tabla_voto vl on vl.id_acta = a.id_acta
+                    where m.estado> 1 and m.fecha = '$fecha'
+                    order by s.id_ue, id_claustro, id_lista";
                         
             return toba::db('gu_kena')->consultar($sql);
         }

@@ -6,7 +6,33 @@ class dt_lista_csuperior extends gu_kena_datos_tabla
 		$sql = "SELECT id_nro_lista, nombre FROM lista_csuperior ORDER BY nombre";
 		return toba::db('gu_kena')->consultar($sql);
 	}
+        
+        function get_listas_a_votar($id_acta){
+            $sql = "SELECT t_l.id_nro_lista, 
+                           t_l.nombre 
+                    FROM acta t_a
+                    INNER JOIN mesa t_m ON (t_m.id_mesa = t_a.de)
+                    INNER JOIN sede t_s ON (t_s.id_sede = t_a.id_sede)
+                    INNER JOIN unidad_electoral t_u ON (t_u.id_nro_ue = t_s.id_ue)
+                    INNER JOIN lista_cdirectivo t_l ON (t_l.id_ue = t_u.id_nro_ue)
+                    WHERE t_a.id_acta = $id_acta AND t_m.id_claustro = t_l.id_claustro
+                    AND t_l.fecha = (SELECT max(id_fecha) FROM acto_electoral)"
+                    . " order by t_l.id_nro_lista";
+                    
+            return toba::db('gu_kena')->consultar($sql);
+        }
 
+        function get_listas($fecha, $id_claustro){
+            $where = "";
+            if(isset($id_claustro)){//Se pide de un claustro en especifico
+                $where = "AND id_claustro = $id_claustro ";
+            }
+            
+            $sql = "SELECT id_nro_lista, nombre, sigla FROM lista_csuperior "
+                    . "WHERE fecha = '$fecha' $where "
+                    . "  order by nombre"; //. "ORDER BY id_nro_lista";
+            return toba::db('gu_kena')->consultar($sql);
+        }
 
         function get_listas_actuales($id_claustro = null){
             $where = "";
