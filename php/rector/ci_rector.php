@@ -410,6 +410,7 @@ class ci_rector extends toba_ci {
                 $json['labels'] = $labels;
                 $json['total'] = $total;
                 $json['fecha'] = date('d/m/Y G:i:s');
+                $json['titulo'] = 'Votos '.$nom_ue.' Rector';
                 
                 $data = array();
                 $labels = array();
@@ -440,6 +441,7 @@ class ci_rector extends toba_ci {
             $json['labels'] = $labels;
             $json['total'] = $total;
             $json['fecha'] = date('d/m/Y G:i:s');
+            $json['titulo'] = 'Votos '.$nom_ue.' Rector';
             
             $string_json = json_encode($json);
 
@@ -509,6 +511,7 @@ class ci_rector extends toba_ci {
                 $json['labels'] = $labels;
                 $json['total'] = $total;
                 $json['fecha'] = date('d/m/Y G:i:s');
+                $json['titulo'] = 'Votos '.$nom_ue.' Decano';
                 
                 $data = array();
                 $labels = array();
@@ -539,6 +542,7 @@ class ci_rector extends toba_ci {
             $json['labels'] = $labels;
             $json['total'] = $total;
             $json['fecha'] = date('d/m/Y G:i:s');
+            $json['titulo'] = 'Votos '.$nom_ue.' Decano';
             
             $string_json = json_encode($json);
 
@@ -604,6 +608,7 @@ class ci_rector extends toba_ci {
                 $json['labels'] = $labels;
                 $json['total'] = $total;
                 $json['fecha'] = date('d/m/Y G:i:s');
+                $json['titulo'] = 'Votos Universidad Consejero Superior '.$nom_claustro;
                 
                 $data = array();
                 $labels = array();
@@ -634,7 +639,8 @@ class ci_rector extends toba_ci {
             $json['labels'] = $labels;
             $json['total'] = $total;
             $json['fecha'] = date('d/m/Y G:i:s');
-            
+            $json['titulo'] = 'Votos Universidad Consejero Superior '.$nom_claustro;
+             
             $string_json = json_encode($json);
 
             $nom_archivo = 'e'.str_replace('-','',$this->s__fecha).'/CS_TODO_'.strtoupper($nom_claustro[0]);
@@ -706,6 +712,7 @@ class ci_rector extends toba_ci {
                 $json['labels'] = $labels;
                 $json['total'] = $total;
                 $json['fecha'] = date('d/m/Y G:i:s');
+                $json['titulo'] = 'Votos Universidad Rector '.$nom_claustro;
                 
                 $data = array();
                 $labels = array();
@@ -736,6 +743,7 @@ class ci_rector extends toba_ci {
             $json['labels'] = $labels;
             $json['total'] = $total;
             $json['fecha'] = date('d/m/Y G:i:s');
+            $json['titulo'] = 'Votos Universidad Rector '.$nom_claustro;
             
             $string_json = json_encode($json);
 
@@ -799,6 +807,7 @@ class ci_rector extends toba_ci {
         $json['labels'] = $labels;
         $json['total'] = $total;
         $json['fecha'] = date('d/m/Y G:i:s');
+         $json['titulo'] = 'Votos Universidad Rector';
         
         $string_json = json_encode($json);
 
