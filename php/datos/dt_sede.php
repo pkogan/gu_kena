@@ -23,5 +23,10 @@ class dt_sede extends gu_kena_datos_tabla
             $ar = toba::db('gu_kena')->consultar($sql);
             return $ar[0]['id_ue'];
         }
+        
+        function get_datos(){
+            $sql = "SELECT * FROM sede ORDER BY id_ue";
+            return toba::db('gu_kena')->consultar($sql);
+        }
 }
 ?>

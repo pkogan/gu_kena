@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Elecciones UNCOMA</title>
+    <link rel="icon" href="icono.ico">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/estilo.css">
+    <link rel="stylesheet" href="css/bootstrap-table.min.css">
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row align-items-center" id="inicio">
+            <div class="col-md-1">
+             <img id ="primeraImagen" src="img/marca UNCo azul.ico"class="rounded-circle" alt="Logo"> 
+            </div>
+			<div class="col-md-10 text-white">
+				<h3 class="">Elecciones UNCOMA</h3>
+			</div>
+            <div class="col-md-1 align-self-end">
+                <img src="img/ic_gukena.ico" class="rounded-circle" alt="Logo"> 
+            </div>
+		</div>
+	</div>
+	<div class="container-fluid">
+		<div class="row p-2" id="barra">
+        	<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+                <a class="navbar-brand" href="#">Navbar</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                    <ul class="navbar-nav">
+                       <div class="col-md btn-group justify-content-sm-center justify-content-md-start">
+                <a id="uno" class=" btn btn-secondary disabled">Unidades academicas:</a>
+                <a class=" btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+                    <span class="selection pull-left">Universidad</span>
+                </a>
+                 <ul class=" dropdown-menu ">
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','TODO')"><h7>
+                        <span>Universidad</span></h7>
+                        </a>
+                    </li>
+                    <li class="dropdown-divider"></li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','RECT')"><h7>
+                        <span>RECT</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','AUZA')"><h7>
+                        <span>AUZA</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','ASMA')"><h7>
+                        <span>ASMA</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','FACA')"><h7>
+                        <span>FACA</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','FAIF')"><h7>
+                        <span>FAIF</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','CRUB')"><h7>
+                        <span>CRUB</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','CUZA')"><h7>
+                        <span>CUZA</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','FACE')"><h7>
+                        <span>FACE</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','FALE')"><h7>
+                        <span>FALE</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','FAIN')"><h7>
+                        <span>FAIN</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','FATU')"><h7>
+                        <span>FATU</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','FAAS')"><h7>
+                        <span>FAAS</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','FAEA')"><h7>
+                        <span>FAEA</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','FATA')"><h7>
+                        <span>FATA</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','FAME')"><h7>
+                        <span>FAME</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','ESCM')"><h7>
+                        <span>ESCM</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','FADE')"><h7>
+                        <span>FADE</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','FAHU')"><h7>
+                        <span>FAHU</span></h7>
+                        </a>
+                    </li>
+                 </ul>
+                </div>
+            <div class="col-md btn-group justify-content-sm-center justify-content-md-center">
+                <a id="dos"class=" btn btn-secondary  disabled">Categoria:</a>
+                <a class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+                    <span class="selection pull-left">Rector</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" onclick="cambioTablaGrafico('categoria','R')"><h7>
+                        <span>Rector</span></h7>
+                        </a>
+                    </li>
+                    <li class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" onclick="cambioTablaGrafico('categoria','CS')"><h7>
+                        <span>Consejeros Superiores</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item" onclick="cambioTablaGrafico('categoria','D')"><h7>
+                        <span>Decano</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item" onclick="cambioTablaGrafico('categoria','CD')"><h7>
+                        <span>Consejeros Directivos</span></h7>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md btn-group justify-content-sm-center justify-content-md-end">
+                <a id="tres"class=" btn btn-secondary disabled">Claustro:</a>
+                <a class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+                    <span class="selection pull-left">Total</span> 
+                </a>
+                <ul class="dropdown-menu " >
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('claustro','T')"><h7>
+                        <span>Total</span></h7>
+                        </a>
+                    </li>
+                    <li class="dropdown-divider"></li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('claustro','G')"><h7> 
+                        <span>Graduados</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('claustro','N')"><h7> 
+                        <span>No Docentes</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('claustro','E')"><h7> 
+                        <span>Estudiantes</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('claustro','D')"><h7> 
+                        <span>Docentes</span></h7>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+                    </ul>
+                </div>  
+                </nav>		
+		</div>
+	</div>
+    <div class="container-fluid" id="carteles">
+         <div class="row justify-content-between border" id="borde">
+            <div class="col-md-9">
+                <h2 id="titulo"></h2>
+            </div>
+            <div class="col-md-3 col align-self-center">
+               <small class="float-right"> <h5 id="hora"></h5> </small>
+            </div>
+         </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row flex-row-reverse">
+            <div class="col-3 col-md-1">
+                <button id="refresh" class="btn btn-dark"onclick="llamadaAjax()"><span data-feather="refresh-cw"></span></button>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid ">
+        <div class="row d-flex p-4 justify-content-center">
+            <div class="col col-md-6 jumbotron" id="lugarGrafico">
+                    <canvas id="grafico"></canvas>
+            </div>
+        </div>
+    </div>
+	<div class="container-fluid ">
+		<div class="row justify-content-center ">
+		    <div class="table-responsive col-md-8 jumbotron" id="lugarTabla">
+        		<table id="tabla" class="table table-striped table-sm "></table>
+                        <!-- Boton exportar-->
+                        <button id="exportar" class="btn " onclick="exportarTabla()">Exportar
+                        </button>
+			</div>
+		</div>
+	</div> 
+    <div class="p-5" style="background-color: #00658a" ></div>
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-table.min.js"></script>
+<script src="js/feather.min.js"></script>
+<script>
+      feather.replace()
+</script>
+<script src="js/Chart.min.js"></script> 
+<script src="js/manejoDeInfo.js"></script>
+<script src="js/jquery.table2excel.js"></script>
+</body>
+</html>
+<!--<div class="col-md btn-group justify-content-sm-center justify-content-md-start">
+                <a id="uno" class=" btn btn-secondary disabled">Unidades academicas:</a>
+                <a class=" btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+                    <span class="selection pull-left">Universidad</span>
+                </a>
+                 <ul class=" dropdown-menu ">
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','TODO')"><h7>
+                        <span>Universidad</span></h7>
+                        </a>
+                    </li>
+                    <li class="dropdown-divider"></li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','RECT')"><h7>
+                        <span>RECT</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','AUZA')"><h7>
+                        <span>AUZA</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','ASMA')"><h7>
+                        <span>ASMA</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','FACA')"><h7>
+                        <span>FACA</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','FAIF')"><h7>
+                        <span>FAIF</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','CRUB')"><h7>
+                        <span>CRUB</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','CUZA')"><h7>
+                        <span>CUZA</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','FACE')"><h7>
+                        <span>FACE</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','FALE')"><h7>
+                        <span>FALE</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','FAIN')"><h7>
+                        <span>FAIN</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','FATU')"><h7>
+                        <span>FATU</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','FAAS')"><h7>
+                        <span>FAAS</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','FAEA')"><h7>
+                        <span>FAEA</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','FATA')"><h7>
+                        <span>FATA</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','FAME')"><h7>
+                        <span>FAME</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','ESCM')"><h7>
+                        <span>ESCM</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','FADE')"><h7>
+                        <span>FADE</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('ua','FAHU')"><h7>
+                        <span>FAHU</span></h7>
+                        </a>
+                    </li>
+                 </ul>
+                </div>
+            <div class="col-md btn-group justify-content-sm-center justify-content-md-center">
+                <a id="dos"class=" btn btn-secondary  disabled">Categoria:</a>
+                <a class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+                    <span class="selection pull-left">Rector</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" onclick="cambioTablaGrafico('categoria','R')"><h7>
+                        <span>Rector</span></h7>
+                        </a>
+                    </li>
+                    <li class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" onclick="cambioTablaGrafico('categoria','CS')"><h7>
+                        <span>Consejeros Superiores</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item" onclick="cambioTablaGrafico('categoria','D')"><h7>
+                        <span>Decano</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item" onclick="cambioTablaGrafico('categoria','CD')"><h7>
+                        <span>Consejeros Directivos</span></h7>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md btn-group justify-content-sm-center justify-content-md-end">
+                <a id="tres"class=" btn btn-secondary disabled">Claustro:</a>
+                <a class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+                    <span class="selection pull-left">Total</span> 
+                </a>
+                <ul class="dropdown-menu " >
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('claustro','T')"><h7>
+                        <span>Total</span></h7>
+                        </a>
+                    </li>
+                    <li class="dropdown-divider"></li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('claustro','G')"><h7> 
+                        <span>Graduados</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('claustro','N')"><h7> 
+                        <span>No Docentes</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('claustro','E')"><h7> 
+                        <span>Estudiantes</span></h7>
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item"onclick="cambioTablaGrafico('claustro','D')"><h7> 
+                        <span>Docentes</span></h7>
+                        </a>
+                    </li>
+                </ul>
+            </div>              -->
