@@ -24,7 +24,7 @@ function cambioTablaGrafico(opcion, valor){
 }
 function llamadaAjax(){
 $.ajax({
-        url: 'e20160517/'+json,
+        url: 'e20150616/'+json,
         dataType: 'json',
         cache: false,
         success: function(data) {
