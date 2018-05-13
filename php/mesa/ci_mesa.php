@@ -174,7 +174,8 @@ class ci_mesa extends toba_ci
                     //id_tipo=2 => directivo facultad, escuela, etc
                    //id_tipo=3 => directivo asentamiento
                    //id_tipo=4 => rector
-                   //id_tipo=5 => director asentamiento
+                   //id_tipo=5 => decano
+                   //id_tipo=6 => director asentamiento
                    switch($un_acta['id_tipo']){
                        case 1: $this->s__acta_superior = $un_acta; 
                            $mostrar_form['form_ml_superior'] = 'Consejeros Superiores'; 
@@ -338,6 +339,35 @@ class ci_mesa extends toba_ci
             }
             
 	}
+        
+        //-----------------------------------------------------------------------------------
+	//---- form_ml_director ---------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__form_ml_director(form_ml_director $form_ml)
+	{
+            if(isset($this->s__acta_director)){
+                $datos_necesarios['acta'] = $this->s__acta_director;
+                $datos_necesarios['tabla_listas'] = 'lista_decano';
+                $datos_necesarios['tabla_voto'] = 'voto_lista_decano';
+                $respuesta = $this->cargar_formulario($datos_necesarios);
+                $form_ml->set_datos($respuesta);
+                
+            }
+	}
+
+	function evt__form_ml_director__modificacion($datos)
+	{
+            if(isset($this->s__acta_director)){
+                $datos_necesarios['acta'] = $this->s__acta_director;
+                $datos_necesarios['tabla_voto'] = 'voto_lista_decano';
+                $datos_necesarios['datos'] = $datos;
+                
+                $this->formulario_modificacion($datos_necesarios); 
+                
+            }
+            
+	}
 
 	//-----------------------------------------------------------------------------------
 	//---- form_ml_rector ---------------------------------------------------------------
@@ -367,6 +397,10 @@ class ci_mesa extends toba_ci
             }
 	}
         
+        //-----------------------------------------------------------------------------------
+	//---- FUNCION ENCARGADA DE CARGAR/GUARDAR LOS FORMULARIOS ---------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
         function cargar_formulario($datos_necesarios){
             if(isset($datos_necesarios['acta'])){
                 $ar = array();
@@ -385,7 +419,7 @@ class ci_mesa extends toba_ci
 
                 //obtener los votos cargados, asociados a este acta
                 $votos = $this->dep('datos')->tabla($datos_necesarios['tabla_voto'])->get_listado_votos($datos_necesarios['acta']['id_acta']);
-                               
+                              
                 if(sizeof($votos) > 0){//existen votos cargados
                     $ar = array_merge($votos, $ar);
                     
