@@ -123,7 +123,7 @@ INSERT INTO apex_objeto_mt_me (objeto_mt_me_proyecto, objeto_mt_me, ev_procesar_
 	NULL, --ev_procesar_etiq
 	NULL, --ev_cancelar_etiq
 	'100%', --ancho
-	'300px', --alto
+	NULL, --alto
 	NULL, --posicion_botonera
 	NULL, --tipo_navegacion
 	'1', --botonera_barra_item
@@ -278,18 +278,18 @@ INSERT INTO apex_objeto_ci_pantalla (objeto_ci_proyecto, objeto_ci, pantalla, id
 	'<table>
 	<tbody>
 		<tr style="horizontal-align: center;">
-			<td>
+			<td style="text-align: center;">
 				[dep id=form_datos]</td>
 		</tr>
 		<tr style="horizontal-align: center;">
 			<td>
-				<p>[dep id=form_ml_rector]</p><p>[dep id=form_ml_decano]</p><p>[dep id=form_ml_director]</p><p>[dep id=form_ml_superior]</p><p>[dep id=form_ml_directivo]</p><p>[dep id=form_ml_extra]</p></td>
+				<p style="text-align: center;">[dep id=form_ml_rector]</p><p style="text-align: center;">[dep id=form_ml_decano]</p><p style="text-align: center;">[dep id=form_ml_director]</p><p style="text-align: center;">[dep id=form_ml_superior]</p><p style="text-align: center;">[dep id=form_ml_directivo]</p><p style="text-align: center;">[dep id=form_ml_extra]</p></td>
 			<td>
 				<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p></td>
 		</tr>
 	</tbody>
 </table>
-<p>&nbsp;</p>', --template
+<p style="text-align: center;">&nbsp;</p>', --template
 	NULL, --template_impresion
 	'10000003'  --punto_montaje
 );
