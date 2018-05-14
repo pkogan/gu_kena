@@ -242,7 +242,7 @@ class ci_rector extends toba_ci {
             }
         }
 
-        $this->generar_json('2015-06-16');
+        $this->generar_json('2016-05-17');
         
     }
 
@@ -275,7 +275,7 @@ class ci_rector extends toba_ci {
     function datos_ue_claustro($fecha, $tabla_voto, $tabla_lista, $categoria, $sigla_cat){
         $sql = "select ue.nombre as unidad_electoral, ue.sigla as sigla_ue, cl.descripcion as claustro, 
                     l.id_nro_lista, l.nombre as lista,
-                    s.sigla as sede, 
+                    s.sigla as sede, m.nro_mesa,
                     l.sigla as sigla_lista, vl.cant_votos, total.total
             from acta a 
             inner join mesa m on m.id_mesa = a.de
@@ -296,6 +296,7 @@ class ci_rector extends toba_ci {
                     group by s.id_ue, m.id_claustro, vl.id_lista 
             ) total on total.id_claustro = cl.id
                     and total.id_lista = l.id_nro_lista
+                    and total.id_ue = s.id_ue
             where l.fecha = '".$fecha."'
             order by unidad_electoral, claustro, lista, sede 
                 ";
@@ -382,7 +383,7 @@ class ci_rector extends toba_ci {
             $labels[] = $un_registro['sigla_lista'];
             $total[] = $un_registro['total'];
             
-            $sedes[$un_registro['sede']] = $un_registro['cant_votos'];
+            $sedes[$un_registro['sede'].' mesa '.$un_registro['nro_mesa']] = $un_registro['cant_votos'];
             
         }
         
