@@ -38,7 +38,7 @@ class ci_validar extends gu_kena_ci
 	//---- cuadro_actas -----------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
 
-	function conf__cuadro_actas(gu_kena_ei_cuadro $cuadro)
+	function conf__datos_actas(gu_kena_ei_cuadro $cuadro)
 	{
             $m = $this->dep('datos')->tabla('acta')->get_ultimo_listado();
             return $m;
@@ -56,6 +56,18 @@ class ci_validar extends gu_kena_ci
         function conf__cuadro_listas_dir(gu_kena_ei_cuadro $cuadro)
 	{
             $m = $this->dep('datos')->tabla('lista_cdirectivo')->get_ultimo_listado();
+            return $m;
+	}
+        
+        function conf__cuadro_rector(gu_kena_ei_cuadro $cuadro)
+	{
+            $m = $this->dep('datos')->tabla('lista_rector')->get_ultimo_listado();
+            return $m;
+	}
+        
+        function conf__cuadro_decano(gu_kena_ei_cuadro $cuadro)
+	{
+            $m = $this->dep('datos')->tabla('lista_decano')->get_ultimo_listado();
             return $m;
 	}
 }

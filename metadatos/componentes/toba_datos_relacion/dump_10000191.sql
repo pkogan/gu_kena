@@ -101,6 +101,30 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 );
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'gu_kena', --proyecto
+	'10000403', --dep_id
+	'10000191', --objeto_consumidor
+	'2000060', --objeto_proveedor
+	'lista_decano', --identificador
+	NULL, --parametros_a
+	NULL, --parametros_b
+	NULL, --parametros_c
+	NULL, --inicializar
+	'5'  --orden
+);
+INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
+	'gu_kena', --proyecto
+	'10000404', --dep_id
+	'10000191', --objeto_consumidor
+	'2000054', --objeto_proveedor
+	'lista_rector', --identificador
+	NULL, --parametros_a
+	NULL, --parametros_b
+	NULL, --parametros_c
+	NULL, --inicializar
+	'6'  --orden
+);
+INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
+	'gu_kena', --proyecto
 	'10000252', --dep_id
 	'10000191', --objeto_consumidor
 	'10000119', --objeto_proveedor

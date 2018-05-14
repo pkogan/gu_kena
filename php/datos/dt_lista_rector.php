@@ -18,5 +18,20 @@ class dt_lista_rector extends gu_kena_datos_tabla
                     . "  order by nombre"; 
             return toba::db('gu_kena')->consultar($sql);
         }
+        
+    //usado en ci_validar
+        function get_ultimo_listado()
+	{
+		$sql = "SELECT
+			t_lc.id_nro_lista,
+			t_lc.nombre,
+			t_lc.fecha
+		FROM
+			lista_rector as t_lc	
+                        WHERE t_lc.fecha = (SELECT max(id_fecha) FROM acto_electoral)
+		ORDER BY t_lc.nombre";
+		$res = toba::db('gu_kena')->consultar($sql);
+                return $res;
+	}
 }
 ?>

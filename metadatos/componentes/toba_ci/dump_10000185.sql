@@ -74,10 +74,10 @@ INSERT INTO apex_objeto_mt_me (objeto_mt_me_proyecto, objeto_mt_me, ev_procesar_
 --- INICIO Grupo de desarrollo 10
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'gu_kena', --proyecto
-	'10000253', --dep_id
+	'10000402', --dep_id
 	'10000185', --objeto_consumidor
-	'10000194', --objeto_proveedor
-	'cuadro_actas', --identificador
+	'10000255', --objeto_proveedor
+	'cuadro_decano', --identificador
 	NULL, --parametros_a
 	NULL, --parametros_b
 	NULL, --parametros_c
@@ -144,6 +144,18 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	NULL, --inicializar
 	NULL  --orden
 );
+INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
+	'gu_kena', --proyecto
+	'10000401', --dep_id
+	'10000185', --objeto_consumidor
+	'10000254', --objeto_proveedor
+	'datos_actas', --identificador
+	NULL, --parametros_a
+	NULL, --parametros_b
+	NULL, --parametros_c
+	NULL, --inicializar
+	NULL  --orden
+);
 --- FIN Grupo de desarrollo 10
 
 ------------------------------------------------------------
@@ -157,7 +169,7 @@ INSERT INTO apex_objeto_ci_pantalla (objeto_ci_proyecto, objeto_ci, pantalla, id
 	'10000079', --pantalla
 	'pant_listas', --identificador
 	'1', --orden
-	'Listas', --etiqueta
+	'Listas Sup y Dir', --etiqueta
 	NULL, --descripcion
 	NULL, --tip
 	'apex', --imagen_recurso_origen
@@ -195,7 +207,26 @@ INSERT INTO apex_objeto_ci_pantalla (objeto_ci_proyecto, objeto_ci, pantalla, id
 	'10000106', --pantalla
 	'pant_listas_rector', --identificador
 	'3', --orden
-	'Listas Rector', --etiqueta
+	'Listas Rector y Decano', --etiqueta
+	NULL, --descripcion
+	NULL, --tip
+	'apex', --imagen_recurso_origen
+	NULL, --imagen
+	NULL, --objetos
+	NULL, --eventos
+	NULL, --subclase
+	NULL, --subclase_archivo
+	NULL, --template
+	NULL, --template_impresion
+	NULL  --punto_montaje
+);
+INSERT INTO apex_objeto_ci_pantalla (objeto_ci_proyecto, objeto_ci, pantalla, identificador, orden, etiqueta, descripcion, tip, imagen_recurso_origen, imagen, objetos, eventos, subclase, subclase_archivo, template, template_impresion, punto_montaje) VALUES (
+	'gu_kena', --objeto_ci_proyecto
+	'10000185', --objeto_ci
+	'10000107', --pantalla
+	'pant_datos_mesas', --identificador
+	'4', --orden
+	'Ver de y para', --etiqueta
 	NULL, --descripcion
 	NULL, --tip
 	'apex', --imagen_recurso_origen
@@ -236,15 +267,22 @@ INSERT INTO apex_objetos_pantalla (proyecto, pantalla, objeto_ci, orden, dep_id)
 );
 INSERT INTO apex_objetos_pantalla (proyecto, pantalla, objeto_ci, orden, dep_id) VALUES (
 	'gu_kena', --proyecto
-	'10000083', --pantalla
+	'10000106', --pantalla
 	'10000185', --objeto_ci
-	'1', --orden
-	'10000253'  --dep_id
+	'0', --orden
+	'10000400'  --dep_id
 );
 INSERT INTO apex_objetos_pantalla (proyecto, pantalla, objeto_ci, orden, dep_id) VALUES (
 	'gu_kena', --proyecto
 	'10000106', --pantalla
 	'10000185', --objeto_ci
+	'1', --orden
+	'10000402'  --dep_id
+);
+INSERT INTO apex_objetos_pantalla (proyecto, pantalla, objeto_ci, orden, dep_id) VALUES (
+	'gu_kena', --proyecto
+	'10000107', --pantalla
+	'10000185', --objeto_ci
 	'0', --orden
-	'10000400'  --dep_id
+	'10000401'  --dep_id
 );
