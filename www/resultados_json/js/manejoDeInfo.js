@@ -24,14 +24,30 @@ function cambioTablaGrafico(opcion, valor){
 }
 function llamadaAjax(){
 $.ajax({
-        url: 'e20160517/'+json,
+        //url: 'e20160517/'+json,
+        url: 'e20180522/'+json,
         dataType: 'json',
         cache: false,
         success: function(data) {
                                 actualizarTabla(data);
                                 actualizarGrafico(data);
                                 actualizarTitulo(data);
-                                }}); 
+                                },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                                borrar();
+                                }});
+}
+
+function borrar(){
+    if (grafico != null) {grafico.destroy();};
+    $('#tabla').bootstrapTable('destroy');
+    $('#tabla2').bootstrapTable('destroy');
+    document.getElementById('titulo').innerHTML = "No hay datos para el filtro ingresado";
+    document.getElementById('titulo2').innerHTML = "";
+    document.getElementById('tituloTabla').innerHTML = "";
+    document.getElementById('hora').innerHTML = "";
+    titulo=data.titulo;
+
 }
 function actualizarTabla(data)
 {
@@ -40,32 +56,43 @@ function actualizarTabla(data)
                                     data: data.data,
                                     columns: data.columns
                                 });
-
+    $('#tabla2').bootstrapTable('destroy');
+    document.getElementById('titulo2').innerHTML = '';
+    //if(isset )
+    if(data.hasOwnProperty('data2')){
+        document.getElementById('titulo2').innerHTML = 'Dont';
+    $('#tabla2').bootstrapTable({
+                                    data: data.data2,
+                                    columns: data.columns2
+                                });
+                            }
 }
 function actualizarGrafico(data){
-   var arregloTotal = carga(data);
+  // var arregloTotal = carga(data);
    if (grafico != null) {grafico.destroy();};
    grafico = new Chart(document.getElementById("grafico"), {
-    type: tipo,//'pie',horizontalBar
+    type: 'bar',//'pie',horizontalBar
     data: {
             labels: data.labels,
              datasets: [{
-                        backgroundColor: arregloTotal[0],
-                        borderColor: arregloTotal[1],
-                        borderWidth: arregloTotal[2],
+                        backgroundColor: "#3498db",// arregloTotal[0],
+                        borderColor: "#1a5276",//arregloTotal[1],
+                        //borderWidth: 2,//arregloTotal[2],
                         data: data.total,
-                        xAxisID:'id',
                       }]
            },
     options:{
              legend:{
-                    display: arregloTotal[3],
-                    position: arregloTotal[4],
+                    display: false,//arregloTotal[3],
+                    position: "top",//arregloTotal[4],
                 },
-                title: {
-                        display: true,
+                /*title: {
+                        //display: true,
                         text: data.titulo,
-                        },
+                        },*/
+                        scales:{
+                        	yAxes:[{ticks:{beginAtZero:true}}]
+                        }
                 
             },
 
@@ -94,12 +121,15 @@ function arregloDeColore(){
 $(".dropdown-menu").on('click', 'li a', function(){
   var selText = $(this).children("h7").html();
  $(this).parent('li').siblings().removeClass('active');
-  $(this).parents('.btn-group').find('.selection').html(selText);
+  $(this).parents('.nav-item').find('.selection').html(selText);
   $(this).parents('li').addClass("active");
 });
 function actualizarTitulo(data){
 document.getElementById('titulo').innerHTML = data.titulo;
-document.getElementById('hora').innerHTML = data.fecha;
+document.getElementById('tituloTabla').innerHTML = data.titulo;
+
+document.getElementById('hora').innerHTML = 'Actualizado:'+data.fecha;
+document.getElementById('mesas').innerHTML = 'Mesas enviadas: 10 de 99 (10%)';
 titulo=data.titulo;
 }
 function cambioGrafico(){
@@ -108,13 +138,6 @@ function cambioGrafico(){
     } else{
         tipo = 'horizontalBar';}
 }
-$(window).resize(function(){
-   var aux = $(this);
-   if (aux.width() < 820) {
-    (document.getElementById("primeraImagen")).src="img/icono.ico";
-   }else{(document.getElementById("primeraImagen")).src="img/marca UNCo azul.ico";};
-})
-
 function exportarTabla(){
     $("#tabla").table2excel({
         name:titulo,
