@@ -4,6 +4,7 @@ var categoria = 'R';
 var grafico = null;
 var tipo = 'pie';
 var titulo;
+//var carpeta_json='e20180522';
 $(function () {
     json = categoria +"_"+ ua +"_"+ claustro + '.json';
     llamadaAjax();
@@ -25,7 +26,7 @@ function cambioTablaGrafico(opcion, valor){
 function llamadaAjax(){
 $.ajax({
         //url: 'e20160517/'+json,
-        url: 'e20180522/'+json,
+        url: carpeta_json+'/'+json,
         dataType: 'json',
         cache: false,
         success: function(data) {

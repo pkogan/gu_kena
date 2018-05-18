@@ -24,13 +24,13 @@ class Testing {
 
     public function __construct($fecha) {
         $this->eleccion_a_0($fecha);
-        $this->generar_eleccion_random($fecha, 'voto_lista_csuperior', 'lista_csuperior', 1);
+       /* $this->generar_eleccion_random($fecha, 'voto_lista_csuperior', 'lista_csuperior', 1);
         $this->generar_eleccion_random($fecha, 'voto_lista_cdirectivo', 'lista_cdirectivo', 2);
         $this->generar_eleccion_random($fecha, 'voto_lista_cdirectivo', 'lista_cdirectivo', 3);
         $this->generar_eleccion_random($fecha, 'voto_lista_rector', 'lista_rector', 4);
         $this->generar_eleccion_random($fecha, 'voto_lista_decano', 'lista_decano', 5);
         $this->generar_eleccion_random($fecha, 'voto_lista_decano', 'lista_decano', 6);
-        $this->actualizarMesas($fecha);
+        $this->actualizarMesas($fecha);*/
     }
 
     public function eleccion_a_0($fecha) {
